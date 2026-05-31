@@ -23,17 +23,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} bg-neutral-950`}>
       <body
-        className={`${inter.className} bg-white text-slate-900`}
+        className={`${inter.className} bg-neutral-950 text-slate-100`}
         suppressHydrationWarning
       >
-        {/*
-         * LanguageProvider is a Client Component that owns the active
-         * language state. Mounting it here — above every page and component
-         * in the tree — guarantees that useTranslation() works in any
-         * client component without prop drilling or a hydration mismatch.
-         */}
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
