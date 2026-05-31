@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
 
 type FormData = {
   fullName: string;
@@ -62,23 +61,34 @@ export default function IntakeForm() {
     setLoading(true);
     setSubmitError(null);
 
-    const { error } = await supabase.from("intake_submissions").insert({
-      full_name: form.fullName,
-      email: form.email,
-      builders: form.builders,
-      has_github: form.hasGithub || null,
-      has_vercel: form.hasVercel || null,
-      has_supabase: form.hasSupabase || null,
-      problem: form.problem,
-      deadline: form.deadline,
-      discovery: form.discovery || null,
-    });
+    try {
+      const res = await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: form.fullName,
+          email: form.email,
+          builders: form.builders,
+          has_github: form.hasGithub || null,
+          has_vercel: form.hasVercel || null,
+          has_supabase: form.hasSupabase || null,
+          problem: form.problem,
+          deadline: form.deadline,
+          discovery: form.discovery || null,
+        }),
+      });
 
-    setLoading(false);
+      const data = await res.json();
 
-    if (error) {
-      setSubmitError("Something went wrong submitting your request. Please try again.");
+      if (!res.ok) {
+        setSubmitError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+    } catch {
+      setSubmitError("Network error. Please check your connection and try again.");
       return;
+    } finally {
+      setLoading(false);
     }
 
     setSubmitted(true);
