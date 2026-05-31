@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { sanitizeText, sanitizeArray } from "@/lib/sanitize";
 
 // Allowed values for enumerated fields — reject anything outside these sets
-const ALLOWED_BUILDERS = ["Lovable", "Bolt", "Framer", "Webflow", "Bubble", "V0", "Other"];
+const ALLOWED_BUILDERS = ["Lovable", "Bolt", "v0", "Cursor", "Framer", "Webflow", "Bubble", "Other"];
 const ALLOWED_DEADLINES = ["asap", "24h", "72h", "1w", "flexible"];
 const ALLOWED_YES_NO = ["Yes", "No"];
 const ALLOWED_DISCOVERY = ["google", "twitter", "reddit", "linkedin", "referral", "ai-builder", "other"];
