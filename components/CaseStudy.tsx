@@ -1,8 +1,9 @@
-import type { CaseStudyT } from "@/lib/i18n";
+"use client";
 
-interface Props { t: CaseStudyT }
+import { useTranslation } from "@/components/LanguageProvider";
 
-export default function CaseStudy({ t }: Props) {
+export default function CaseStudy() {
+  const { t: { caseStudy: t } } = useTranslation();
   return (
     <section id="case-study" className="py-24 bg-slate-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

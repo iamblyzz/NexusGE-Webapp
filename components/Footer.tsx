@@ -1,8 +1,9 @@
-import type { FooterT } from "@/lib/i18n";
+"use client";
 
-interface Props { t: FooterT }
+import { useTranslation } from "@/components/LanguageProvider";
 
-export default function Footer({ t }: Props) {
+export default function Footer() {
+  const { t: { footer: t } } = useTranslation();
   const year = new Date().getFullYear();
 
   return (

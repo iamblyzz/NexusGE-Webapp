@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { FormT } from "@/lib/i18n";
-
-interface Props { t: FormT }
+import { useTranslation } from "@/components/LanguageProvider";
 
 type FormData = {
   fullName: string;
@@ -24,7 +22,8 @@ const EMPTY: FormData = {
   hasVercel: "", hasSupabase: "", problem: "", deadline: "", discovery: "",
 };
 
-export default function IntakeForm({ t }: Props) {
+export default function IntakeForm() {
+  const { t: { form: t } } = useTranslation();
   const [form, setForm] = useState<FormData>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [loading, setLoading] = useState(false);

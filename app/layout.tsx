@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { headers } from "next/headers";
+import { LanguageProvider } from "@/components/LanguageProvider";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -22,14 +22,19 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // Nonce injected by middleware for CSP compliance
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _nonce = headers().get("x-nonce") ?? undefined;
-
   return (
     <html lang="en" className={inter.variable}>
-      <body className={`${inter.className} bg-white text-slate-900`} suppressHydrationWarning>
-        {children}
+      <body
+        className={`${inter.className} bg-white text-slate-900`}
+        suppressHydrationWarning
+      >
+        {/*
+         * LanguageProvider is a Client Component that owns the active
+         * language state. Mounting it here — above every page and component
+         * in the tree — guarantees that useTranslation() works in any
+         * client component without prop drilling or a hydration mismatch.
+         */}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

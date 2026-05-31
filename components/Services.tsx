@@ -1,8 +1,6 @@
 "use client";
 
-import type { ServicesT } from "@/lib/i18n";
-
-interface Props { t: ServicesT }
+import { useTranslation } from "@/components/LanguageProvider";
 
 function CheckIcon() {
   return (
@@ -12,7 +10,8 @@ function CheckIcon() {
   );
 }
 
-export default function Services({ t }: Props) {
+export default function Services() {
+  const { t: { services: t } } = useTranslation();
   const scrollToForm = () =>
     document.getElementById("intake-form")?.scrollIntoView({ behavior: "smooth" });
 

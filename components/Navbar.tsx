@@ -1,13 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import type { NavT, Lang } from "@/lib/i18n";
-
-interface Props {
-  t: NavT;
-  lang: Lang;
-  setLang: (l: Lang) => void;
-}
+import { useTranslation } from "@/components/LanguageProvider";
+import type { Lang } from "@/app/lib/languages";
 
 const LANG_LABELS: Record<Lang, string> = { en: "EN", es: "ES", pt: "PT" };
 const LANG_FULL: Record<Lang, string> = {
@@ -16,14 +11,17 @@ const LANG_FULL: Record<Lang, string> = {
   pt: "Português",
 };
 
-const NAV_LINKS = [
-  { key: "services" as const, id: "services" },
-  { key: "howItWorks" as const, id: "how-it-works" },
-  { key: "caseStudy" as const, id: "case-study" },
-  { key: "getHelp" as const, id: "intake-form" },
-] satisfies { key: keyof NavT; id: string }[];
+const NAV_IDS = {
+  services:   "services",
+  howItWorks: "how-it-works",
+  caseStudy:  "case-study",
+  getHelp:    "intake-form",
+} as const;
 
-export default function Navbar({ t, lang, setLang }: Props) {
+export default function Navbar() {
+  const { t, lang, setLanguage } = useTranslation();
+  const nav = t.nav;
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -46,7 +44,7 @@ export default function Navbar({ t, lang, setLang }: Props) {
   };
 
   const handleLang = (l: Lang) => {
-    setLang(l);
+    setLanguage(l);
     setLangOpen(false);
   };
 
@@ -57,27 +55,32 @@ export default function Navbar({ t, lang, setLang }: Props) {
 
           {/* Brand */}
           <span className="text-slate-900 font-bold text-base tracking-tight whitespace-nowrap select-none">
-            Nexus{" "}
-            <span className="text-blue-600">Global</span>{" "}
-            Enterprise
+            Nexus <span className="text-blue-600">Global</span> Enterprise
           </span>
 
-          {/* Desktop nav */}
+          {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-7">
-            {NAV_LINKS.map(({ key, id }) => (
+            {(
+              [
+                [nav.services,   NAV_IDS.services],
+                [nav.howItWorks, NAV_IDS.howItWorks],
+                [nav.caseStudy,  NAV_IDS.caseStudy],
+                [nav.getHelp,    NAV_IDS.getHelp],
+              ] as [string, string][]
+            ).map(([label, id]) => (
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
                 className="text-slate-500 hover:text-slate-900 text-sm font-medium transition-colors duration-150"
               >
-                {t[key] as string}
+                {label}
               </button>
             ))}
           </nav>
 
           {/* Desktop right — lang switcher + CTA */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language switcher */}
+            {/* Language dropdown */}
             <div ref={langRef} className="relative">
               <button
                 onClick={() => setLangOpen((v) => !v)}
@@ -89,13 +92,19 @@ export default function Navbar({ t, lang, setLang }: Props) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918" />
                 </svg>
                 {LANG_LABELS[lang]}
-                <svg className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${langOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                <svg
+                  className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${langOpen ? "rotate-180" : ""}`}
+                  fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
 
               {langOpen && (
-                <div role="listbox" className="absolute right-0 top-full mt-1 w-36 rounded-lg border border-slate-200 bg-white shadow-lg shadow-slate-200/60 py-1 z-50">
+                <div
+                  role="listbox"
+                  className="absolute right-0 top-full mt-1.5 w-36 rounded-lg border border-slate-200 bg-white shadow-lg shadow-slate-200/60 py-1 z-50"
+                >
                   {(["en", "es", "pt"] as Lang[]).map((l) => (
                     <button
                       key={l}
@@ -121,13 +130,12 @@ export default function Navbar({ t, lang, setLang }: Props) {
               onClick={() => scrollTo("intake-form")}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition-colors duration-150 shadow-sm"
             >
-              {t.submitCta}
+              {nav.submitCta}
             </button>
           </div>
 
           {/* Mobile controls */}
           <div className="md:hidden flex items-center gap-2">
-            {/* Mobile lang */}
             <div ref={langRef} className="relative">
               <button
                 onClick={() => setLangOpen((v) => !v)}
@@ -142,7 +150,9 @@ export default function Navbar({ t, lang, setLang }: Props) {
                       key={l}
                       onClick={() => handleLang(l)}
                       className={`w-full text-left px-3 py-2 text-sm ${
-                        lang === l ? "text-blue-700 font-semibold bg-blue-50" : "text-slate-700 hover:bg-slate-50"
+                        lang === l
+                          ? "text-blue-700 font-semibold bg-blue-50"
+                          : "text-slate-700 hover:bg-slate-50"
                       }`}
                     >
                       {LANG_FULL[l]}
@@ -152,7 +162,6 @@ export default function Navbar({ t, lang, setLang }: Props) {
               )}
             </div>
 
-            {/* Hamburger */}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Toggle navigation"
@@ -175,20 +184,27 @@ export default function Navbar({ t, lang, setLang }: Props) {
       {/* Mobile drawer */}
       {menuOpen && (
         <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 flex flex-col gap-1">
-          {NAV_LINKS.map(({ key, id }) => (
+          {(
+            [
+              [nav.services,   NAV_IDS.services],
+              [nav.howItWorks, NAV_IDS.howItWorks],
+              [nav.caseStudy,  NAV_IDS.caseStudy],
+              [nav.getHelp,    NAV_IDS.getHelp],
+            ] as [string, string][]
+          ).map(([label, id]) => (
             <button
               key={id}
               onClick={() => scrollTo(id)}
               className="text-left py-2.5 text-slate-600 hover:text-slate-900 text-sm font-medium border-b border-slate-100 last:border-0 transition-colors"
             >
-              {t[key] as string}
+              {label}
             </button>
           ))}
           <button
             onClick={() => scrollTo("intake-form")}
             className="mt-3 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition-colors"
           >
-            {t.submitCta}
+            {nav.submitCta}
           </button>
         </div>
       )}
