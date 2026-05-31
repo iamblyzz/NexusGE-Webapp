@@ -24,11 +24,21 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
+
+  // Two separate refs — one per dropdown instance (desktop / mobile).
+  // A single shared ref always resolves to the last-rendered element, which
+  // was the mobile div. That caused the mousedown outside-click handler to
+  // fire on desktop clicks before onClick could execute, collapsing the
+  // dropdown and swallowing the language change.
+  const desktopLangRef = useRef<HTMLDivElement>(null);
+  const mobileLangRef  = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handler(e: MouseEvent) {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const inDesktop = desktopLangRef.current?.contains(target) ?? false;
+      const inMobile  = mobileLangRef.current?.contains(target)  ?? false;
+      if (!inDesktop && !inMobile) {
         setLangOpen(false);
       }
     }
@@ -49,6 +59,29 @@ export default function Navbar() {
     setLanguage(l);
     setLangOpen(false);
   };
+
+  // Shared dropdown item list — rendered identically for desktop and mobile
+  const LangOptions = () => (
+    <>
+      {(["en", "es", "pt"] as Lang[]).map((l) => (
+        <button
+          key={l}
+          type="button"
+          role="option"
+          aria-selected={lang === l}
+          onClick={() => handleLang(l)}
+          className={`w-full flex items-center justify-between px-3 py-2.5 text-sm cursor-pointer pointer-events-auto transition-colors ${
+            lang === l
+              ? "bg-blue-600/20 text-blue-400 font-semibold"
+              : "text-slate-300 hover:bg-white/5"
+          }`}
+        >
+          <span>{LANG_FULL[l]}</span>
+          <span className="text-xs text-slate-500 font-mono">{LANG_LABELS[l]}</span>
+        </button>
+      ))}
+    </>
+  );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/95 backdrop-blur-md border-b border-white/10">
@@ -82,13 +115,14 @@ export default function Navbar() {
 
           {/* Desktop right — lang switcher + CTA */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language dropdown */}
-            <div ref={langRef} className="relative">
+            {/* Desktop language dropdown — uses desktopLangRef */}
+            <div ref={desktopLangRef} className="relative">
               <button
+                type="button"
                 onClick={() => setLangOpen((v) => !v)}
                 aria-expanded={langOpen}
                 aria-haspopup="listbox"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/15 text-slate-300 hover:border-white/30 hover:text-white text-sm font-medium transition-colors duration-150 select-none"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/15 text-slate-300 hover:border-white/30 hover:text-white text-sm font-medium transition-colors duration-150 select-none cursor-pointer"
               >
                 <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918" />
@@ -107,22 +141,7 @@ export default function Navbar() {
                   role="listbox"
                   className="absolute right-0 top-full mt-1.5 w-36 rounded-lg border border-white/10 bg-neutral-900 shadow-xl py-1 z-50"
                 >
-                  {(["en", "es", "pt"] as Lang[]).map((l) => (
-                    <button
-                      key={l}
-                      role="option"
-                      aria-selected={lang === l}
-                      onClick={() => handleLang(l)}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-sm transition-colors ${
-                        lang === l
-                          ? "bg-blue-600/20 text-blue-400 font-semibold"
-                          : "text-slate-300 hover:bg-white/5"
-                      }`}
-                    >
-                      <span>{LANG_FULL[l]}</span>
-                      <span className="text-xs text-slate-500 font-mono">{LANG_LABELS[l]}</span>
-                    </button>
-                  ))}
+                  <LangOptions />
                 </div>
               )}
             </div>
@@ -138,28 +157,21 @@ export default function Navbar() {
 
           {/* Mobile controls */}
           <div className="md:hidden flex items-center gap-2">
-            <div ref={langRef} className="relative">
+            {/* Mobile language dropdown — uses mobileLangRef */}
+            <div ref={mobileLangRef} className="relative">
               <button
+                type="button"
                 onClick={() => setLangOpen((v) => !v)}
-                className="px-2.5 py-1.5 rounded-md border border-white/15 text-slate-300 text-xs font-semibold"
+                className="px-2.5 py-1.5 rounded-md border border-white/15 text-slate-300 text-xs font-semibold cursor-pointer"
               >
                 {LANG_LABELS[lang]}
               </button>
               {langOpen && (
-                <div className="absolute right-0 top-full mt-1 w-32 rounded-lg border border-white/10 bg-neutral-900 shadow-lg py-1 z-50">
-                  {(["en", "es", "pt"] as Lang[]).map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => handleLang(l)}
-                      className={`w-full text-left px-3 py-2 text-sm ${
-                        lang === l
-                          ? "text-blue-400 font-semibold bg-blue-600/10"
-                          : "text-slate-300 hover:bg-white/5"
-                      }`}
-                    >
-                      {LANG_FULL[l]}
-                    </button>
-                  ))}
+                <div
+                  role="listbox"
+                  className="absolute right-0 top-full mt-1 w-36 rounded-lg border border-white/10 bg-neutral-900 shadow-lg py-1 z-50"
+                >
+                  <LangOptions />
                 </div>
               )}
             </div>
