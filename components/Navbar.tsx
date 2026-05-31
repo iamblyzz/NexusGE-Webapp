@@ -45,6 +45,7 @@ export default function Navbar() {
   };
 
   const handleLang = (l: Lang) => {
+    console.log("[NGE] Navbar: language button clicked →", l, "| current lang =", lang);
     setLanguage(l);
     setLangOpen(false);
   };

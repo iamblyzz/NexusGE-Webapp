@@ -5,7 +5,8 @@ import { useTranslation } from "@/components/LanguageProvider";
 const STACK = ["Next.js 14", "Vercel", "Supabase", "GitHub", "TypeScript", "Tailwind CSS"];
 
 export default function Hero() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  console.log("[NGE] Hero: rendering with lang =", lang);
   const hero = t.hero;
 
   const scrollTo = (id: string) => {

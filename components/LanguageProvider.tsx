@@ -4,7 +4,7 @@ import {
   createContext,
   useContext,
   useState,
-  useMemo,
+  useCallback,
   type ReactNode,
 } from "react";
 import { type Lang, type Dictionary, getT } from "@/app/lib/languages";
@@ -12,11 +12,8 @@ import { type Lang, type Dictionary, getT } from "@/app/lib/languages";
 // ── Context shape ─────────────────────────────────────────────────────────────
 
 interface LanguageContextValue {
-  /** Active language code */
   lang: Lang;
-  /** Switch the active language — triggers an instant, synchronous re-render */
   setLanguage: (lang: Lang) => void;
-  /** Full translation dictionary for the active language */
   t: Dictionary;
 }
 
@@ -26,28 +23,24 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 // ── Provider ──────────────────────────────────────────────────────────────────
 
-/**
- * Wraps the app tree (mounted in layout.tsx) so every client component can
- * call `useTranslation()` without prop drilling.
- *
- * Initial language: "en". State lives here — switching language updates all
- * consumers in a single synchronous React render cycle, producing zero flash
- * and zero layout shift.
- */
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLanguage] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>("en");
 
-  // Memoise the dictionary lookup so the object reference only changes when
-  // lang changes — prevents unnecessary re-renders of memoised consumers.
-  const t = useMemo(() => getT(lang), [lang]);
+  const setLanguage = useCallback((newLang: Lang) => {
+    console.log("[NGE] LanguageProvider: setLanguage called →", newLang);
+    setLang(newLang);
+  }, []);
 
-  const value = useMemo<LanguageContextValue>(
-    () => ({ lang, setLanguage, t }),
-    [lang, t]
-  );
+  // Compute dictionary directly — no useMemo so there is no chance of
+  // a stale memo preventing consumers from seeing the new dictionary.
+  const t = getT(lang);
+
+  console.log("[NGE] LanguageProvider: rendering with lang =", lang);
 
   return (
-    <LanguageContext.Provider value={value}>
+    // Pass a fresh object literal so React Context always detects a change
+    // and re-renders every consumer when lang changes.
+    <LanguageContext.Provider value={{ lang, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -55,21 +48,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 
-/**
- * `useTranslation()` — consume the active language state and translation
- * dictionary from anywhere inside the provider tree.
- *
- * @example
- * const { t, lang, setLanguage } = useTranslation();
- * <h1>{t.hero.headline}</h1>
- * <button onClick={() => setLanguage("es")}>ES</button>
- */
 export function useTranslation(): LanguageContextValue {
   const ctx = useContext(LanguageContext);
   if (!ctx) {
     throw new Error(
-      "useTranslation() must be called inside <LanguageProvider>. " +
-        "Ensure app/layout.tsx wraps {children} with <LanguageProvider>."
+      "useTranslation() must be called inside <LanguageProvider>."
     );
   }
   return ctx;
