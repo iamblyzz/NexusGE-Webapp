@@ -3,86 +3,98 @@
 import { useState } from "react";
 import { useTranslation } from "@/components/LanguageProvider";
 
+// Service tiers — must match ALLOWED_TIERS in the API route exactly
+const TIERS = [
+  { value: "Infrastructure Deployment Fix",  label: "Infrastructure Deployment Fix",  price: "$250 flat" },
+  { value: "End-to-End Core Migration",       label: "End-to-End Core Migration",       price: "$450 flat" },
+  { value: "Enterprise App Stabilization",    label: "Enterprise App Stabilization",    price: "$750 flat" },
+  { value: "Production Oversight",            label: "Production Oversight (Retainer)", price: "$99 / mo"  },
+];
+
 type FormData = {
-  fullName: string;
-  email: string;
-  builders: string[];
-  hasGithub: string;
-  hasVercel: string;
-  hasSupabase: string;
-  problem: string;
-  deadline: string;
-  discovery: string;
+  name:          string;
+  email:         string;
+  phone:         string;
+  selected_tier: string;
+  project_scope: string;
 };
 
-const BUILDERS = ["Lovable", "Bolt", "v0", "Cursor", "Framer", "Webflow", "Bubble", "Other"];
-
 const EMPTY: FormData = {
-  fullName: "", email: "", builders: [], hasGithub: "",
-  hasVercel: "", hasSupabase: "", problem: "", deadline: "", discovery: "",
+  name: "", email: "", phone: "", selected_tier: "", project_scope: "",
 };
 
 export default function IntakeForm() {
-  const { t: { form: t } } = useTranslation();
-  const [form, setForm] = useState<FormData>(EMPTY);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-  const [loading, setLoading] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const { t: { form: t }, lang } = useTranslation();
 
-  const toggleBuilder = (b: string) =>
-    setForm((prev) => ({
-      ...prev,
-      builders: prev.builders.includes(b)
-        ? prev.builders.filter((x) => x !== b)
-        : [...prev.builders, b],
-    }));
+  const [form,        setForm]        = useState<FormData>(EMPTY);
+  const [errors,      setErrors]      = useState<Partial<Record<keyof FormData, string>>>({});
+  const [loading,     setLoading]     = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitted,   setSubmitted]   = useState(false);
+
+  const set = (key: keyof FormData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
   const validate = (): boolean => {
     const e: Partial<Record<keyof FormData, string>> = {};
-    if (!form.fullName.trim())  e.fullName  = t.fullName.error!;
+
+    if (!form.name.trim())
+      e.name = t.fullName.error;
+
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = t.email.error!;
-    if (form.builders.length === 0) e.builders = t.builders.error;
-    if (!form.problem.trim())   e.problem   = t.problem.error!;
-    if (!form.deadline)         e.deadline  = t.deadline.error!;
+      e.email = t.email.error;
+
+    if (!form.selected_tier)
+      e.selected_tier = lang === "pt"
+        ? "Por favor selecione um serviço."
+        : lang === "es"
+        ? "Por favor selecciona un servicio."
+        : "Please select a service tier.";
+
+    if (!form.project_scope.trim() || form.project_scope.trim().length < 10)
+      e.project_scope = t.problem.error;
+
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault();
     if (!validate()) return;
     setLoading(true);
     setSubmitError(null);
+
     try {
       const res = await fetch("/api/intake", {
-        method: "POST",
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          full_name:    form.fullName,
-          email:        form.email,
-          builders:     form.builders,
-          has_github:   form.hasGithub   || null,
-          has_vercel:   form.hasVercel   || null,
-          has_supabase: form.hasSupabase || null,
-          problem:      form.problem,
-          deadline:     form.deadline,
-          discovery:    form.discovery   || null,
+          name:           form.name.trim(),
+          email:          form.email.trim(),
+          phone:          form.phone.trim() || null,
+          project_scope:  form.project_scope.trim(),
+          selected_tier:  form.selected_tier,
+          language_track: lang,
         }),
       });
+
       const data = await res.json();
-      if (!res.ok) { setSubmitError(data.error ?? t.networkError); return; }
+      if (!res.ok) {
+        setSubmitError(data.error ?? t.networkError);
+        return;
+      }
     } catch {
       setSubmitError(t.networkError);
       return;
     } finally {
       setLoading(false);
     }
+
     setSubmitted(true);
   };
 
-  // ── Success state ─────────────────────────────────────────────────────────────
+  // ── Success banner ────────────────────────────────────────────────────────────
   if (submitted) {
     return (
       <section id="intake-form" className="py-24 bg-neutral-950">
@@ -103,34 +115,41 @@ export default function IntakeForm() {
   }
 
   // ── Form ──────────────────────────────────────────────────────────────────────
+  const inputClass = (err?: string) =>
+    `w-full px-4 py-2.5 rounded-lg bg-neutral-900 border text-white placeholder-slate-500
+     focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm
+     transition-colors ${err ? "border-red-500" : "border-white/10"}`;
+
   return (
     <section id="intake-form" className="py-24 bg-neutral-950">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">{t.sectionLabel}</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{t.headline}</h2>
+          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">
+            {t.sectionLabel}
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            {t.headline}
+          </h2>
           <p className="mt-4 text-slate-400 text-base">{t.subheadline}</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
 
-          {/* Full Name */}
+          {/* Name */}
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-1.5">
               {t.fullName.label} <span className="text-blue-400">*</span>
             </label>
             <input
               type="text"
-              value={form.fullName}
-              onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+              value={form.name}
+              onChange={set("name")}
               placeholder={t.fullName.placeholder}
-              className={`w-full px-4 py-2.5 rounded-lg bg-neutral-900 border text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm transition-colors ${
-                errors.fullName ? "border-red-500" : "border-white/10"
-              }`}
+              className={inputClass(errors.name)}
             />
-            {errors.fullName && <p className="mt-1.5 text-red-400 text-xs">{errors.fullName}</p>}
+            {errors.name && <p className="mt-1.5 text-red-400 text-xs">{errors.name}</p>}
           </div>
 
           {/* Email */}
@@ -141,124 +160,78 @@ export default function IntakeForm() {
             <input
               type="email"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={set("email")}
               placeholder={t.email.placeholder}
-              className={`w-full px-4 py-2.5 rounded-lg bg-neutral-900 border text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm transition-colors ${
-                errors.email ? "border-red-500" : "border-white/10"
-              }`}
+              className={inputClass(errors.email)}
             />
             {errors.email && <p className="mt-1.5 text-red-400 text-xs">{errors.email}</p>}
           </div>
 
-          {/* Builder checklist */}
+          {/* Phone (optional) */}
+          <div>
+            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
+              {lang === "pt" ? "Telefone" : lang === "es" ? "Teléfono" : "Phone"}
+              <span className="ml-1.5 text-slate-500 font-normal text-xs">
+                ({lang === "pt" ? "opcional" : lang === "es" ? "opcional" : "optional"})
+              </span>
+            </label>
+            <input
+              type="tel"
+              value={form.phone}
+              onChange={set("phone")}
+              placeholder={lang === "pt" ? "+55 (11) 99999-9999" : lang === "es" ? "+1 (555) 000-0000" : "+1 (555) 000-0000"}
+              className={inputClass()}
+            />
+          </div>
+
+          {/* Service tier */}
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2.5">
-              {t.builders.label} <span className="text-blue-400">*</span>
+              {lang === "pt" ? "Serviço desejado" : lang === "es" ? "Servicio deseado" : "Service tier"}
+              {" "}<span className="text-blue-400">*</span>
             </label>
-            <div className="flex flex-wrap gap-2">
-              {BUILDERS.map((b) => (
+            <div className="flex flex-col gap-2">
+              {TIERS.map((tier) => (
                 <button
+                  key={tier.value}
                   type="button"
-                  key={b}
-                  onClick={() => toggleBuilder(b)}
-                  className={`px-3.5 py-2 rounded-md text-sm font-medium border transition-all duration-150 ${
-                    form.builders.includes(b)
-                      ? "bg-blue-600 border-blue-600 text-white"
-                      : "bg-neutral-900 border-white/10 text-slate-400 hover:border-blue-500/50 hover:text-blue-400"
-                  }`}
+                  onClick={() => setForm((p) => ({ ...p, selected_tier: tier.value }))}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg border text-sm
+                    font-medium transition-all duration-150 text-left
+                    ${form.selected_tier === tier.value
+                      ? "bg-blue-600/20 border-blue-500 text-white"
+                      : "bg-neutral-900 border-white/10 text-slate-400 hover:border-blue-500/40 hover:text-white"
+                    }`}
                 >
-                  {b}
+                  <span>{tier.label}</span>
+                  <span className={`text-xs font-mono ml-4 shrink-0 ${
+                    form.selected_tier === tier.value ? "text-blue-300" : "text-slate-500"
+                  }`}>
+                    {tier.price}
+                  </span>
                 </button>
               ))}
             </div>
-            {errors.builders && <p className="mt-1.5 text-red-400 text-xs">{errors.builders}</p>}
+            {errors.selected_tier && (
+              <p className="mt-1.5 text-red-400 text-xs">{errors.selected_tier}</p>
+            )}
           </div>
 
-          {/* Infrastructure radios */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-lg bg-neutral-900 border border-white/10">
-            {(
-              [
-                { key: "hasGithub"  as const, label: t.hasGithub  },
-                { key: "hasVercel"  as const, label: t.hasVercel  },
-                { key: "hasSupabase"as const, label: t.hasSupabase},
-              ]
-            ).map(({ key, label }) => (
-              <div key={key}>
-                <p className="text-xs font-semibold text-slate-400 mb-2">{label}</p>
-                <div className="flex gap-4">
-                  {[
-                    { val: "Yes", display: t.yes },
-                    { val: "No",  display: t.no  },
-                  ].map(({ val, display }) => (
-                    <label key={val} className="flex items-center gap-1.5 cursor-pointer group">
-                      <input
-                        type="radio"
-                        name={key}
-                        value={val}
-                        checked={form[key] === val}
-                        onChange={() => setForm({ ...form, [key]: val })}
-                        className="w-4 h-4 accent-blue-500"
-                      />
-                      <span className="text-slate-400 text-sm group-hover:text-white transition-colors">{display}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Problem */}
+          {/* Project scope */}
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-1.5">
               {t.problem.label} <span className="text-blue-400">*</span>
             </label>
             <textarea
-              value={form.problem}
-              onChange={(e) => setForm({ ...form, problem: e.target.value })}
+              value={form.project_scope}
+              onChange={set("project_scope")}
               rows={5}
               placeholder={t.problem.placeholder}
-              className={`w-full px-4 py-2.5 rounded-lg bg-neutral-900 border text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm resize-none transition-colors ${
-                errors.problem ? "border-red-500" : "border-white/10"
-              }`}
+              className={inputClass(errors.project_scope) + " resize-none"}
             />
-            {errors.problem && <p className="mt-1.5 text-red-400 text-xs">{errors.problem}</p>}
-          </div>
-
-          {/* Deadline */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
-              {t.deadline.label} <span className="text-blue-400">*</span>
-            </label>
-            <select
-              value={form.deadline}
-              onChange={(e) => setForm({ ...form, deadline: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-lg bg-neutral-900 border text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm transition-colors appearance-none ${
-                errors.deadline ? "border-red-500" : "border-white/10"
-              }`}
-            >
-              <option value="" disabled className="text-slate-500">{t.deadline.placeholder}</option>
-              {Object.entries(t.deadline.options).map(([val, label]) => (
-                <option key={val} value={val} className="bg-neutral-900">{label}</option>
-              ))}
-            </select>
-            {errors.deadline && <p className="mt-1.5 text-red-400 text-xs">{errors.deadline}</p>}
-          </div>
-
-          {/* Discovery */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
-              {t.discovery.label}
-            </label>
-            <select
-              value={form.discovery}
-              onChange={(e) => setForm({ ...form, discovery: e.target.value })}
-              className="w-full px-4 py-2.5 rounded-lg bg-neutral-900 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm transition-colors appearance-none"
-            >
-              <option value="" className="text-slate-500">{t.discovery.placeholder}</option>
-              {Object.entries(t.discovery.options).map(([val, label]) => (
-                <option key={val} value={val} className="bg-neutral-900">{label}</option>
-              ))}
-            </select>
+            {errors.project_scope && (
+              <p className="mt-1.5 text-red-400 text-xs">{errors.project_scope}</p>
+            )}
           </div>
 
           {/* Server error */}
@@ -272,7 +245,9 @@ export default function IntakeForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg transition-all duration-150 shadow-sm flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50
+              disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg
+              transition-all duration-150 shadow-sm flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
