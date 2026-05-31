@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { LanguageProvider } from "@/components/LanguageProvider";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -28,7 +27,7 @@ export default function RootLayout({
         className={`${inter.className} bg-neutral-950 text-slate-100`}
         suppressHydrationWarning
       >
-        <LanguageProvider>{children}</LanguageProvider>
+        {children}
       </body>
     </html>
   );
