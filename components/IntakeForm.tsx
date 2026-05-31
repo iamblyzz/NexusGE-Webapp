@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 type FormData = {
   fullName: string;
@@ -29,6 +30,8 @@ export default function IntakeForm() {
     discovery: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   const toggleBuilder = (b: string) => {
@@ -52,9 +55,33 @@ export default function IntakeForm() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) setSubmitted(true);
+    if (!validate()) return;
+
+    setLoading(true);
+    setSubmitError(null);
+
+    const { error } = await supabase.from("intake_submissions").insert({
+      full_name: form.fullName,
+      email: form.email,
+      builders: form.builders,
+      has_github: form.hasGithub || null,
+      has_vercel: form.hasVercel || null,
+      has_supabase: form.hasSupabase || null,
+      problem: form.problem,
+      deadline: form.deadline,
+      discovery: form.discovery || null,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setSubmitError("Something went wrong submitting your request. Please try again.");
+      return;
+    }
+
+    setSubmitted(true);
   };
 
   if (submitted) {
@@ -237,12 +264,30 @@ export default function IntakeForm() {
             </select>
           </div>
 
+          {/* Server error */}
+          {submitError && (
+            <div className="px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+              {submitError}
+            </div>
+          )}
+
           {/* Submit */}
           <button
             type="submit"
-            className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold text-base rounded-lg transition-all duration-200 shadow-lg shadow-blue-600/20 hover:shadow-blue-500/30 mt-2"
+            disabled={loading}
+            className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-base rounded-lg transition-all duration-200 shadow-lg shadow-blue-600/20 hover:shadow-blue-500/30 mt-2 flex items-center justify-center gap-2"
           >
-            Submit for Review
+            {loading ? (
+              <>
+                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Submitting…
+              </>
+            ) : (
+              "Submit for Review"
+            )}
           </button>
 
           <p className="text-center text-slate-500 text-xs">
