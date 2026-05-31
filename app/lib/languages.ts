@@ -675,9 +675,9 @@ const pt: Dictionary = {
     plans: [
       {
         name:    "Correção de Implantação de Infraestrutura",
-        price:   "Sob Consulta",
-        unit:    "",
-        tagline: "Envie seu repositório para uma auditoria de escopo e orçamento personalizado.",
+        price:   "R$ 2.500",
+        unit:    "valor fixo",
+        tagline: "Seu aplicativo está desenvolvido. Mas não implanta.",
         popular: false,
         features: [
           "Auditoria abrangente de erros no contêiner de build do Vercel",
@@ -691,9 +691,9 @@ const pt: Dictionary = {
       },
       {
         name:    "Migração Completa de Ponta a Ponta",
-        price:   "Sob Consulta",
-        unit:    "",
-        tagline: "Envie seu repositório para uma auditoria de escopo e orçamento personalizado.",
+        price:   "R$ 7.500",
+        unit:    "valor fixo",
+        tagline: "Da exportação bruta de IA à infraestrutura de produção.",
         popular: true,
         features: [
           "Tudo incluído na Correção de Implantação",
@@ -708,9 +708,9 @@ const pt: Dictionary = {
       },
       {
         name:    "Estabilização Empresarial de Aplicativo",
-        price:   "Sob Consulta",
-        unit:    "",
-        tagline: "Envie seu repositório para uma auditoria de escopo e orçamento personalizado.",
+        price:   "R$ 17.500+",
+        unit:    "valor fixo",
+        tagline: "Em produção mas frágil. Nós endurecemos toda a stack.",
         popular: false,
         features: [
           "Tudo incluído na Migração Completa",
@@ -725,7 +725,7 @@ const pt: Dictionary = {
       },
       {
         name:    "Supervisão de Produção e Guarda de Arquitetura",
-        price:   "$99",
+        price:   "R$ 499",
         unit:    "/ mês",
         tagline: "Vigilância contínua de infraestrutura — sem depuração diária.",
         popular: false,
@@ -858,9 +858,9 @@ const pt: Dictionary = {
     services: {
       title: "Serviços",
       items: [
-        "Correção de Implantação — Sob Consulta",
-        "Migração Completa — Sob Consulta",
-        "Estabilização Empresarial — Sob Consulta",
+        "Correção de Implantação — R$ 2.500",
+        "Migração Completa — R$ 7.500",
+        "Estabilização Empresarial — R$ 17.500+",
       ],
     },
     stack: {
