@@ -40,7 +40,9 @@ export default function Navbar() {
   const scrollTo = (id: string) => {
     setMenuOpen(false);
     setLangOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    if (typeof window === "undefined") return;
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLang = (l: Lang) => {

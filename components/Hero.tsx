@@ -8,8 +8,11 @@ export default function Hero() {
   const { t } = useTranslation();
   const hero = t.hero;
 
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id: string) => {
+    if (typeof window === "undefined") return;
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section id="hero" className="relative pt-16 overflow-hidden bg-white">

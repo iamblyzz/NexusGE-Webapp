@@ -37,7 +37,7 @@ export interface Dictionary {
     headline: string;
     subheadline: string;
     popularBadge: string;
-    plans: [ServicePlan, ServicePlan, ServicePlan];
+    plans: [ServicePlan, ServicePlan, ServicePlan, ServicePlan];
     disclaimer: string;
   };
   caseStudy: {
@@ -202,6 +202,21 @@ const en: Dictionary = {
           "30-day asynchronous support SLA",
         ],
         cta: "Get Started",
+      },
+      {
+        name:    "Production Oversight & Architecture Guard",
+        price:   "$99",
+        unit:    "/ month",
+        tagline: "Ongoing infrastructure vigilance — not daily debugging.",
+        popular: false,
+        features: [
+          "Weekly Repository & Pipeline Audit (1 fixed check per week — not real-time monitoring)",
+          "Dependency & AI-Generated Schema Verification",
+          "Pre-emptive Deployment Conflict Identification",
+          "Rolling 30-day Backup Monitoring (Supabase & Vercel)",
+          "Direct Email/Ticket Support for Architectural Advice (48-hour SLA)",
+        ],
+        cta: "Start Retainer",
       },
     ],
     disclaimer:
@@ -448,6 +463,21 @@ const es: Dictionary = {
         ],
         cta: "Comenzar",
       },
+      {
+        name:    "Supervisión de Producción y Guardia de Arquitectura",
+        price:   "$99",
+        unit:    "/ mes",
+        tagline: "Vigilancia continua de infraestructura — sin depuración diaria.",
+        popular: false,
+        features: [
+          "Auditoría semanal de repositorio y pipeline (1 revisión fija por semana — no monitoreo en tiempo real)",
+          "Verificación de dependencias y esquemas generados por IA",
+          "Identificación preventiva de conflictos de despliegue",
+          "Monitoreo de respaldo continuo de 30 días (Supabase y Vercel)",
+          "Soporte directo por email/ticket para asesoramiento arquitectónico (SLA de 48 horas)",
+        ],
+        cta: "Iniciar Contrato",
+      },
     ],
     disclaimer:
       "Todo el trabajo es delimitado y confirmado antes de solicitar el pago. Sin sorpresas.",
@@ -692,6 +722,21 @@ const pt: Dictionary = {
           "SLA de suporte assíncrono por 30 dias",
         ],
         cta: "Começar",
+      },
+      {
+        name:    "Supervisão de Produção e Guarda de Arquitetura",
+        price:   "$99",
+        unit:    "/ mês",
+        tagline: "Vigilância contínua de infraestrutura — sem depuração diária.",
+        popular: false,
+        features: [
+          "Auditoria semanal de repositório e pipeline (1 verificação fixa por semana — sem monitoramento em tempo real)",
+          "Verificação de dependências e esquemas gerados por IA",
+          "Identificação preventiva de conflitos de implantação",
+          "Monitoramento de backup contínuo de 30 dias (Supabase e Vercel)",
+          "Suporte direto por email/ticket para consultoria arquitetônica (SLA de 48 horas)",
+        ],
+        cta: "Iniciar Contrato",
       },
     ],
     disclaimer:
