@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import { useTranslation } from "@/components/LanguageProvider";
 import type { Lang } from "@/app/lib/languages";
 
@@ -23,8 +22,9 @@ export default function Navbar() {
   const { t, lang, setLanguage } = useTranslation();
   const nav = t.nav;
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
+  const [menuOpen,   setMenuOpen]   = useState(false);
+  const [langOpen,   setLangOpen]   = useState(false);
+  const [logoError,  setLogoError]  = useState(false);
 
   // Two separate refs — one per dropdown instance (desktop / mobile).
   // A single shared ref always resolves to the last-rendered element, which
@@ -89,15 +89,19 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Brand */}
-          <Image
-            src="/nexuslogo.png"
-            alt="Nexus Global Enterprise Logo"
-            width={180}
-            height={40}
-            className="h-10 w-auto object-contain brightness-0 invert"
-            priority
-          />
+          {/* Brand — shows logo if nexuslogo.png exists, falls back to text */}
+          {logoError ? (
+            <span className="text-white font-bold text-base tracking-tight whitespace-nowrap select-none">
+              Nexus <span className="text-blue-400">Global</span> Enterprise
+            </span>
+          ) : (
+            <img
+              src="/nexuslogo.png"
+              alt="Nexus Global Enterprise Logo"
+              className="h-10 w-auto object-contain brightness-0 invert"
+              onError={() => setLogoError(true)}
+            />
+          )}
 
           {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-7">

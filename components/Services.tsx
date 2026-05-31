@@ -13,8 +13,20 @@ function CheckIcon({ retainer = false }: { retainer?: boolean }) {
   );
 }
 
+// Hardcoded BRL overrides for the 'pt' track — belt-and-suspenders guarantee
+// that pricing renders in Brazilian Real regardless of context timing.
+const BRL = [
+  { price: "R$ 2.500",   unit: "valor fixo" },
+  { price: "R$ 7.500",   unit: "valor fixo" },
+  { price: "R$ 17.500+", unit: "valor fixo" },
+];
+const BRL_RETAINER = { price: "R$ 499", unit: "/ mês" };
+const BRL_CTA      = "Solicitar Análise";
+
 export default function Services() {
-  const { t: { services: t } } = useTranslation();
+  const { t: { services: t }, lang } = useTranslation();
+  const isPT = lang === "pt";
+
   const scrollToForm = () => {
     if (typeof window === "undefined") return;
     const el = document.getElementById("intake-form");
@@ -43,7 +55,13 @@ export default function Services() {
 
         {/* One-time pricing cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-          {oneTimePlans.map((plan) => (
+          {oneTimePlans.map((plan, i) => {
+            // PT track: use hardcoded BRL values as the authoritative source
+            const displayPrice = isPT ? BRL[i].price : plan.price;
+            const displayUnit  = isPT ? BRL[i].unit  : plan.unit;
+            const displayCta   = isPT ? BRL_CTA       : plan.cta;
+
+            return (
             <div
               key={plan.name}
               className={`relative flex flex-col rounded-xl border transition-all duration-200 ${
@@ -69,15 +87,15 @@ export default function Services() {
                 </h3>
                 <p className="text-slate-400 text-sm mb-5 min-h-[2.5rem]">{plan.tagline}</p>
                 <div className="flex items-end gap-1.5">
-                  <span className="text-4xl font-extrabold text-white">{plan.price}</span>
-                  <span className="text-slate-500 text-sm mb-1">{plan.unit}</span>
+                  <span className="text-4xl font-extrabold text-white">{displayPrice}</span>
+                  <span className="text-slate-500 text-sm mb-1">{displayUnit}</span>
                 </div>
               </div>
 
               <div className="p-8 flex-1 flex flex-col">
                 <ul className="flex flex-col gap-3 flex-1 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
+                  {plan.features.map((feature, fi) => (
+                    <li key={fi} className="flex items-start gap-2.5">
                       <CheckIcon />
                       <span className="text-slate-300 text-sm leading-snug">{feature}</span>
                     </li>
@@ -91,11 +109,12 @@ export default function Services() {
                       : "border border-white/15 hover:border-blue-500/50 hover:text-blue-400 text-slate-300"
                   }`}
                 >
-                  {plan.cta}
+                  {displayCta}
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* ── Continuous Coverage / Retainer ─────────────────────────────── */}
@@ -136,14 +155,18 @@ export default function Services() {
 
               <div className="flex flex-col items-start lg:items-end gap-5 lg:min-w-[180px]">
                 <div className="flex items-end gap-1.5">
-                  <span className="text-5xl font-extrabold text-white">{retainerPlan.price}</span>
-                  <span className="text-slate-500 text-sm mb-1.5">{retainerPlan.unit}</span>
+                  <span className="text-5xl font-extrabold text-white">
+                    {isPT ? BRL_RETAINER.price : retainerPlan.price}
+                  </span>
+                  <span className="text-slate-500 text-sm mb-1.5">
+                    {isPT ? BRL_RETAINER.unit : retainerPlan.unit}
+                  </span>
                 </div>
                 <button
                   onClick={scrollToForm}
                   className="w-full lg:w-auto px-7 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-lg transition-all duration-150 shadow-sm whitespace-nowrap"
                 >
-                  {retainerPlan.cta}
+                  {isPT ? BRL_CTA : retainerPlan.cta}
                 </button>
                 <p className="text-slate-500 text-xs leading-relaxed lg:text-right max-w-[200px]">
                   Cancel anytime. Billed monthly. Scope confirmed before activation.
