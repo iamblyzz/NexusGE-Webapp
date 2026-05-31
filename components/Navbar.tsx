@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { useTranslation } from "@/components/LanguageProvider";
 import type { Lang } from "@/app/lib/languages";
 
@@ -89,9 +90,14 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Brand */}
-          <span className="text-white font-bold text-base tracking-tight whitespace-nowrap select-none">
-            Nexus <span className="text-blue-400">Global</span> Enterprise
-          </span>
+          <Image
+            src="/nexuslogo.png"
+            alt="Nexus Global Enterprise Logo"
+            width={180}
+            height={40}
+            className="h-10 w-auto object-contain brightness-0 invert"
+            priority
+          />
 
           {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-7">

@@ -675,9 +675,9 @@ const pt: Dictionary = {
     plans: [
       {
         name:    "Correção de Implantação de Infraestrutura",
-        price:   "$250",
-        unit:    "tarifa fixa",
-        tagline: "Seu aplicativo está desenvolvido. Mas não implanta.",
+        price:   "Sob Consulta",
+        unit:    "",
+        tagline: "Envie seu repositório para uma auditoria de escopo e orçamento personalizado.",
         popular: false,
         features: [
           "Auditoria abrangente de erros no contêiner de build do Vercel",
@@ -687,13 +687,13 @@ const pt: Dictionary = {
           "Roteamento de domínios personalizados com terminação SSL gerenciada",
           "Uma rodada completa de validação pós-implantação",
         ],
-        cta: "Começar",
+        cta: "Solicitar Análise",
       },
       {
         name:    "Migração Completa de Ponta a Ponta",
-        price:   "$450",
-        unit:    "tarifa fixa",
-        tagline: "Da exportação bruta de IA à infraestrutura de produção.",
+        price:   "Sob Consulta",
+        unit:    "",
+        tagline: "Envie seu repositório para uma auditoria de escopo e orçamento personalizado.",
         popular: true,
         features: [
           "Tudo incluído na Correção de Implantação",
@@ -704,13 +704,13 @@ const pt: Dictionary = {
           "100% de otimização de build e implantação em produção no Vercel",
           "Garantia de entrega em 48–72 horas",
         ],
-        cta: "Começar",
+        cta: "Solicitar Análise",
       },
       {
         name:    "Estabilização Empresarial de Aplicativo",
-        price:   "$750",
-        unit:    "tarifa fixa",
-        tagline: "Em produção mas frágil. Nós endurecemos toda a stack.",
+        price:   "Sob Consulta",
+        unit:    "",
+        tagline: "Envie seu repositório para uma auditoria de escopo e orçamento personalizado.",
         popular: false,
         features: [
           "Tudo incluído na Migração Completa",
@@ -721,7 +721,7 @@ const pt: Dictionary = {
           "Auditoria completa de desempenho e correção de Core Web Vitals",
           "SLA de suporte assíncrono por 30 dias",
         ],
-        cta: "Começar",
+        cta: "Solicitar Análise",
       },
       {
         name:    "Supervisão de Produção e Guarda de Arquitetura",
@@ -858,9 +858,9 @@ const pt: Dictionary = {
     services: {
       title: "Serviços",
       items: [
-        "Correção de Implantação — $250",
-        "Migração Completa — $450",
-        "Estabilização Empresarial — $750",
+        "Correção de Implantação — Sob Consulta",
+        "Migração Completa — Sob Consulta",
+        "Estabilização Empresarial — Sob Consulta",
       ],
     },
     stack: {
