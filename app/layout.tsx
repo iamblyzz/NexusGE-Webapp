@@ -3,33 +3,32 @@ import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Nexus Global Enterprise — Production-Ready App Deployment",
+  title: "Nexus Global Enterprise — Production App Migration & Deployment",
   description:
-    "We migrate Lovable, Bolt, Framer, and no-code apps into real deployable infrastructure — Vercel, Supabase, GitHub. 24–72 hour turnaround.",
+    "We perform structural migrations from AI-generated apps into production-hardened infrastructure on Vercel and Supabase. 24–72 hour delivery.",
+  keywords: [
+    "AI app migration",
+    "Next.js deployment",
+    "Vercel",
+    "Supabase",
+    "production infrastructure",
+    "no-code migration",
+  ],
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // Read the nonce injected by middleware so Next.js inline bootstrap scripts
-  // are stamped with it and allowed by the Content-Security-Policy.
-  const nonce = headers().get("x-nonce") ?? undefined;
+  // Nonce injected by middleware for CSP compliance
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _nonce = headers().get("x-nonce") ?? undefined;
 
   return (
-    <html lang="en">
-      <head>
-        {/*
-         * Passing the nonce to Next.js internals via the script prop on <head>
-         * is not needed for App Router — Next.js 14 reads it from the
-         * x-nonce request header automatically when using generateMetadata or
-         * the headers() helper. The nonce variable is kept here for any
-         * future <script> or <style> tags added manually.
-         */}
-      </head>
-      <body className={inter.className} suppressHydrationWarning>
+    <html lang="en" className={inter.variable}>
+      <body className={`${inter.className} bg-white text-slate-900`} suppressHydrationWarning>
         {children}
       </body>
     </html>
