@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomBytes } from "crypto";
+
+// Node's `crypto` module is NOT available in the Vercel Edge Runtime.
+// Use the Web Crypto API (globally available in all edge/browser environments).
+function generateNonce(): string {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  // btoa over charCodes produces a valid base64 nonce string
+  return btoa(String.fromCharCode(...Array.from(bytes)));
+}
 
 /**
  * Security middleware — runs at the Vercel edge before every request.
@@ -12,7 +20,7 @@ import { randomBytes } from "crypto";
  *     can stamp it on <script> tags.
  */
 export function middleware(request: NextRequest) {
-  const nonce = randomBytes(16).toString("base64");
+  const nonce = generateNonce();
 
   // ── Content Security Policy ────────────────────────────────────────────────
   //
