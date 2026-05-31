@@ -22,9 +22,8 @@ export default function Navbar() {
   const { t, lang, setLanguage } = useTranslation();
   const nav = t.nav;
 
-  const [menuOpen,   setMenuOpen]   = useState(false);
-  const [langOpen,   setLangOpen]   = useState(false);
-  const [logoError,  setLogoError]  = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   // Two separate refs — one per dropdown instance (desktop / mobile).
   // A single shared ref always resolves to the last-rendered element, which
@@ -89,19 +88,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Brand — shows logo if nexuslogo.png exists, falls back to text */}
-          {logoError ? (
-            <span className="text-white font-bold text-base tracking-tight whitespace-nowrap select-none">
-              Nexus <span className="text-blue-400">Global</span> Enterprise
-            </span>
-          ) : (
-            <img
-              src="/nexuslogo.png"
-              alt="Nexus Global Enterprise Logo"
-              className="h-10 w-auto object-contain brightness-0 invert"
-              onError={() => setLogoError(true)}
-            />
-          )}
+          {/* Brand */}
+          <span className="text-white font-bold text-base tracking-tight whitespace-nowrap select-none">
+            Nexus <span className="text-blue-400">Global</span> Enterprise
+          </span>
 
           {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-7">
