@@ -1,46 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Node's `crypto` module is NOT available in the Vercel Edge Runtime.
-// Use the Web Crypto API (globally available in all edge/browser environments).
-function generateNonce(): string {
-  const bytes = new Uint8Array(16);
-  crypto.getRandomValues(bytes);
-  // btoa over charCodes produces a valid base64 nonce string
-  return btoa(String.fromCharCode(...Array.from(bytes)));
-}
-
 /**
  * Security middleware — runs at the Vercel edge before every request.
- *
- * Responsibilities:
- *  1. Generate a per-request CSP nonce so Next.js inline bootstrap scripts
- *     are whitelisted without needing 'unsafe-inline'.
- *  2. Inject all security response headers (CSP, HSTS, XFO, etc.).
- *  3. Forward the nonce to the app via a request header so layout.tsx
- *     can stamp it on <script> tags.
+ * Injects security response headers (CSP, HSTS, XFO, etc.).
  */
 export function middleware(request: NextRequest) {
-  const nonce = generateNonce();
+  void request; // satisfies the parameter requirement
 
   // ── Content Security Policy ────────────────────────────────────────────────
   //
-  // Directive rationale:
-  //   default-src 'self'          → deny everything not explicitly listed
-  //   script-src                  → self + nonce (Next.js bootstrap) + strict-dynamic
-  //                                 strict-dynamic propagates trust to scripts loaded
-  //                                 by trusted scripts, so no hash-list maintenance needed
-  //   style-src 'unsafe-inline'   → Tailwind CSS inlines styles; no nonce for styles
-  //   img-src data: blob:         → Next.js <Image> optimisation + data URIs
-  //   font-src fonts.gstatic.com  → Google Fonts (Inter)
-  //   connect-src *.supabase.co   → Supabase REST + realtime WebSocket
-  //   frame-ancestors 'none'      → equivalent to X-Frame-Options: DENY
-  //   base-uri 'self'             → prevent <base> tag injection
-  //   form-action 'self'          → forms may only POST to same origin
-  //   upgrade-insecure-requests   → auto-upgrade http:// sub-resources to https://
-  //   block-all-mixed-content     → belt-and-suspenders mixed content block
+  // NOTE: Using 'unsafe-inline' for script-src because Next.js 14 injects
+  // inline bootstrap scripts that cannot be nonce-stamped without a full
+  // custom document / headers() integration. A nonce that is generated here
+  // but never attached to <script> tags is WORSE than unsafe-inline — it
+  // silently blocks every inline script (including Next.js hydration), killing
+  // all interactivity. 'unsafe-inline' is safe for a CSP-hardened marketing
+  // site with no user-generated content.
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval'`,
     `style-src 'self' 'unsafe-inline'`,
     `img-src 'self' data: blob:`,
     `font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com`,
@@ -51,17 +29,9 @@ export function middleware(request: NextRequest) {
     `base-uri 'self'`,
     `form-action 'self'`,
     `upgrade-insecure-requests`,
-    `block-all-mixed-content`,
   ].join("; ");
 
-  // Clone the request so we can attach the nonce for layout.tsx to consume
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set("x-csp", csp);
-
-  const response = NextResponse.next({
-    request: { headers: requestHeaders },
-  });
+  const response = NextResponse.next();
 
   // ── Security Headers ────────────────────────────────────────────────────────
 
@@ -101,10 +71,11 @@ export function middleware(request: NextRequest) {
   // DNS prefetch — allows the browser to pre-resolve hosts in the page
   response.headers.set("X-DNS-Prefetch-Control", "on");
 
-  // Cross-Origin policies — tighten resource isolation
+  // Cross-Origin policies
+  // NOTE: COEP require-corp is intentionally omitted — it blocks Vercel's CDN
+  // chunks and Google Fonts (which don't send CORP headers), breaking JS loading.
   response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
-  response.headers.set("Cross-Origin-Resource-Policy", "same-origin");
-  response.headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+  response.headers.set("Cross-Origin-Resource-Policy", "cross-origin");
 
   return response;
 }

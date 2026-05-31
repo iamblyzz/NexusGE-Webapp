@@ -155,7 +155,7 @@ const en: Dictionary = {
     plans: [
       {
         name:    "Infrastructure Deployment Fix",
-        price:   "$150",
+        price:   "$250",
         unit:    "flat",
         tagline: "Your app is built. It will not deploy.",
         popular: false,
@@ -171,7 +171,7 @@ const en: Dictionary = {
       },
       {
         name:    "End-to-End Core Migration",
-        price:   "$250",
+        price:   "$450",
         unit:    "flat",
         tagline: "Move from raw AI export to production infrastructure.",
         popular: true,
@@ -188,7 +188,7 @@ const en: Dictionary = {
       },
       {
         name:    "Enterprise App Stabilization",
-        price:   "$400",
+        price:   "$750",
         unit:    "flat",
         tagline: "Live but fragile. We harden the entire stack.",
         popular: false,
@@ -338,9 +338,9 @@ const en: Dictionary = {
     services: {
       title: "Services",
       items: [
-        "Infrastructure Deployment Fix — $150",
-        "End-to-End Core Migration — $250",
-        "Enterprise App Stabilization — $400",
+        "Infrastructure Deployment Fix — $250",
+        "End-to-End Core Migration — $450",
+        "Enterprise App Stabilization — $750",
       ],
     },
     stack: {
@@ -415,7 +415,7 @@ const es: Dictionary = {
     plans: [
       {
         name:    "Corrección de Despliegue de Infraestructura",
-        price:   "$150",
+        price:   "$250",
         unit:    "tarifa fija",
         tagline: "Su aplicación está construida. No se despliega.",
         popular: false,
@@ -431,7 +431,7 @@ const es: Dictionary = {
       },
       {
         name:    "Migración Integral Completa",
-        price:   "$250",
+        price:   "$450",
         unit:    "tarifa fija",
         tagline: "De exportación bruta de IA a infraestructura de producción.",
         popular: true,
@@ -448,7 +448,7 @@ const es: Dictionary = {
       },
       {
         name:    "Estabilización de Aplicación Empresarial",
-        price:   "$400",
+        price:   "$750",
         unit:    "tarifa fija",
         tagline: "En producción pero frágil. Reforzamos todo el stack.",
         popular: false,
@@ -598,9 +598,9 @@ const es: Dictionary = {
     services: {
       title: "Servicios",
       items: [
-        "Corrección de Despliegue — $150",
-        "Migración Integral — $250",
-        "Estabilización Empresarial — $400",
+        "Corrección de Despliegue — $250",
+        "Migración Integral — $450",
+        "Estabilización Empresarial — $750",
       ],
     },
     stack: {
@@ -675,7 +675,7 @@ const pt: Dictionary = {
     plans: [
       {
         name:    "Correção de Implantação de Infraestrutura",
-        price:   "$150",
+        price:   "$250",
         unit:    "tarifa fixa",
         tagline: "Seu aplicativo está desenvolvido. Mas não implanta.",
         popular: false,
@@ -691,7 +691,7 @@ const pt: Dictionary = {
       },
       {
         name:    "Migração Completa de Ponta a Ponta",
-        price:   "$250",
+        price:   "$450",
         unit:    "tarifa fixa",
         tagline: "Da exportação bruta de IA à infraestrutura de produção.",
         popular: true,
@@ -708,7 +708,7 @@ const pt: Dictionary = {
       },
       {
         name:    "Estabilização Empresarial de Aplicativo",
-        price:   "$400",
+        price:   "$750",
         unit:    "tarifa fixa",
         tagline: "Em produção mas frágil. Nós endurecemos toda a stack.",
         popular: false,
@@ -858,9 +858,9 @@ const pt: Dictionary = {
     services: {
       title: "Serviços",
       items: [
-        "Correção de Implantação — $150",
-        "Migração Completa — $250",
-        "Estabilização Empresarial — $400",
+        "Correção de Implantação — $250",
+        "Migração Completa — $450",
+        "Estabilização Empresarial — $750",
       ],
     },
     stack: {
