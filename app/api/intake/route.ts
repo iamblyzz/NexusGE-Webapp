@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req: NextRequest) {
-  // ── 1. Read + hard-trim env vars ──────────────────────────────────────────
+  // ── 1. Read + hard-trim env vars — redeployed with fresh Vercel env ───────
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
   const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 
