@@ -27,9 +27,11 @@ export async function POST(req: NextRequest) {
   console.log("[intake] POST received");
 
   // ── 1. Env-var check (explicit early bail-out with readable error) ──────────
-  // Support both naming conventions — Vercel uses SUPABASE_SECRET_KEY
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const serviceKey  = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Trim all env vars to strip accidental whitespace/newlines from copy-paste
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL)?.trim();
+  const serviceKey  = (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)?.trim();
+
+  console.log(`[intake] Key initialized. Length: ${serviceKey?.length}`);
 
   if (!supabaseUrl || !serviceKey) {
     console.error(
@@ -101,7 +103,7 @@ export async function POST(req: NextRequest) {
   // ── 6. Supabase insert (wrapped — no unhandled throw) ──────────────────────
   let insertOk = false;
   try {
-    const supabase = createClient(supabaseUrl, serviceKey, {
+    const supabase = createClient(supabaseUrl!, serviceKey!, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
