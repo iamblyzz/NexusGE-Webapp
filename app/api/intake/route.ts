@@ -27,14 +27,15 @@ export async function POST(req: NextRequest) {
   console.log("[intake] POST received");
 
   // ── 1. Env-var check (explicit early bail-out with readable error) ──────────
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey  = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Support both naming conventions — Vercel uses SUPABASE_SECRET_KEY
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const serviceKey  = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceKey) {
     console.error(
       "[intake] MISSING DATABASE ENVIRONMENT KEYS — " +
-      `NEXT_PUBLIC_SUPABASE_URL=${supabaseUrl ? "SET" : "MISSING"} | ` +
-      `SUPABASE_SERVICE_ROLE_KEY=${serviceKey ? "SET" : "MISSING"}`
+      `SUPABASE_URL=${supabaseUrl ? "SET" : "MISSING"} | ` +
+      `SUPABASE_SECRET_KEY=${serviceKey ? "SET" : "MISSING"}`
     );
     return NextResponse.json(
       { error: "Server configuration error. Please contact support." },
