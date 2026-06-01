@@ -3,98 +3,70 @@
 import { useState } from "react";
 import { useTranslation } from "@/components/LanguageProvider";
 
-// Service tiers — must match ALLOWED_TIERS in the API route exactly
 const TIERS = [
-  { value: "Infrastructure Deployment Fix",  label: "Infrastructure Deployment Fix",  price: "$250 flat" },
-  { value: "End-to-End Core Migration",       label: "End-to-End Core Migration",       price: "$450 flat" },
-  { value: "Enterprise App Stabilization",    label: "Enterprise App Stabilization",    price: "$750 flat" },
-  { value: "Production Oversight",            label: "Production Oversight (Retainer)", price: "$99 / mo"  },
+  { value: "Infrastructure Deployment Fix",  price: "$250 flat" },
+  { value: "End-to-End Core Migration",       price: "$450 flat" },
+  { value: "Enterprise App Stabilization",    price: "$750 flat" },
+  { value: "Production Oversight",            price: "$99 / mo"  },
 ];
 
-type FormData = {
-  name:          string;
-  email:         string;
-  phone:         string;
-  selected_tier: string;
-  project_scope: string;
-};
-
-const EMPTY: FormData = {
-  name: "", email: "", phone: "", selected_tier: "", project_scope: "",
-};
+const EMPTY = { name: "", email: "", phone: "", selected_tier: "", project_scope: "" };
 
 export default function IntakeForm() {
   const { t: { form: t }, lang } = useTranslation();
 
-  const [form,        setForm]        = useState<FormData>(EMPTY);
-  const [errors,      setErrors]      = useState<Partial<Record<keyof FormData, string>>>({});
-  const [loading,     setLoading]     = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitted,   setSubmitted]   = useState(false);
+  const [form,      setForm]      = useState(EMPTY);
+  const [loading,   setLoading]   = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const set = (key: keyof FormData) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-      setForm((prev) => ({ ...prev, [key]: e.target.value }));
-
-  const validate = (): boolean => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-
-    if (!form.name.trim())
-      e.name = t.fullName.error;
-
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = t.email.error;
-
-    if (!form.selected_tier)
-      e.selected_tier = lang === "pt"
-        ? "Por favor selecione um serviço."
-        : lang === "es"
-        ? "Por favor selecciona un servicio."
-        : "Please select a service tier.";
-
-    if (!form.project_scope.trim() || form.project_scope.trim().length < 10)
-      e.project_scope = t.problem.error;
-
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
+  const set = (key: keyof typeof EMPTY) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((p) => ({ ...p, [key]: e.target.value }));
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
-    if (!validate()) return;
-    setLoading(true);
-    setSubmitError(null);
 
+    if (!form.name || !form.email || !form.selected_tier || !form.project_scope) {
+      alert(lang === "pt"
+        ? "Por favor preencha todos os campos obrigatórios."
+        : lang === "es"
+        ? "Por favor completa todos los campos requeridos."
+        : "Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
     try {
       const res = await fetch("/api/intake", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name:           form.name.trim(),
-          email:          form.email.trim(),
-          phone:          form.phone.trim() || null,
-          project_scope:  form.project_scope.trim(),
+          name:           form.name,
+          email:          form.email,
+          phone:          form.phone,
+          project_scope:  form.project_scope,
           selected_tier:  form.selected_tier,
           language_track: lang,
         }),
       });
 
       const data = await res.json();
-      if (!res.ok) {
-        setSubmitError(data.error ?? t.networkError);
-        return;
+
+      if (res.ok) {
+        setForm(EMPTY);
+        setSubmitted(true);
+      } else {
+        alert(data.error || "Submission failed. Please try again.");
       }
-    } catch {
-      setSubmitError(t.networkError);
-      return;
+    } catch (err) {
+      alert("Network error. Please check your connection and try again.");
+      console.error("[form] fetch error:", err);
     } finally {
       setLoading(false);
     }
-
-    setSubmitted(true);
   };
 
-  // ── Success banner ────────────────────────────────────────────────────────────
+  // ── Success banner ─────────────────────────────────────────────────────────
   if (submitted) {
     return (
       <section id="intake-form" className="py-24 bg-neutral-950">
@@ -114,24 +86,16 @@ export default function IntakeForm() {
     );
   }
 
-  // ── Form ──────────────────────────────────────────────────────────────────────
-  const inputClass = (err?: string) =>
-    `w-full px-4 py-2.5 rounded-lg bg-neutral-900 border text-white placeholder-slate-500
-     focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm
-     transition-colors ${err ? "border-red-500" : "border-white/10"}`;
+  // ── Form ───────────────────────────────────────────────────────────────────
+  const input = "w-full px-4 py-2.5 rounded-lg bg-neutral-900 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm transition-colors";
 
   return (
     <section id="intake-form" className="py-24 bg-neutral-950">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">
-            {t.sectionLabel}
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            {t.headline}
-          </h2>
+          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">{t.sectionLabel}</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{t.headline}</h2>
           <p className="mt-4 text-slate-400 text-base">{t.subheadline}</p>
         </div>
 
@@ -142,14 +106,8 @@ export default function IntakeForm() {
             <label className="block text-sm font-semibold text-slate-300 mb-1.5">
               {t.fullName.label} <span className="text-blue-400">*</span>
             </label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={set("name")}
-              placeholder={t.fullName.placeholder}
-              className={inputClass(errors.name)}
-            />
-            {errors.name && <p className="mt-1.5 text-red-400 text-xs">{errors.name}</p>}
+            <input type="text" value={form.name} onChange={set("name")}
+              placeholder={t.fullName.placeholder} className={input} />
           </div>
 
           {/* Email */}
@@ -157,17 +115,11 @@ export default function IntakeForm() {
             <label className="block text-sm font-semibold text-slate-300 mb-1.5">
               {t.email.label} <span className="text-blue-400">*</span>
             </label>
-            <input
-              type="email"
-              value={form.email}
-              onChange={set("email")}
-              placeholder={t.email.placeholder}
-              className={inputClass(errors.email)}
-            />
-            {errors.email && <p className="mt-1.5 text-red-400 text-xs">{errors.email}</p>}
+            <input type="email" value={form.email} onChange={set("email")}
+              placeholder={t.email.placeholder} className={input} />
           </div>
 
-          {/* Phone (optional) */}
+          {/* Phone */}
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-1.5">
               {lang === "pt" ? "Telefone" : lang === "es" ? "Teléfono" : "Phone"}
@@ -175,16 +127,11 @@ export default function IntakeForm() {
                 ({lang === "pt" ? "opcional" : lang === "es" ? "opcional" : "optional"})
               </span>
             </label>
-            <input
-              type="tel"
-              value={form.phone}
-              onChange={set("phone")}
-              placeholder={lang === "pt" ? "+55 (11) 99999-9999" : lang === "es" ? "+1 (555) 000-0000" : "+1 (555) 000-0000"}
-              className={inputClass()}
-            />
+            <input type="tel" value={form.phone} onChange={set("phone")}
+              placeholder="+1 (555) 000-0000" className={input} />
           </div>
 
-          {/* Service tier */}
+          {/* Tier selector */}
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2.5">
               {lang === "pt" ? "Serviço desejado" : lang === "es" ? "Servicio deseado" : "Service tier"}
@@ -192,29 +139,21 @@ export default function IntakeForm() {
             </label>
             <div className="flex flex-col gap-2">
               {TIERS.map((tier) => (
-                <button
-                  key={tier.value}
-                  type="button"
+                <button key={tier.value} type="button"
                   onClick={() => setForm((p) => ({ ...p, selected_tier: tier.value }))}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg border text-sm
-                    font-medium transition-all duration-150 text-left
-                    ${form.selected_tier === tier.value
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-150 ${
+                    form.selected_tier === tier.value
                       ? "bg-blue-600/20 border-blue-500 text-white"
                       : "bg-neutral-900 border-white/10 text-slate-400 hover:border-blue-500/40 hover:text-white"
-                    }`}
+                  }`}
                 >
-                  <span>{tier.label}</span>
-                  <span className={`text-xs font-mono ml-4 shrink-0 ${
-                    form.selected_tier === tier.value ? "text-blue-300" : "text-slate-500"
-                  }`}>
+                  <span>{tier.value}</span>
+                  <span className={`text-xs font-mono ml-4 shrink-0 ${form.selected_tier === tier.value ? "text-blue-300" : "text-slate-500"}`}>
                     {tier.price}
                   </span>
                 </button>
               ))}
             </div>
-            {errors.selected_tier && (
-              <p className="mt-1.5 text-red-400 text-xs">{errors.selected_tier}</p>
-            )}
           </div>
 
           {/* Project scope */}
@@ -222,33 +161,14 @@ export default function IntakeForm() {
             <label className="block text-sm font-semibold text-slate-300 mb-1.5">
               {t.problem.label} <span className="text-blue-400">*</span>
             </label>
-            <textarea
-              value={form.project_scope}
-              onChange={set("project_scope")}
-              rows={5}
-              placeholder={t.problem.placeholder}
-              className={inputClass(errors.project_scope) + " resize-none"}
-            />
-            {errors.project_scope && (
-              <p className="mt-1.5 text-red-400 text-xs">{errors.project_scope}</p>
-            )}
+            <textarea value={form.project_scope} onChange={set("project_scope")}
+              rows={5} placeholder={t.problem.placeholder}
+              className={`${input} resize-none`} />
           </div>
 
-          {/* Server error */}
-          {submitError && (
-            <div className="px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
-              {submitError}
-            </div>
-          )}
-
           {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50
-              disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg
-              transition-all duration-150 shadow-sm flex items-center justify-center gap-2"
-          >
+          <button type="submit" disabled={loading}
+            className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg transition-all duration-150 shadow-sm flex items-center justify-center gap-2">
             {loading ? (
               <>
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
