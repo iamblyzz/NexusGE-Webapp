@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useTranslation } from "@/components/LanguageProvider";
 
 const TIERS = [
-  { value: "Infrastructure Deployment Fix",  price: "$250 flat" },
-  { value: "End-to-End Core Migration",       price: "$450 flat" },
-  { value: "Enterprise App Stabilization",    price: "$750 flat" },
-  { value: "Production Oversight",            price: "$99 / mo"  },
+  { value: "Infrastructure Deployment Fix",                          label: "Infrastructure Deployment Fix — $250 flat" },
+  { value: "End-to-End Core Migration",                              label: "End-to-End Core Migration — $450 flat" },
+  { value: "Enterprise App Stabilization",                           label: "Enterprise App Stabilization — $750 flat" },
+  { value: "Production Oversight Retainer (Weekly Fixed Audit Window Only)", label: "Production Oversight Retainer (Weekly Fixed Audit Window Only) — $99/mo" },
+  { value: "Bespoke Co-Architecture & System Blueprint Consultation", label: "Bespoke Co-Architecture & System Blueprint Consultation — $2,500+" },
 ];
 
 const EMPTY = { name: "", email: "", phone: "", selected_tier: "", project_scope: "" };
@@ -141,16 +142,13 @@ export default function IntakeForm() {
               {TIERS.map((tier) => (
                 <button key={tier.value} type="button"
                   onClick={() => setForm((p) => ({ ...p, selected_tier: tier.value }))}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-150 ${
+                  className={`w-full text-left px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-150 ${
                     form.selected_tier === tier.value
                       ? "bg-blue-600/20 border-blue-500 text-white"
                       : "bg-neutral-900 border-white/10 text-slate-400 hover:border-blue-500/40 hover:text-white"
                   }`}
                 >
-                  <span>{tier.value}</span>
-                  <span className={`text-xs font-mono ml-4 shrink-0 ${form.selected_tier === tier.value ? "text-blue-300" : "text-slate-500"}`}>
-                    {tier.price}
-                  </span>
+                  {tier.label}
                 </button>
               ))}
             </div>
