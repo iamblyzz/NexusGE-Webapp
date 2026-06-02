@@ -16,6 +16,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Guard against pasting the REST URL instead of the project base URL
+  if (!supabaseUrl.startsWith("https://") || supabaseUrl.includes("/rest/") || supabaseUrl.includes("/v1/")) {
+    console.error(`[intake] Invalid NEXT_PUBLIC_SUPABASE_URL format. Got length ${supabaseUrl.length} — must be https://<ref>.supabase.co only`);
+    return NextResponse.json(
+      { error: "Invalid Supabase URL format in Vercel panel. Must be https://<ref>.supabase.co" },
+      { status: 503 }
+    );
+  }
+
   // ── 2. Parse body ─────────────────────────────────────────────────────────
   let body: Record<string, unknown>;
   try {
