@@ -37,7 +37,7 @@ export interface Dictionary {
     headline: string;
     subheadline: string;
     popularBadge: string;
-    plans: [ServicePlan, ServicePlan, ServicePlan, ServicePlan];
+    plans: [ServicePlan, ServicePlan, ServicePlan, ServicePlan, ServicePlan];
     disclaimer: string;
   };
   caseStudy: {
@@ -217,6 +217,21 @@ const en: Dictionary = {
           "Direct Email/Ticket Support for Architectural Advice (48-hour standard SLA)",
         ],
         cta: "Start Retainer",
+      },
+      {
+        name:    "Bespoke Co-Architecture & System Blueprint",
+        price:   "$2,500+",
+        unit:    "flat rate / sprint",
+        tagline: "Custom infrastructure design for teams building at scale.",
+        popular: false,
+        features: [
+          "Dedicated 1-on-1 strategic infrastructure design mapping and consulting",
+          "Full relational schema validation and custom Supabase relational planning",
+          "Secure multi-tenant architecture and access control layout",
+          "Signed Mutual Responsibility Release Framework (Full legal sign-off required)",
+          "Includes option for integrated 3rd-party security compliance APIs",
+        ],
+        cta: "Request Blueprint Consultation",
       },
     ],
     disclaimer:
@@ -478,6 +493,21 @@ const es: Dictionary = {
         ],
         cta: "Iniciar Contrato",
       },
+      {
+        name:    "Co-Arquitectura a Medida y Blueprint de Sistema",
+        price:   "$2,500+",
+        unit:    "tarifa fija / sprint",
+        tagline: "Diseño de infraestructura personalizado para equipos que escalan.",
+        popular: false,
+        features: [
+          "Mapeo y consultoría estratégica de infraestructura dedicada 1-a-1",
+          "Validación completa de esquema relacional y planificación de Supabase personalizada",
+          "Arquitectura multi-tenant segura y diseño de control de acceso",
+          "Marco de Responsabilidad Mutua Firmado (Requiere aprobación legal completa)",
+          "Incluye opción para APIs de cumplimiento de seguridad de terceros integradas",
+        ],
+        cta: "Solicitar Consultoría Blueprint",
+      },
     ],
     disclaimer:
       "Todo el trabajo es delimitado y confirmado antes de solicitar el pago. Sin sorpresas.",
@@ -737,6 +767,21 @@ const pt: Dictionary = {
           "Suporte direto por email/ticket para consultoria arquitetônica (SLA de 48 horas)",
         ],
         cta: "Iniciar Contrato",
+      },
+      {
+        name:    "Co-Arquitetura Personalizada e Blueprint de Sistema",
+        price:   "R$ 12.500+",
+        unit:    "taxa fixa / sprint",
+        tagline: "Design de infraestrutura personalizado para equipes que escalam.",
+        popular: false,
+        features: [
+          "Mapeamento e consultoria estratégica de infraestrutura dedicada 1-a-1",
+          "Validação completa de esquema relacional e planejamento personalizado do Supabase",
+          "Arquitetura multi-tenant segura e layout de controle de acesso",
+          "Framework de Responsabilidade Mútua Assinado (Aprovação legal completa necessária)",
+          "Inclui opção para APIs de conformidade de segurança de terceiros integradas",
+        ],
+        cta: "Solicitar Consultoria Blueprint",
       },
     ],
     disclaimer:
