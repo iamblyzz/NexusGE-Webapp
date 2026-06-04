@@ -22,9 +22,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} bg-neutral-950`}>
+    <html lang="en" className={`${inter.variable} bg-slate-50`}>
       <body
-        className={`${inter.className} bg-neutral-950 text-slate-100`}
+        className={`${inter.className} bg-slate-50 text-slate-900`}
         suppressHydrationWarning
       >
         {children}

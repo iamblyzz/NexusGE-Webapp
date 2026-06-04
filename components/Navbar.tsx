@@ -72,8 +72,8 @@ export default function Navbar() {
           onClick={() => handleLang(l)}
           className={`w-full flex items-center justify-between px-3 py-2.5 text-sm cursor-pointer pointer-events-auto transition-colors ${
             lang === l
-              ? "bg-blue-600/20 text-blue-400 font-semibold"
-              : "text-slate-300 hover:bg-white/5"
+              ? "bg-blue-50 text-blue-600 font-semibold"
+              : "text-slate-600 hover:bg-slate-50"
           }`}
         >
           <span>{LANG_FULL[l]}</span>
@@ -84,13 +84,13 @@ export default function Navbar() {
   );
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/95 backdrop-blur-md border-b border-white/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Brand */}
-          <span className="text-white font-bold text-base tracking-tight whitespace-nowrap select-none">
-            Nexus <span className="text-blue-400">Global</span> Enterprise
+          <span className="text-slate-900 font-bold text-base tracking-tight whitespace-nowrap select-none">
+            Nexus <span className="text-blue-600">Global</span> Enterprise
           </span>
 
           {/* Desktop nav links */}
@@ -106,7 +106,7 @@ export default function Navbar() {
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
-                className="text-slate-400 hover:text-white text-sm font-medium transition-colors duration-150"
+                className="text-slate-600 hover:text-slate-900 text-sm font-medium transition-colors duration-150"
               >
                 {label}
               </button>
@@ -122,7 +122,7 @@ export default function Navbar() {
                 onClick={() => setLangOpen((v) => !v)}
                 aria-expanded={langOpen}
                 aria-haspopup="listbox"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/15 text-slate-300 hover:border-white/30 hover:text-white text-sm font-medium transition-colors duration-150 select-none cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 text-sm font-medium transition-colors duration-150 select-none cursor-pointer"
               >
                 <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918" />
@@ -139,7 +139,7 @@ export default function Navbar() {
               {langOpen && (
                 <div
                   role="listbox"
-                  className="absolute right-0 top-full mt-1.5 w-36 rounded-lg border border-white/10 bg-neutral-900 shadow-xl py-1 z-50"
+                  className="absolute right-0 top-full mt-1.5 w-36 rounded-lg border border-slate-200 bg-white shadow-lg py-1 z-50"
                 >
                   <LangOptions />
                 </div>
@@ -162,14 +162,14 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setLangOpen((v) => !v)}
-                className="px-2.5 py-1.5 rounded-md border border-white/15 text-slate-300 text-xs font-semibold cursor-pointer"
+                className="px-2.5 py-1.5 rounded-md border border-slate-200 text-slate-600 text-xs font-semibold cursor-pointer"
               >
                 {LANG_LABELS[lang]}
               </button>
               {langOpen && (
                 <div
                   role="listbox"
-                  className="absolute right-0 top-full mt-1 w-36 rounded-lg border border-white/10 bg-neutral-900 shadow-lg py-1 z-50"
+                  className="absolute right-0 top-full mt-1 w-36 rounded-lg border border-slate-200 bg-white shadow-lg py-1 z-50"
                 >
                   <LangOptions />
                 </div>
@@ -179,7 +179,7 @@ export default function Navbar() {
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Toggle navigation"
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-slate-500 hover:text-slate-900 transition-colors"
             >
               {menuOpen ? (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -197,7 +197,7 @@ export default function Navbar() {
 
       {/* Mobile drawer */}
       {menuOpen && (
-        <div className="md:hidden border-t border-white/10 bg-neutral-950 px-4 py-4 flex flex-col gap-1">
+        <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 flex flex-col gap-1">
           {(
             [
               [nav.services,   NAV_IDS.services],
@@ -209,7 +209,7 @@ export default function Navbar() {
             <button
               key={id}
               onClick={() => scrollTo(id)}
-              className="text-left py-2.5 text-slate-400 hover:text-white text-sm font-medium border-b border-white/5 last:border-0 transition-colors"
+              className="text-left py-2.5 text-slate-600 hover:text-slate-900 text-sm font-medium border-b border-slate-100 last:border-0 transition-colors"
             >
               {label}
             </button>

@@ -70,17 +70,17 @@ export default function IntakeForm() {
   // ── Success banner ─────────────────────────────────────────────────────────
   if (submitted) {
     return (
-      <section id="intake-form" className="py-24 bg-neutral-950">
+      <section id="intake-form" className="py-24 bg-white">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 px-8 py-14 text-center">
-            <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
-              <svg className="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-8 py-14 text-center">
+            <div className="w-14 h-14 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center mx-auto mb-6">
+              <svg className="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
             </div>
-            <h3 className="text-2xl font-extrabold text-white mb-3">{t.success.title}</h3>
-            <p className="text-slate-300 text-base leading-relaxed max-w-md mx-auto">{t.success.message}</p>
-            <p className="mt-4 text-slate-500 text-sm">{t.success.note}</p>
+            <h3 className="text-2xl font-extrabold text-slate-900 mb-3">{t.success.title}</h3>
+            <p className="text-slate-600 text-base leading-relaxed max-w-md mx-auto">{t.success.message}</p>
+            <p className="mt-4 text-slate-400 text-sm">{t.success.note}</p>
           </div>
         </div>
       </section>
@@ -88,24 +88,24 @@ export default function IntakeForm() {
   }
 
   // ── Form ───────────────────────────────────────────────────────────────────
-  const input = "w-full px-4 py-2.5 rounded-lg bg-neutral-900 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm transition-colors";
+  const input = "w-full px-4 py-2.5 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-sm transition-colors";
 
   return (
-    <section id="intake-form" className="py-24 bg-neutral-950">
+    <section id="intake-form" className="py-24 bg-slate-50">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-12">
-          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">{t.sectionLabel}</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{t.headline}</h2>
-          <p className="mt-4 text-slate-400 text-base">{t.subheadline}</p>
+          <p className="text-blue-600 text-xs font-bold tracking-widest uppercase mb-3">{t.sectionLabel}</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">{t.headline}</h2>
+          <p className="mt-4 text-slate-600 text-base">{t.subheadline}</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
-              {t.fullName.label} <span className="text-blue-400">*</span>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              {t.fullName.label} <span className="text-blue-600">*</span>
             </label>
             <input type="text" value={form.name} onChange={set("name")}
               placeholder={t.fullName.placeholder} className={input} />
@@ -113,8 +113,8 @@ export default function IntakeForm() {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
-              {t.email.label} <span className="text-blue-400">*</span>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              {t.email.label} <span className="text-blue-600">*</span>
             </label>
             <input type="email" value={form.email} onChange={set("email")}
               placeholder={t.email.placeholder} className={input} />
@@ -122,9 +122,9 @@ export default function IntakeForm() {
 
           {/* Phone */}
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
               {lang === "pt" ? "Telefone" : lang === "es" ? "Teléfono" : "Phone"}
-              <span className="ml-1.5 text-slate-500 font-normal text-xs">
+              <span className="ml-1.5 text-slate-400 font-normal text-xs">
                 ({lang === "pt" ? "opcional" : lang === "es" ? "opcional" : "optional"})
               </span>
             </label>
@@ -134,9 +134,9 @@ export default function IntakeForm() {
 
           {/* Tier selector */}
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-2.5">
+            <label className="block text-sm font-semibold text-slate-700 mb-2.5">
               {lang === "pt" ? "Serviço desejado" : lang === "es" ? "Servicio deseado" : "Service tier"}
-              {" "}<span className="text-blue-400">*</span>
+              {" "}<span className="text-blue-600">*</span>
             </label>
             <div className="flex flex-col gap-2">
               {TIERS.map((tier) => (
@@ -144,8 +144,8 @@ export default function IntakeForm() {
                   onClick={() => setForm((p) => ({ ...p, selected_tier: tier.value }))}
                   className={`w-full text-left px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-150 ${
                     form.selected_tier === tier.value
-                      ? "bg-blue-600/20 border-blue-500 text-white"
-                      : "bg-neutral-900 border-white/10 text-slate-400 hover:border-blue-500/40 hover:text-white"
+                      ? "bg-blue-50 border-blue-500 text-blue-700"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-blue-300 hover:text-slate-900"
                   }`}
                 >
                   {tier.label}
@@ -156,8 +156,8 @@ export default function IntakeForm() {
 
           {/* Project scope */}
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
-              {t.problem.label} <span className="text-blue-400">*</span>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              {t.problem.label} <span className="text-blue-600">*</span>
             </label>
             <textarea value={form.project_scope} onChange={set("project_scope")}
               rows={5} placeholder={t.problem.placeholder}
@@ -178,7 +178,7 @@ export default function IntakeForm() {
             ) : t.submit}
           </button>
 
-          <p className="text-center text-slate-500 text-xs">{t.note}</p>
+          <p className="text-center text-slate-400 text-xs">{t.note}</p>
         </form>
       </div>
     </section>

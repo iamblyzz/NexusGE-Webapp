@@ -19,39 +19,39 @@ export default function HowItWorks() {
   const hiw = t.howItWorks;
 
   return (
-    <section id="how-it-works" className="py-24 bg-neutral-900">
+    <section id="how-it-works" className="py-24 bg-slate-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-16">
           <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">
             {hiw.sectionLabel}
           </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             {hiw.headline}
           </h2>
-          <p className="mt-4 text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
+          <p className="mt-4 text-slate-600 text-base max-w-xl mx-auto leading-relaxed">
             {hiw.subheadline}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-          <div className="hidden md:block absolute top-8 left-[calc(16.666%+1rem)] right-[calc(16.666%+1rem)] h-px bg-white/10" aria-hidden />
+          <div className="hidden md:block absolute top-8 left-[calc(16.666%+1rem)] right-[calc(16.666%+1rem)] h-px bg-slate-200" aria-hidden />
 
           {hiw.steps.map((step, i) => (
             <div
               key={step.number}
-              className="relative bg-neutral-950 rounded-xl border border-white/10 p-8 shadow-sm hover:border-white/20 transition-all duration-200"
+              className="relative bg-white rounded-xl border border-slate-200 p-8 shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200"
             >
-              <span className="absolute top-5 right-6 text-4xl font-black text-white/5 select-none" aria-hidden>
+              <span className="absolute top-5 right-6 text-4xl font-black text-slate-100 select-none" aria-hidden>
                 {step.number}
               </span>
               <div className="relative z-10 w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white mb-6 shadow-sm">
                 {ICONS[i]}
               </div>
-              <h3 className="text-base font-bold text-white mb-3 min-h-[2.5rem] flex items-start">
+              <h3 className="text-base font-bold text-slate-900 mb-3 min-h-[2.5rem] flex items-start">
                 {step.title}
               </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">{step.description}</p>
+              <p className="text-slate-600 text-sm leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>

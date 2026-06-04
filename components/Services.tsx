@@ -38,7 +38,7 @@ export default function Services() {
   const blueprintPlan = t.plans[4];
 
   return (
-    <section id="services" className="py-24 bg-neutral-900">
+    <section id="services" className="py-24 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -46,10 +46,10 @@ export default function Services() {
           <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">
             {t.sectionLabel}
           </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             {t.headline}
           </h2>
-          <p className="mt-4 text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
+          <p className="mt-4 text-slate-600 text-base max-w-xl mx-auto leading-relaxed">
             {t.subheadline}
           </p>
         </div>
@@ -66,8 +66,8 @@ export default function Services() {
                 key={plan.name}
                 className={`relative flex flex-col rounded-xl border transition-all duration-200 ${
                   plan.popular
-                    ? "border-blue-500/60 bg-neutral-950 shadow-xl shadow-blue-500/10 ring-1 ring-blue-500/20"
-                    : "border-white/10 bg-neutral-950 hover:border-white/20"
+                    ? "border-blue-400 bg-white shadow-xl shadow-blue-500/10 ring-1 ring-blue-200"
+                    : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-md shadow-sm"
                 }`}
               >
                 {plan.popular && (
@@ -77,17 +77,17 @@ export default function Services() {
                     </span>
                   </div>
                 )}
-                <div className="p-8 pb-6 border-b border-white/10">
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                <div className="p-8 pb-6 border-b border-slate-100">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                     {plan.popular ? t.popularBadge : "Standard"}
                   </p>
-                  <h3 className="text-lg font-bold text-white mb-2 min-h-[3.5rem] leading-snug">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 min-h-[3.5rem] leading-snug">
                     {plan.name}
                   </h3>
-                  <p className="text-slate-400 text-sm mb-5 min-h-[2.5rem]">{plan.tagline}</p>
+                  <p className="text-slate-500 text-sm mb-5 min-h-[2.5rem]">{plan.tagline}</p>
                   <div className="flex items-end gap-1.5">
-                    <span className="text-4xl font-extrabold text-white">{displayPrice}</span>
-                    <span className="text-slate-500 text-sm mb-1">{displayUnit}</span>
+                    <span className="text-4xl font-extrabold text-slate-900">{displayPrice}</span>
+                    <span className="text-slate-400 text-sm mb-1">{displayUnit}</span>
                   </div>
                 </div>
                 <div className="p-8 flex-1 flex flex-col">
@@ -95,7 +95,7 @@ export default function Services() {
                     {plan.features.map((feature, fi) => (
                       <li key={fi} className="flex items-start gap-2.5">
                         <CheckIcon />
-                        <span className="text-slate-300 text-sm leading-snug">{feature}</span>
+                        <span className="text-slate-600 text-sm leading-snug">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -104,7 +104,7 @@ export default function Services() {
                     className={`w-full py-3 rounded-lg font-semibold text-sm transition-all duration-150 ${
                       plan.popular
                         ? "bg-blue-600 hover:bg-blue-500 text-white shadow-sm"
-                        : "border border-white/15 hover:border-blue-500/50 hover:text-blue-400 text-slate-300"
+                        : "border border-slate-200 hover:border-blue-400 hover:text-blue-600 text-slate-600"
                     }`}
                   >
                     {displayCta}
@@ -125,18 +125,18 @@ export default function Services() {
             <div className="h-px flex-1 bg-white/10" />
           </div>
 
-          <div className="relative rounded-xl border border-blue-500/20 bg-neutral-950 shadow-xl overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" aria-hidden />
+          <div className="relative rounded-xl border border-blue-200 bg-white shadow-md overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent" aria-hidden />
             <div className="p-8 sm:p-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start">
               <div className="flex flex-col gap-6">
                 <div>
-                  <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">
+                  <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">
                     Monthly Retainer
                   </p>
-                  <h3 className="text-xl font-bold text-white mb-2 leading-snug">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 leading-snug">
                     {retainerPlan.name}
                   </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed max-w-xl">
+                  <p className="text-slate-500 text-sm leading-relaxed max-w-xl">
                     {retainerPlan.tagline}
                   </p>
                 </div>
@@ -144,17 +144,17 @@ export default function Services() {
                   {retainerPlan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2.5">
                       <CheckIcon />
-                      <span className="text-slate-300 text-sm leading-snug">{feature}</span>
+                      <span className="text-slate-600 text-sm leading-snug">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="flex flex-col items-start lg:items-end gap-5 lg:min-w-[180px]">
                 <div className="flex items-end gap-1.5">
-                  <span className="text-5xl font-extrabold text-white">
+                  <span className="text-5xl font-extrabold text-slate-900">
                     {isPT ? BRL_RETAINER.price : retainerPlan.price}
                   </span>
-                  <span className="text-slate-500 text-sm mb-1.5">
+                  <span className="text-slate-400 text-sm mb-1.5">
                     {isPT ? BRL_RETAINER.unit : retainerPlan.unit}
                   </span>
                 </div>
@@ -164,7 +164,7 @@ export default function Services() {
                 >
                   {isPT ? BRL_CTA : retainerPlan.cta}
                 </button>
-                <p className="text-slate-500 text-xs leading-relaxed lg:text-right max-w-[200px]">
+                <p className="text-slate-400 text-xs leading-relaxed lg:text-right max-w-[200px]">
                   Cancel anytime. Billed monthly. Scope confirmed before activation.
                 </p>
               </div>
@@ -182,18 +182,18 @@ export default function Services() {
             <div className="h-px flex-1 bg-white/10" />
           </div>
 
-          <div className="relative rounded-xl border border-amber-500/20 bg-neutral-950 shadow-xl overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" aria-hidden />
+          <div className="relative rounded-xl border border-amber-200 bg-white shadow-md overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" aria-hidden />
             <div className="p-8 sm:p-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start">
               <div className="flex flex-col gap-6">
                 <div>
-                  <p className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">
+                  <p className="text-xs font-bold text-amber-600 uppercase tracking-widest mb-2">
                     Bespoke Engagement
                   </p>
-                  <h3 className="text-xl font-bold text-white mb-2 leading-snug">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 leading-snug">
                     {blueprintPlan.name}
                   </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed max-w-xl">
+                  <p className="text-slate-500 text-sm leading-relaxed max-w-xl">
                     {blueprintPlan.tagline}
                   </p>
                 </div>
@@ -201,27 +201,27 @@ export default function Services() {
                   {blueprintPlan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2.5">
                       <CheckIcon premium />
-                      <span className="text-slate-300 text-sm leading-snug">{feature}</span>
+                      <span className="text-slate-600 text-sm leading-snug">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="flex flex-col items-start lg:items-end gap-5 lg:min-w-[200px]">
                 <div className="flex items-end gap-1.5">
-                  <span className="text-5xl font-extrabold text-white">
+                  <span className="text-5xl font-extrabold text-slate-900">
                     {isPT ? BRL_BLUEPRINT.price : blueprintPlan.price}
                   </span>
-                  <span className="text-slate-500 text-sm mb-1.5">
+                  <span className="text-slate-400 text-sm mb-1.5">
                     {isPT ? BRL_BLUEPRINT.unit : blueprintPlan.unit}
                   </span>
                 </div>
                 <button
                   onClick={scrollToForm}
-                  className="w-full lg:w-auto px-7 py-3 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-sm rounded-lg transition-all duration-150 shadow-sm whitespace-nowrap"
+                  className="w-full lg:w-auto px-7 py-3 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-lg transition-all duration-150 shadow-sm whitespace-nowrap"
                 >
                   {blueprintPlan.cta}
                 </button>
-                <p className="text-slate-500 text-xs leading-relaxed lg:text-right max-w-[220px]">
+                <p className="text-slate-400 text-xs leading-relaxed lg:text-right max-w-[220px]">
                   Scope and legal framework confirmed before engagement begins.
                 </p>
               </div>
@@ -229,7 +229,7 @@ export default function Services() {
           </div>
         </div>
 
-        <p className="mt-10 text-center text-slate-500 text-sm">{t.disclaimer}</p>
+        <p className="mt-10 text-center text-slate-400 text-sm">{t.disclaimer}</p>
       </div>
     </section>
   );

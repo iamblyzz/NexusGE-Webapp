@@ -12,7 +12,7 @@ import Footer     from "@/components/Footer";
 export default function Home() {
   return (
     <LanguageProvider>
-      <main className="min-h-screen bg-neutral-950 text-slate-100">
+      <main className="min-h-screen bg-slate-50 text-slate-900">
         <Navbar />
         <Hero />
         <HowItWorks />
