@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { LanguageProvider } from "@/components/LanguageProvider";
-import Navbar  from "@/components/Navbar";
-import Hero    from "@/components/Hero";
-import Footer  from "@/components/Footer";
+import Link       from "next/link";
+import SiteNavbar from "@/components/SiteNavbar";
+import Hero       from "@/components/Hero";
+import Footer     from "@/components/Footer";
 
 // ── What we do cards ──────────────────────────────────────────────────────────
 const SERVICES = [
@@ -60,9 +59,8 @@ const SIGNALS = [
 
 export default function Home() {
   return (
-    <LanguageProvider>
-      <div className="min-h-screen bg-white text-slate-900">
-        <Navbar />
+    <div className="min-h-screen bg-white text-slate-900">
+        <SiteNavbar />
 
         {/* Hero */}
         <Hero />
@@ -217,6 +215,5 @@ export default function Home() {
 
         <Footer />
       </div>
-    </LanguageProvider>
   );
 }

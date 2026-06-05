@@ -1,17 +1,12 @@
 "use client";
 
 /**
- * Self-contained intake form for the /services page.
- * Wraps IntakeForm with its own LanguageProvider so it works
- * independently of the homepage's context tree.
+ * Thin wrapper so /services can import IntakeForm as a client component.
+ * LanguageProvider is now at the root level (layout.tsx), so no inner
+ * provider is needed here.
  */
-import { LanguageProvider } from "@/components/LanguageProvider";
-import IntakeForm           from "@/components/IntakeForm";
+import IntakeForm from "@/components/IntakeForm";
 
 export default function ServiceIntakeForm() {
-  return (
-    <LanguageProvider>
-      <IntakeForm />
-    </LanguageProvider>
-  );
+  return <IntakeForm />;
 }

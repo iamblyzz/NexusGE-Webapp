@@ -11,9 +11,9 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-white py-14 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
 
-          {/* Brand column */}
+          {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="text-slate-900 font-bold text-sm mb-3 inline-block">
               Nexus <span className="text-blue-600">Global</span> Enterprise
@@ -26,30 +26,17 @@ export default function Footer() {
             <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">Company</p>
             <ul className="flex flex-col gap-2.5">
               {[
-                { label: "Services",      href: "/services"      },
-                { label: "Process",       href: "/process"       },
-                { label: "Case Studies",  href: "/case-studies"  },
-                { label: "Blog",          href: "/blog"          },
-                { label: "Get Help",      href: "/services#intake-form" },
+                { label: "Services",     href: "/services"             },
+                { label: "Process",      href: "/process"               },
+                { label: "Case Studies", href: "/case-studies"          },
+                { label: "Blog",         href: "/blog"                  },
+                { label: "Get Help",     href: "/services#intake-form"  },
               ].map(({ label, href }) => (
                 <li key={href}>
-                  <Link
-                    href={href}
-                    className="text-slate-500 text-sm hover:text-slate-900 transition-colors"
-                  >
+                  <Link href={href} className="text-slate-500 text-sm hover:text-slate-900 transition-colors">
                     {label}
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Stack */}
-          <div>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">{t.stack.title}</p>
-            <ul className="flex flex-col gap-2.5">
-              {t.stack.items.map((item) => (
-                <li key={item} className="text-slate-500 text-sm font-mono">{item}</li>
               ))}
             </ul>
           </div>
