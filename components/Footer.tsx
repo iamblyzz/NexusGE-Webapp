@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslation } from "@/components/LanguageProvider";
 
 export default function Footer() {
@@ -68,8 +69,21 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Legal links */}
+        <div className="border-t border-slate-100 pt-6 pb-2 flex flex-wrap items-center gap-x-5 gap-y-2">
+          <Link href="/blog" className="text-slate-400 hover:text-slate-700 text-xs transition-colors">
+            Blog
+          </Link>
+          <Link href="/terms" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-slate-700 text-xs transition-colors">
+            Terms of Service
+          </Link>
+          <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-slate-700 text-xs transition-colors">
+            Privacy Policy
+          </Link>
+        </div>
+
         {/* Bottom bar */}
-        <div className="border-t border-slate-100 pt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <p className="text-slate-400 text-xs">
             © {year} {t.copyrightPrefix}
           </p>
