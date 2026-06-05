@@ -102,6 +102,9 @@ export interface Dictionary {
       title: string;
       excerpt: string;
       body: string[];
+      quote?: string;
+      sections?: Array<{ heading: string; body: string[] }>;
+      ctaText?: string;
     }>;
   };
 
@@ -523,6 +526,45 @@ const en: Dictionary = {
           "The deployment pipeline is the GitHub-Vercel integration. Merging a pull request to main automatically deploys to production. There is no manual step, no SSH session, no FTP upload. The deployment is atomic — if it fails, the previous deployment remains live. If it succeeds, the new version goes live within sixty seconds of the merge.",
           "This stack — GitHub repository with branch protection, Vercel preview deployments on pull requests, automatic production deployment on merge — is sufficient for the vast majority of early-stage web applications. It takes approximately thirty minutes to configure correctly from scratch. It is the exact stack we establish on every End-to-End Core Migration engagement, and it is what makes every subsequent change to your application safe to ship.",
         ],
+      },
+      {
+        slug:    "the-3-month-ai-hangover",
+        date:    "June 5, 2026",
+        tag:     "Engineering",
+        title:   "The 3-Month AI Hangover: What Happens After the Vibe Coding Stops",
+        excerpt: "AI tools made your prototype look production-ready in 72 hours. Three months later, the database is leaking, the auth layer is collapsing under real traffic, and the API costs are spiraling. This is the architecture failure nobody talks about.",
+        quote:   "We spent three months building with AI. Everything worked perfectly in the prototype. Then we launched, and within 48 hours, the database crashed, the auth broke, and our API costs went through the roof. We had no idea where to start.",
+        body:    [],
+        sections: [
+          {
+            heading: "The Illusion of Speed",
+            body: [
+              "AI tools are genuinely brilliant at one thing: generating frontend velocity. In a matter of hours, they produce complete user interfaces, plausible routing structures, and realistic data flows. A founder can go from a napkin sketch to a visually complete, locally runnable prototype inside a single working day. This speed is real. It is also deceptive.",
+              "What AI code generation optimizes for is creation — the act of bringing something into existence that looks and feels operational. What it does not optimize for, and cannot optimize for without architectural context, is long-term operational stability. Production environments are not isolated demos. They have real traffic patterns, concurrent users, database connection limits, authentication edge cases, and cost structures that only manifest under load. None of these pressures exist in a local development environment, and AI tools have zero contextual visibility over them.",
+              "The illusion breaks at launch. The prototype that looked production-ready is running on infrastructure that was never designed to be production infrastructure. The database has no access control. The environment variables are in the wrong scope. The authentication session handling was built for a single-user demo, not concurrent authenticated users hitting the same endpoints simultaneously. The AI did not fail — it delivered exactly what it was designed to deliver. The problem is that what it delivered is a prototype, not a system.",
+            ],
+          },
+          {
+            heading: "The Confident Hallucinations",
+            body: [
+              "AI tools do not flag uncertainty. They generate output with uniform confidence whether they are producing a structurally correct API route or a database schema with no Row-Level Security policies. The result is a codebase that contains critical infrastructure failures that look identical to correct implementations at the surface level.",
+              "The most dangerous category is security misconfiguration. An AI-generated Supabase backend frequently provisions a database with RLS disabled or with a permissive policy that exposes all rows to all authenticated users. The application works correctly in testing — where there is only one user, yourself — and ships with a live data exposure vulnerability that becomes exploitable the moment a second user signs up.",
+              "The second category is brittle API integration. AI tools generate API calls that work against mock data or low-traffic sandbox environments. Under real user traffic, these integrations hit rate limits, encounter unexpected response formats, and fail in ways that cascade through the entire application. An AI-generated retry logic block may solve the surface problem while creating a request amplification loop that drives API costs into the hundreds of dollars per hour.",
+              "The third category is unmapped schema dependencies. AI tools generate database schemas based on the data shapes visible in the prototype. As the application grows, new features require schema changes that conflict with the original structure. Without a properly normalized, relationship-mapped schema, these changes require destructive migrations that risk data loss. The three-month hangover frequently arrives exactly when the product is gaining traction and the technical debt becomes impossible to ignore.",
+            ],
+          },
+          {
+            heading: "The Architectural Intervention",
+            body: [
+              "Nexus Global Enterprise does not rebuild your application from scratch. We step in as systems architects — mapping the existing codebase against production requirements and resolving the specific failures that are blocking stability, security, and scale.",
+              "The process begins with a full repository audit. We read every configuration file, every database schema, every API integration, and every environment variable reference. We do not generate more code on top of existing problems. We identify the root causes systematically before touching anything.",
+              "The database layer receives the most immediate attention. We map the existing schema against the application's actual data access patterns, define proper ownership models, write Row-Level Security policies that enforce access control at the database level, and verify that service role credentials are scoped exclusively to server-side code. This layer is the foundation everything else depends on.",
+              "The deployment pipeline is hardened next. We establish branch protection rules, connect the repository to Vercel with proper environment variable scoping, and configure preview deployments so every future change can be validated before reaching production. The CI/CD structure we put in place transforms the development process from high-risk manual pushes to a controlled, verifiable delivery pipeline.",
+              "We do not expose our migration methodology or the specific interventions we apply at each layer. What we deliver is the outcome: a production system that operates correctly under real traffic, with documented infrastructure, proper access control, and an architecture that can be maintained and extended without triggering the cascade failures that define the AI hangover.",
+            ],
+          },
+        ],
+        ctaText: "Stop burn-testing your API credits trying to debug infrastructure errors. Submit your repository manifest to Nexus Global Enterprise for a professional production alignment review within 12 hours.",
       },
     ],
   },
@@ -1369,6 +1411,45 @@ const es: Dictionary = {
           "Este stack — repositorio GitHub con protección de ramas, despliegues de vista previa de Vercel en pull requests, despliegue automático a producción en la fusión — es suficiente para la gran mayoría de aplicaciones web en etapa inicial. Es exactamente el stack que establecemos en cada compromiso de Migración Integral.",
         ],
       },
+      {
+        slug:    "the-3-month-ai-hangover",
+        date:    "5 de junio de 2026",
+        tag:     "Ingeniería",
+        title:   "La Resaca de IA de 3 Meses: Qué Pasa Después de Que la Programación por Vibración Se Detiene",
+        excerpt: "Las herramientas de IA hicieron que tu prototipo pareciera listo para producción en 72 horas. Tres meses después, la base de datos está expuesta, la capa de autenticación colapsa bajo tráfico real y los costos de API se disparan.",
+        quote:   "Pasamos tres meses construyendo con IA. Todo funcionaba perfectamente en el prototipo. Luego lanzamos, y en 48 horas, la base de datos falló, la autenticación se rompió y nuestros costos de API se dispararon. No teníamos idea de por dónde empezar.",
+        body:    [],
+        sections: [
+          {
+            heading: "La Ilusión de la Velocidad",
+            body: [
+              "Las herramientas de IA son genuinamente brillantes en una cosa: generar velocidad en el frontend. En cuestión de horas, producen interfaces de usuario completas, estructuras de enrutamiento plausibles y flujos de datos realistas. Un fundador puede pasar de un boceto a un prototipo visualmente completo en un solo día laboral. Esta velocidad es real. También es engañosa.",
+              "Lo que la generación de código IA optimiza es la creación — el acto de traer a la existencia algo que parece y se siente operativo. Lo que no optimiza, y no puede optimizar sin contexto arquitectónico, es la estabilidad operacional a largo plazo. Los entornos de producción no son demostraciones aisladas. Tienen patrones de tráfico reales, usuarios concurrentes, límites de conexión de bases de datos, casos límite de autenticación y estructuras de costos que solo se manifiestan bajo carga.",
+              "La ilusión se rompe en el lanzamiento. El prototipo que parecía listo para producción está corriendo en infraestructura que nunca fue diseñada para ser infraestructura de producción. La base de datos no tiene control de acceso. Las variables de entorno están en el alcance incorrecto. El manejo de sesiones de autenticación fue construido para una demo de un solo usuario, no para usuarios autenticados concurrentes.",
+            ],
+          },
+          {
+            heading: "Las Alucinaciones Confiadas",
+            body: [
+              "Las herramientas de IA no marcan la incertidumbre. Generan resultados con confianza uniforme, ya sea que estén produciendo una ruta API estructuralmente correcta o un esquema de base de datos sin políticas de Row-Level Security. El resultado es una base de código que contiene fallos de infraestructura críticos que se ven idénticos a implementaciones correctas a nivel superficial.",
+              "La categoría más peligrosa es la configuración incorrecta de seguridad. Un backend de Supabase generado por IA frecuentemente aprovisiona una base de datos con RLS deshabilitado o con una política permisiva que expone todas las filas a todos los usuarios autenticados. La aplicación funciona correctamente en las pruebas — donde solo hay un usuario — y se lanza con una vulnerabilidad de exposición de datos en vivo.",
+              "La segunda categoría es la integración de API frágil. Las herramientas de IA generan llamadas a API que funcionan contra datos simulados o entornos sandbox de bajo tráfico. Bajo tráfico real de usuarios, estas integraciones alcanzan límites de velocidad, encuentran formatos de respuesta inesperados y fallan de formas que se propagan en cascada por toda la aplicación.",
+              "La tercera categoría son las dependencias de esquema no mapeadas. A medida que la aplicación crece, las nuevas funciones requieren cambios de esquema que entran en conflicto con la estructura original. Sin un esquema correctamente normalizado y mapeado por relaciones, estos cambios requieren migraciones destructivas que arriesgan la pérdida de datos.",
+            ],
+          },
+          {
+            heading: "La Intervención Arquitectónica",
+            body: [
+              "Nexus Global Enterprise no reconstruye tu aplicación desde cero. Actuamos como arquitectos de sistemas — mapeando el código existente contra los requisitos de producción y resolviendo los fallos específicos que bloquean la estabilidad, la seguridad y la escala.",
+              "El proceso comienza con una auditoría completa del repositorio. Leemos cada archivo de configuración, cada esquema de base de datos, cada integración de API y cada referencia de variable de entorno. No generamos más código sobre problemas existentes. Identificamos las causas raíz sistemáticamente antes de tocar nada.",
+              "La capa de base de datos recibe atención inmediata. Mapeamos el esquema existente contra los patrones de acceso a datos reales de la aplicación, definimos modelos de propiedad apropiados, escribimos políticas de Row-Level Security y verificamos que las credenciales de rol de servicio estén delimitadas exclusivamente al código del lado del servidor.",
+              "El pipeline de despliegue se refuerza a continuación. Establecemos reglas de protección de ramas, conectamos el repositorio a Vercel con el alcance correcto de variables de entorno y configuramos despliegues de vista previa para que cada cambio futuro pueda validarse antes de llegar a producción.",
+              "No exponemos nuestra metodología de migración ni las intervenciones específicas que aplicamos en cada capa. Lo que entregamos es el resultado: un sistema de producción que opera correctamente bajo tráfico real, con infraestructura documentada, control de acceso apropiado y una arquitectura que puede mantenerse y extenderse.",
+            ],
+          },
+        ],
+        ctaText: "Deja de quemar créditos de API tratando de depurar errores de infraestructura. Envía tu manifiesto de repositorio a Nexus Global Enterprise para una revisión profesional de alineación de producción en 12 horas.",
+      },
     ],
   },
 
@@ -2075,6 +2156,45 @@ const pt: Dictionary = {
           "O pipeline de implantação é a integração GitHub-Vercel. Mesclar um pull request ao main implanta automaticamente na produção. Não há etapa manual, nenhuma sessão SSH. A implantação é atômica — se falhar, a implantação anterior permanece ativa.",
           "Este stack — repositório GitHub com proteção de branch, implantações de prévia do Vercel em pull requests, implantação automática de produção na mesclagem — é suficiente para a grande maioria dos aplicativos web em estágio inicial. É exatamente o stack que estabelecemos em cada compromisso de Migração Principal.",
         ],
+      },
+      {
+        slug:    "the-3-month-ai-hangover",
+        date:    "5 de junho de 2026",
+        tag:     "Engenharia",
+        title:   "A Ressaca de IA de 3 Meses: O Que Acontece Depois que a Programação por Vibração Para",
+        excerpt: "As ferramentas de IA fizeram seu protótipo parecer pronto para produção em 72 horas. Três meses depois, o banco de dados está exposto, a camada de autenticação está colapsando sob tráfego real e os custos de API estão disparando.",
+        quote:   "Passamos três meses construindo com IA. Tudo funcionava perfeitamente no protótipo. Então lançamos, e em 48 horas, o banco de dados travou, a autenticação quebrou e nossos custos de API dispararam. Não sabíamos por onde começar.",
+        body:    [],
+        sections: [
+          {
+            heading: "A Ilusão da Velocidade",
+            body: [
+              "As ferramentas de IA são genuinamente brilhantes em uma coisa: gerar velocidade no frontend. Em questão de horas, produzem interfaces de usuário completas, estruturas de roteamento plausíveis e fluxos de dados realistas. Um fundador pode passar de um esboço a um protótipo visualmente completo em um único dia de trabalho. Essa velocidade é real. Também é enganosa.",
+              "O que a geração de código IA otimiza é a criação — o ato de trazer à existência algo que parece e se sente operacional. O que ela não otimiza, e não pode otimizar sem contexto arquitetônico, é a estabilidade operacional de longo prazo. Os ambientes de produção não são demonstrações isoladas. Eles têm padrões de tráfego reais, usuários simultâneos, limites de conexão de banco de dados, casos extremos de autenticação e estruturas de custos que só se manifestam sob carga.",
+              "A ilusão se rompe no lançamento. O protótipo que parecia pronto para produção está rodando em infraestrutura que nunca foi projetada para ser infraestrutura de produção. O banco de dados não tem controle de acesso. As variáveis de ambiente estão no escopo errado. O gerenciamento de sessão de autenticação foi construído para uma demonstração de usuário único, não para usuários autenticados simultâneos.",
+            ],
+          },
+          {
+            heading: "As Alucinações Confiantes",
+            body: [
+              "As ferramentas de IA não sinalizam incerteza. Elas geram saída com confiança uniforme, seja produzindo uma rota de API estruturalmente correta ou um esquema de banco de dados sem políticas de Row-Level Security. O resultado é uma base de código que contém falhas de infraestrutura críticas que se parecem idênticas a implementações corretas no nível superficial.",
+              "A categoria mais perigosa é a configuração incorreta de segurança. Um backend do Supabase gerado por IA frequentemente provisiona um banco de dados com RLS desabilitado ou com uma política permissiva que expõe todas as linhas a todos os usuários autenticados. O aplicativo funciona corretamente nos testes — onde há apenas um usuário — e é lançado com uma vulnerabilidade de exposição de dados ao vivo.",
+              "A segunda categoria é a integração de API frágil. As ferramentas de IA geram chamadas de API que funcionam contra dados simulados ou ambientes sandbox de baixo tráfego. Sob tráfego real de usuários, essas integrações atingem limites de taxa, encontram formatos de resposta inesperados e falham de formas que se propagam em cascata por todo o aplicativo.",
+              "A terceira categoria são as dependências de esquema não mapeadas. À medida que o aplicativo cresce, novos recursos exigem mudanças de esquema que conflitam com a estrutura original. Sem um esquema corretamente normalizado e mapeado por relacionamentos, essas mudanças exigem migrações destrutivas que arriscam a perda de dados.",
+            ],
+          },
+          {
+            heading: "A Intervenção Arquitetônica",
+            body: [
+              "A Nexus Global Enterprise não reconstrói seu aplicativo do zero. Atuamos como arquitetos de sistemas — mapeando o código existente em relação aos requisitos de produção e resolvendo as falhas específicas que bloqueiam a estabilidade, a segurança e a escala.",
+              "O processo começa com uma auditoria completa do repositório. Lemos cada arquivo de configuração, cada esquema de banco de dados, cada integração de API e cada referência de variável de ambiente. Não geramos mais código sobre problemas existentes. Identificamos as causas raiz sistematicamente antes de tocar em qualquer coisa.",
+              "A camada de banco de dados recebe atenção imediata. Mapeamos o esquema existente em relação aos padrões reais de acesso a dados do aplicativo, definimos modelos de propriedade adequados, escrevemos políticas de Row-Level Security e verificamos que as credenciais de função de serviço estejam delimitadas exclusivamente ao código do lado do servidor.",
+              "O pipeline de implantação é fortalecido em seguida. Estabelecemos regras de proteção de branch, conectamos o repositório ao Vercel com o escopo correto de variáveis de ambiente e configuramos implantações de prévia para que cada mudança futura possa ser validada antes de chegar à produção.",
+              "Não expomos nossa metodologia de migração nem as intervenções específicas que aplicamos em cada camada. O que entregamos é o resultado: um sistema de produção que opera corretamente sob tráfego real, com infraestrutura documentada, controle de acesso adequado e uma arquitetura que pode ser mantida e expandida.",
+            ],
+          },
+        ],
+        ctaText: "Pare de queimar créditos de API tentando depurar erros de infraestrutura. Envie seu manifesto de repositório à Nexus Global Enterprise para uma revisão profissional de alinhamento de produção em 12 horas.",
       },
     ],
   },
