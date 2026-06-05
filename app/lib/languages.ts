@@ -86,6 +86,25 @@ export interface Dictionary {
     disclaimer: string;
   };
 
+  blog: {
+    sectionLabel: string;
+    headline: string;
+    subheadline: string;
+    readArticle: string;
+    backToBlog: string;
+    ctaHeadline: string;
+    ctaSubheadline: string;
+    ctaButton: string;
+    posts: Array<{
+      slug: string;
+      date: string;
+      tag: string;
+      title: string;
+      excerpt: string;
+      body: string[];
+    }>;
+  };
+
   legal: {
     label: string;
     effectiveDate: string;
@@ -423,6 +442,89 @@ const en: Dictionary = {
       message: "Got it. We'll review your submission and reach out within a few hours to confirm scope and next steps.",
       note:    "No payment will be requested until you approve the scope.",
     },
+  },
+
+  blog: {
+    sectionLabel: "Engineering Journal",
+    headline:     "Production Infrastructure Insights",
+    subheadline:  "Technical writeups on migrating AI-generated applications to hardened production infrastructure. Real deployments, real failures, real fixes.",
+    readArticle:  "Read article",
+    backToBlog:   "← Back to Blog",
+    ctaHeadline:   "Stop debugging. Start deploying.",
+    ctaSubheadline:"Submit your repository in three minutes. Receive a written scope and fixed price within 12 hours.",
+    ctaButton:     "Submit Your App for Review →",
+    posts: [
+      {
+        slug:    "why-ai-builders-fail-at-deployment",
+        date:    "May 28, 2026",
+        tag:     "Infrastructure",
+        title:   "Why AI Builders Fail at Deployment (And What Actually Fixes It)",
+        excerpt: "Lovable, Bolt, and v0 generate impressive frontend code. But they generate zero production infrastructure. Here is the exact gap between a local preview and a live, hardened deployment — and why closing it requires engineering judgment, not more prompts.",
+        body: [
+          "Every AI builder we have worked with produces the same class of output: a visually complete, locally runnable application with no production infrastructure attached. The code compiles. The dev server runs. The UI looks finished. Then the founder tries to deploy it and everything stops.",
+          "The gap is not a bug in the AI tool. It is a fundamental scope boundary. AI builders are trained to produce interface code — components, routes, styles, and basic logic. They are not trained to produce the surrounding infrastructure that a live production application requires. That infrastructure is a separate engineering discipline entirely.",
+          "Here is what is typically missing when a Lovable, Bolt, or v0 export arrives for a production migration: a properly structured GitHub repository with branch protection, a configured deployment pipeline connecting the repository to a hosting provider, correctly scoped environment variables that work in both local and production contexts, a provisioned external database with real schemas and access control policies, and an authentication system that persists sessions correctly across server and client boundaries.",
+          "The common failure pattern is that founders attempt to close this gap themselves using the same AI tools that produced the code. They prompt their way through Vercel deployment errors, ask for environment variable help, and try to get the AI to write database provisioning scripts. This generates more code — more configuration fragments, more partial solutions — that layer on top of the original structural problem without resolving it.",
+          "The resolution requires an infrastructure audit, not more generation. Every repository we take on starts with a systematic read-through: every configuration file, every environment reference, every routing pattern, every database call. The audit identifies the specific failures. The migration resolves them in a single structured pass. The result is a production deployment that actually runs — not a prototype that looks like one.",
+        ],
+      },
+      {
+        slug:    "supabase-rls-the-silent-killer",
+        date:    "May 22, 2026",
+        tag:     "Database Security",
+        title:   "Supabase RLS: The Silent Killer in AI-Generated Backends",
+        excerpt: "Row-Level Security is the single most important layer in a Supabase deployment. AI tools almost never configure it correctly. This is what a broken RLS policy looks like in production, and how we audit and patch it before your data is exposed.",
+        body: [
+          "Row-Level Security is Supabase's mechanism for enforcing data access control at the database level. It determines which rows a given user can read, write, update, or delete. When configured correctly, it is a powerful and elegant security layer. When configured incorrectly — or not configured at all — it is one of the most dangerous vulnerabilities a production application can have.",
+          "AI-generated Supabase backends almost universally ship with RLS disabled or misconfigured. The reason is straightforward: enabling RLS and writing correct policies requires understanding the application's authentication model, user roles, and data ownership patterns. That understanding requires reading the whole system. AI tools generate components in isolation. They do not reason about the whole system.",
+          "The most common failure mode we encounter is a database with RLS enabled but no INSERT policy on a table that the application writes to. The app crashes on any form submission. The developer disables RLS entirely to make it work. The application now runs — and every row in every table is readable and writable by any anonymous request.",
+          "The second most common failure is an overly permissive SELECT policy. A policy written as `using (true)` allows any authenticated user to read all rows regardless of ownership. In a multi-user application, this means every user can read every other user's data. The application appears functional. The data exposure is invisible until someone looks.",
+          "Correct RLS policy design starts with a clear ownership model: every row belongs to a user, and users can only access their own rows unless explicitly granted access to others. The service role key — used only on the server side — bypasses RLS entirely, which is correct for administrative operations. The anon key — which must never appear in client-side code — maps to the anonymous role and should have minimal permissions. Every policy we write is tested against both authenticated and unauthenticated requests before handoff.",
+        ],
+      },
+      {
+        slug:    "vercel-env-vars-the-right-way",
+        date:    "May 15, 2026",
+        tag:     "Deployment",
+        title:   "Vercel Environment Variables: The Right Way to Structure a Production Secret",
+        excerpt: "NEXT_PUBLIC_ prefixes, service-role keys leaking into client bundles, and missing variable declarations at build time. These are the three most common environment variable failures in AI-generated Next.js apps — and every one of them is preventable.",
+        body: [
+          "Environment variables are the single most common source of production deployment failures in AI-generated Next.js applications. The failures fall into three distinct categories, each with a different root cause and a different resolution.",
+          "The first category is prefix confusion. Next.js distinguishes between server-side variables and client-side variables using the NEXT_PUBLIC_ prefix. Variables without this prefix are available only in server-side code — API routes, server components, middleware. Variables with this prefix are embedded into the client-side JavaScript bundle and accessible in the browser. AI tools frequently generate code that uses NEXT_PUBLIC_ on variables that should remain server-side — database credentials, service role keys, API secrets — exposing them to every visitor who inspects the page source.",
+          "The second category is build-time unavailability. Vercel's build container does not inherit variables from your local machine. Every variable your application references must be explicitly declared in the Vercel project settings. AI tools generate code that works locally — where the developer has a .env.local file — but fails immediately in the build container where that file does not exist. The error appears as a build failure or a runtime crash on the first request.",
+          "The third category is scope misconfiguration. Vercel allows variables to be scoped to Production, Preview, and Development environments independently. AI-generated deployment guides frequently instruct developers to add variables only to Production, causing Preview branch deployments to fail. Alternatively, they instruct adding variables to all environments, which can cause development-environment credentials to appear in production builds.",
+          "The correct structure: server-side secrets (database service role keys, third-party API keys, JWT signing secrets) are declared without the NEXT_PUBLIC_ prefix, scoped only to the environments where they are needed. Client-side configuration (public API endpoints, feature flags, analytics IDs) uses the NEXT_PUBLIC_ prefix and is treated as public information. Every variable is documented in a .env.example file committed to the repository so the requirement is visible to any future developer.",
+        ],
+      },
+      {
+        slug:    "next-js-app-router-migration-guide",
+        date:    "May 8, 2026",
+        tag:     "Architecture",
+        title:   "Migrating an AI Export to Next.js 14 App Router: A Real-World Playbook",
+        excerpt: "The Pages Router and the App Router are not interchangeable. When AI tools output a mix of both, or default to patterns that break under the App Router, the result is a build that compiles locally and crashes in production. Here is the migration playbook we run on every client codebase.",
+        body: [
+          "Next.js 14 ships with two routing systems: the Pages Router, which has existed since Next.js 9, and the App Router, introduced in Next.js 13 and the recommended approach for new applications. They are not interchangeable. They have different file conventions, different data fetching patterns, different component models, and different deployment behaviors. An application that mixes them without understanding the boundaries will fail in unpredictable ways.",
+          "AI tools frequently produce hybrid outputs. A codebase generated by Lovable or Bolt may contain pages/ directory files alongside app/ directory files, or App Router conventions applied to Pages Router file structures. The local development server is lenient about some of these conflicts. The production build container is not.",
+          "The migration playbook starts with a structural audit. We identify every file in the routing directories and classify it: pure App Router, pure Pages Router, or hybrid. We identify every data fetching pattern — getServerSideProps, getStaticProps, useEffect-based fetching, server components — and map them to their App Router equivalents. We identify every API route and verify its file path and handler signature match the expected convention.",
+          "The most disruptive migration is from getServerSideProps to server component data fetching. In the Pages Router, getServerSideProps runs on every request and passes props to a client component. In the App Router, server components fetch data directly and render on the server by default. The pattern looks different but the outcome is equivalent — and the App Router version is faster, simpler, and more composable.",
+          "Once the routing structure is clean, we address the client/server boundary. Every component that uses React hooks, browser APIs, or event handlers requires the 'use client' directive. Every component that can remain a server component should. The goal is to push interactivity as far toward the leaves of the component tree as possible, minimizing the JavaScript sent to the browser and maximizing server-side rendering.",
+        ],
+      },
+      {
+        slug:    "ci-cd-for-non-technical-founders",
+        date:    "April 30, 2026",
+        tag:     "CI/CD",
+        title:   "CI/CD for Non-Technical Founders: What You Actually Need on Day One",
+        excerpt: "You do not need a Kubernetes cluster. You need a branch protection rule, a working build check, and a deployment that does not break when you push a typo. Here is the minimum viable CI/CD stack for a solo founder shipping on Vercel.",
+        body: [
+          "Continuous integration and continuous deployment — CI/CD — is frequently presented as a complex DevOps discipline requiring dedicated infrastructure engineers and significant tooling investment. For a solo founder or small team shipping a web application on Vercel, the reality is much simpler. The minimum viable CI/CD stack requires three things: a version-controlled repository, an automated build check, and a deployment pipeline.",
+          "The repository is GitHub. Every change to your application goes through a commit and a pull request. This is not bureaucracy — it is the mechanism by which you can reverse any change, understand what changed when something breaks, and review code before it reaches your users. A repository without branch protection is a repository where a typo pushed directly to main can take your application offline.",
+          "The build check is Vercel's automatic build verification. Every pull request triggers a preview deployment. If the build fails, you see it on the pull request before it merges. If it succeeds, you get a live preview URL to test the change. This costs nothing additional on Vercel's free tier and catches the majority of deployment failures before they reach production.",
+          "The deployment pipeline is the GitHub-Vercel integration. Merging a pull request to main automatically deploys to production. There is no manual step, no SSH session, no FTP upload. The deployment is atomic — if it fails, the previous deployment remains live. If it succeeds, the new version goes live within sixty seconds of the merge.",
+          "This stack — GitHub repository with branch protection, Vercel preview deployments on pull requests, automatic production deployment on merge — is sufficient for the vast majority of early-stage web applications. It takes approximately thirty minutes to configure correctly from scratch. It is the exact stack we establish on every End-to-End Core Migration engagement, and it is what makes every subsequent change to your application safe to ship.",
+        ],
+      },
+    ],
   },
 
   legal: {
@@ -1187,6 +1289,89 @@ const es: Dictionary = {
     },
   },
 
+  blog: {
+    sectionLabel: "Diario de Ingeniería",
+    headline:     "Perspectivas de Infraestructura de Producción",
+    subheadline:  "Artículos técnicos sobre la migración de aplicaciones generadas por IA a infraestructura de producción reforzada. Despliegues reales, fallos reales, soluciones reales.",
+    readArticle:  "Leer artículo",
+    backToBlog:   "← Volver al Blog",
+    ctaHeadline:   "Deja de depurar. Empieza a desplegar.",
+    ctaSubheadline:"Envía tu repositorio en tres minutos. Recibe un alcance escrito y precio fijo en 12 horas.",
+    ctaButton:     "Enviar Aplicación para Revisión →",
+    posts: [
+      {
+        slug:    "why-ai-builders-fail-at-deployment",
+        date:    "28 de mayo de 2026",
+        tag:     "Infraestructura",
+        title:   "Por Qué los Constructores de IA Fallan en el Despliegue (Y Qué lo Soluciona)",
+        excerpt: "Lovable, Bolt y v0 generan código frontend impresionante. Pero no generan infraestructura de producción. Aquí está la brecha exacta entre una vista previa local y un despliegue en vivo reforzado.",
+        body: [
+          "Cada constructor de IA con el que hemos trabajado produce la misma clase de resultado: una aplicación visualmente completa, ejecutable localmente, sin infraestructura de producción adjunta. El código compila. El servidor de desarrollo corre. La interfaz parece terminada. Luego el fundador intenta desplegarlo y todo se detiene.",
+          "La brecha no es un error en la herramienta de IA. Es un límite de alcance fundamental. Los constructores de IA están entrenados para producir código de interfaz — componentes, rutas, estilos y lógica básica. No están entrenados para producir la infraestructura circundante que una aplicación de producción en vivo requiere.",
+          "Aquí está lo que típicamente falta cuando llega una exportación de Lovable, Bolt o v0 para una migración de producción: un repositorio de GitHub correctamente estructurado con protección de ramas, un pipeline de despliegue configurado que conecte el repositorio a un proveedor de alojamiento, variables de entorno correctamente delimitadas, una base de datos externa aprovisionada con esquemas reales y políticas de control de acceso, y un sistema de autenticación que persiste las sesiones correctamente.",
+          "El patrón de fallo común es que los fundadores intentan cerrar esta brecha ellos mismos usando las mismas herramientas de IA que produjeron el código. Generan más código — más fragmentos de configuración, más soluciones parciales — que se superponen al problema estructural original sin resolverlo.",
+          "La resolución requiere una auditoría de infraestructura, no más generación. Cada repositorio que tomamos comienza con una lectura sistemática: cada archivo de configuración, cada referencia de entorno, cada patrón de enrutamiento. La auditoría identifica los fallos específicos. La migración los resuelve en un único paso estructurado.",
+        ],
+      },
+      {
+        slug:    "supabase-rls-the-silent-killer",
+        date:    "22 de mayo de 2026",
+        tag:     "Seguridad de Bases de Datos",
+        title:   "Supabase RLS: El Asesino Silencioso en los Backends Generados por IA",
+        excerpt: "Row-Level Security es la capa más importante en un despliegue de Supabase. Las herramientas de IA casi nunca lo configuran correctamente. Así es como auditamos y parcheamos esto antes de que sus datos queden expuestos.",
+        body: [
+          "Row-Level Security es el mecanismo de Supabase para aplicar control de acceso a datos a nivel de base de datos. Determina qué filas puede leer, escribir, actualizar o eliminar un usuario determinado. Cuando se configura correctamente, es una capa de seguridad poderosa y elegante. Cuando se configura incorrectamente — o no se configura en absoluto — es una de las vulnerabilidades más peligrosas que puede tener una aplicación de producción.",
+          "Los backends de Supabase generados por IA casi universalmente se envían con RLS deshabilitado o mal configurado. La razón es directa: habilitar RLS y escribir políticas correctas requiere comprender el modelo de autenticación de la aplicación, los roles de usuario y los patrones de propiedad de datos.",
+          "El modo de fallo más común que encontramos es una base de datos con RLS habilitado pero sin política INSERT en una tabla que la aplicación escribe. La aplicación falla en cualquier envío de formulario. El desarrollador deshabilita RLS por completo para que funcione. La aplicación ahora corre — y cada fila en cada tabla es legible y escribible por cualquier solicitud anónima.",
+          "El segundo modo de fallo más común es una política SELECT demasiado permisiva. Una política escrita como `using (true)` permite que cualquier usuario autenticado lea todas las filas independientemente de la propiedad. En una aplicación multiusuario, esto significa que cada usuario puede leer los datos de todos los demás usuarios.",
+          "El diseño correcto de políticas RLS comienza con un modelo de propiedad claro: cada fila pertenece a un usuario, y los usuarios solo pueden acceder a sus propias filas a menos que se les otorgue acceso explícito a otras. Cada política que escribimos se prueba contra solicitudes autenticadas y no autenticadas antes de la entrega.",
+        ],
+      },
+      {
+        slug:    "vercel-env-vars-the-right-way",
+        date:    "15 de mayo de 2026",
+        tag:     "Despliegue",
+        title:   "Variables de Entorno en Vercel: La Forma Correcta de Estructurar un Secreto de Producción",
+        excerpt: "Prefijos NEXT_PUBLIC_, claves de rol de servicio filtrándose a paquetes del cliente, y declaraciones de variables faltantes en tiempo de build. Estos son los tres fallos más comunes de variables de entorno.",
+        body: [
+          "Las variables de entorno son la fuente más común de fallos de despliegue de producción en aplicaciones Next.js generadas por IA. Los fallos caen en tres categorías distintas, cada una con una causa raíz diferente y una resolución diferente.",
+          "La primera categoría es la confusión de prefijos. Next.js distingue entre variables del lado del servidor y variables del lado del cliente usando el prefijo NEXT_PUBLIC_. Las variables sin este prefijo están disponibles solo en código del lado del servidor. Las variables con este prefijo se incrustan en el paquete JavaScript del lado del cliente. Las herramientas de IA frecuentemente generan código que usa NEXT_PUBLIC_ en variables que deberían permanecer del lado del servidor — credenciales de base de datos, claves de rol de servicio, secretos de API.",
+          "La segunda categoría es la indisponibilidad en tiempo de build. El contenedor de build de Vercel no hereda variables de su máquina local. Cada variable que su aplicación referencia debe declararse explícitamente en la configuración del proyecto de Vercel.",
+          "La tercera categoría es la configuración incorrecta del alcance. Vercel permite que las variables se delimiten a entornos de Producción, Vista Previa y Desarrollo de forma independiente. Los guías generados por IA frecuentemente instruyen a los desarrolladores a agregar variables solo a Producción, causando que los despliegues de ramas de Vista Previa fallen.",
+          "La estructura correcta: los secretos del lado del servidor se declaran sin el prefijo NEXT_PUBLIC_, delimitados solo a los entornos donde se necesitan. La configuración del lado del cliente usa el prefijo NEXT_PUBLIC_ y se trata como información pública. Cada variable está documentada en un archivo .env.example comprometido en el repositorio.",
+        ],
+      },
+      {
+        slug:    "next-js-app-router-migration-guide",
+        date:    "8 de mayo de 2026",
+        tag:     "Arquitectura",
+        title:   "Migrando una Exportación de IA al App Router de Next.js 14: Un Manual del Mundo Real",
+        excerpt: "El Pages Router y el App Router no son intercambiables. Cuando las herramientas de IA producen una mezcla de ambos, el resultado es un build que compila localmente y falla en producción.",
+        body: [
+          "Next.js 14 incluye dos sistemas de enrutamiento: el Pages Router, que existe desde Next.js 9, y el App Router, introducido en Next.js 13 y el enfoque recomendado para nuevas aplicaciones. No son intercambiables. Tienen diferentes convenciones de archivos, diferentes patrones de obtención de datos, diferentes modelos de componentes y diferentes comportamientos de despliegue.",
+          "Las herramientas de IA frecuentemente producen salidas híbridas. Un código generado por Lovable o Bolt puede contener archivos del directorio pages/ junto con archivos del directorio app/, o convenciones del App Router aplicadas a estructuras de archivos del Pages Router.",
+          "El manual de migración comienza con una auditoría estructural. Identificamos cada archivo en los directorios de enrutamiento y lo clasificamos: App Router puro, Pages Router puro o híbrido. Identificamos cada patrón de obtención de datos — getServerSideProps, getStaticProps, obtención basada en useEffect, componentes de servidor — y los mapeamos a sus equivalentes del App Router.",
+          "La migración más disruptiva es de getServerSideProps a la obtención de datos de componentes de servidor. En el Pages Router, getServerSideProps se ejecuta en cada solicitud y pasa props a un componente cliente. En el App Router, los componentes de servidor obtienen datos directamente y renderizan en el servidor por defecto.",
+          "Una vez que la estructura de enrutamiento está limpia, abordamos el límite cliente/servidor. Cada componente que usa hooks de React, APIs del navegador o manejadores de eventos requiere la directiva 'use client'. El objetivo es empujar la interactividad lo más hacia las hojas del árbol de componentes como sea posible.",
+        ],
+      },
+      {
+        slug:    "ci-cd-for-non-technical-founders",
+        date:    "30 de abril de 2026",
+        tag:     "CI/CD",
+        title:   "CI/CD para Fundadores No Técnicos: Lo Que Realmente Necesitas el Día Uno",
+        excerpt: "No necesitas un clúster de Kubernetes. Necesitas una regla de protección de ramas, una verificación de build que funcione y un despliegue que no se rompa cuando cometes un error tipográfico.",
+        body: [
+          "Integración continua y despliegue continuo — CI/CD — se presenta frecuentemente como una disciplina DevOps compleja. Para un fundador en solitario o un equipo pequeño que entrega una aplicación web en Vercel, la realidad es mucho más simple. El stack mínimo viable de CI/CD requiere tres cosas: un repositorio con control de versiones, una verificación de build automatizada y un pipeline de despliegue.",
+          "El repositorio es GitHub. Cada cambio en tu aplicación pasa por un commit y un pull request. Esto no es burocracia — es el mecanismo por el cual puedes revertir cualquier cambio, entender qué cambió cuando algo se rompe y revisar el código antes de que llegue a tus usuarios.",
+          "La verificación de build es la verificación automática de build de Vercel. Cada pull request activa un despliegue de vista previa. Si el build falla, lo ves en el pull request antes de que se fusione. Si tiene éxito, obtienes una URL de vista previa en vivo para probar el cambio.",
+          "El pipeline de despliegue es la integración GitHub-Vercel. Fusionar un pull request a main despliega automáticamente a producción. No hay paso manual, no hay sesión SSH. El despliegue es atómico — si falla, el despliegue anterior permanece activo.",
+          "Este stack — repositorio GitHub con protección de ramas, despliegues de vista previa de Vercel en pull requests, despliegue automático a producción en la fusión — es suficiente para la gran mayoría de aplicaciones web en etapa inicial. Es exactamente el stack que establecemos en cada compromiso de Migración Integral.",
+        ],
+      },
+    ],
+  },
+
   legal: {
     label: "Legal",
     effectiveDate: "1 de junio de 2026",
@@ -1809,6 +1994,89 @@ const pt: Dictionary = {
       ctaHeadline:   "Reconhece algum desses padrões?",
       ctaSubheadline:"Envie seu aplicativo em três minutos. Auditamos seu código e retornamos um plano de correção escrito com preço fixo e janela de entrega confirmada.",
     },
+  },
+
+  blog: {
+    sectionLabel: "Diário de Engenharia",
+    headline:     "Perspectivas de Infraestrutura de Produção",
+    subheadline:  "Artigos técnicos sobre a migração de aplicativos gerados por IA para infraestrutura de produção reforçada. Implantações reais, falhas reais, correções reais.",
+    readArticle:  "Ler artigo",
+    backToBlog:   "← Voltar ao Blog",
+    ctaHeadline:   "Pare de depurar. Comece a implantar.",
+    ctaSubheadline:"Envie seu repositório em três minutos. Receba um escopo escrito e preço fixo em 12 horas.",
+    ctaButton:     "Enviar Aplicativo para Revisão →",
+    posts: [
+      {
+        slug:    "why-ai-builders-fail-at-deployment",
+        date:    "28 de maio de 2026",
+        tag:     "Infraestrutura",
+        title:   "Por Que os Construtores de IA Falham na Implantação (E O Que Realmente Resolve)",
+        excerpt: "Lovable, Bolt e v0 geram código frontend impressionante. Mas não geram infraestrutura de produção. Aqui está a lacuna exata entre uma visualização local e uma implantação ao vivo reforçada.",
+        body: [
+          "Cada construtor de IA com o qual trabalhamos produz a mesma classe de resultado: um aplicativo visualmente completo, executável localmente, sem infraestrutura de produção anexada. O código compila. O servidor de desenvolvimento roda. A interface parece finalizada. Em seguida, o fundador tenta implantá-lo e tudo para.",
+          "A lacuna não é um bug na ferramenta de IA. É um limite de escopo fundamental. Os construtores de IA são treinados para produzir código de interface — componentes, rotas, estilos e lógica básica. Eles não são treinados para produzir a infraestrutura circundante que um aplicativo de produção ao vivo requer.",
+          "Aqui está o que normalmente está faltando quando uma exportação do Lovable, Bolt ou v0 chega para uma migração de produção: um repositório GitHub corretamente estruturado com proteção de branch, um pipeline de implantação configurado conectando o repositório a um provedor de hospedagem, variáveis de ambiente corretamente delimitadas, um banco de dados externo provisionado com esquemas reais e políticas de controle de acesso.",
+          "O padrão de falha comum é que os fundadores tentam fechar essa lacuna usando as mesmas ferramentas de IA que produziram o código. Elas geram mais código — mais fragmentos de configuração, mais soluções parciais — que se sobrepõem ao problema estrutural original sem resolvê-lo.",
+          "A resolução requer uma auditoria de infraestrutura, não mais geração. Cada repositório que assumimos começa com uma leitura sistemática: cada arquivo de configuração, cada referência de ambiente, cada padrão de roteamento. A auditoria identifica as falhas específicas. A migração as resolve em uma única passagem estruturada.",
+        ],
+      },
+      {
+        slug:    "supabase-rls-the-silent-killer",
+        date:    "22 de maio de 2026",
+        tag:     "Segurança de Banco de Dados",
+        title:   "Supabase RLS: O Assassino Silencioso em Backends Gerados por IA",
+        excerpt: "Row-Level Security é a camada mais importante em uma implantação do Supabase. As ferramentas de IA quase nunca a configuram corretamente. Veja como auditamos e corrigimos isso antes que seus dados fiquem expostos.",
+        body: [
+          "Row-Level Security é o mecanismo do Supabase para aplicar controle de acesso a dados no nível do banco de dados. Determina quais linhas um determinado usuário pode ler, gravar, atualizar ou excluir. Quando configurado corretamente, é uma camada de segurança poderosa e elegante. Quando configurado incorretamente — ou não configurado — é uma das vulnerabilidades mais perigosas que um aplicativo de produção pode ter.",
+          "Backends do Supabase gerados por IA quase universalmente são entregues com RLS desabilitado ou mal configurado. A razão é direta: habilitar RLS e escrever políticas corretas requer entender o modelo de autenticação do aplicativo, as funções dos usuários e os padrões de propriedade dos dados.",
+          "O modo de falha mais comum que encontramos é um banco de dados com RLS habilitado, mas sem política INSERT em uma tabela que o aplicativo escreve. O aplicativo falha em qualquer envio de formulário. O desenvolvedor desabilita o RLS completamente para fazê-lo funcionar. O aplicativo agora roda — e cada linha em cada tabela é legível e gravável por qualquer solicitação anônima.",
+          "O segundo modo de falha mais comum é uma política SELECT excessivamente permissiva. Uma política escrita como `using (true)` permite que qualquer usuário autenticado leia todas as linhas independentemente da propriedade. Em um aplicativo multiusuário, isso significa que cada usuário pode ler os dados de todos os outros usuários.",
+          "O design correto de políticas RLS começa com um modelo de propriedade claro: cada linha pertence a um usuário, e os usuários só podem acessar suas próprias linhas, a menos que recebam acesso explícito a outras. Cada política que escrevemos é testada contra solicitações autenticadas e não autenticadas antes da entrega.",
+        ],
+      },
+      {
+        slug:    "vercel-env-vars-the-right-way",
+        date:    "15 de maio de 2026",
+        tag:     "Implantação",
+        title:   "Variáveis de Ambiente no Vercel: A Forma Correta de Estruturar um Segredo de Produção",
+        excerpt: "Prefixos NEXT_PUBLIC_, chaves de função de serviço vazando para pacotes do cliente e declarações de variáveis ausentes no momento do build. Estas são as três falhas mais comuns de variáveis de ambiente.",
+        body: [
+          "As variáveis de ambiente são a fonte mais comum de falhas de implantação de produção em aplicativos Next.js gerados por IA. As falhas se enquadram em três categorias distintas, cada uma com uma causa raiz diferente e uma resolução diferente.",
+          "A primeira categoria é a confusão de prefixos. O Next.js distingue entre variáveis do lado do servidor e variáveis do lado do cliente usando o prefixo NEXT_PUBLIC_. As variáveis sem esse prefixo estão disponíveis apenas em código do lado do servidor. As variáveis com esse prefixo são incorporadas ao pacote JavaScript do lado do cliente. As ferramentas de IA frequentemente geram código que usa NEXT_PUBLIC_ em variáveis que deveriam permanecer do lado do servidor.",
+          "A segunda categoria é a indisponibilidade no momento do build. O container de build do Vercel não herda variáveis da sua máquina local. Cada variável que seu aplicativo referencia deve ser declarada explicitamente nas configurações do projeto Vercel.",
+          "A terceira categoria é a configuração incorreta do escopo. O Vercel permite que variáveis sejam delimitadas aos ambientes de Produção, Prévia e Desenvolvimento de forma independente. Os guias gerados por IA frequentemente instruem os desenvolvedores a adicionar variáveis apenas à Produção, fazendo com que as implantações de branches de Prévia falhem.",
+          "A estrutura correta: segredos do lado do servidor são declarados sem o prefixo NEXT_PUBLIC_, delimitados apenas aos ambientes onde são necessários. A configuração do lado do cliente usa o prefixo NEXT_PUBLIC_ e é tratada como informação pública. Cada variável está documentada em um arquivo .env.example comprometido no repositório.",
+        ],
+      },
+      {
+        slug:    "next-js-app-router-migration-guide",
+        date:    "8 de maio de 2026",
+        tag:     "Arquitetura",
+        title:   "Migrando uma Exportação de IA para o App Router do Next.js 14: Um Manual do Mundo Real",
+        excerpt: "O Pages Router e o App Router não são intercambiáveis. Quando as ferramentas de IA produzem uma mistura de ambos, o resultado é um build que compila localmente e falha em produção.",
+        body: [
+          "O Next.js 14 inclui dois sistemas de roteamento: o Pages Router, que existe desde o Next.js 9, e o App Router, introduzido no Next.js 13 e a abordagem recomendada para novos aplicativos. Eles não são intercambiáveis. Têm diferentes convenções de arquivos, diferentes padrões de busca de dados, diferentes modelos de componentes e diferentes comportamentos de implantação.",
+          "As ferramentas de IA frequentemente produzem saídas híbridas. Um código gerado pelo Lovable ou Bolt pode conter arquivos do diretório pages/ junto com arquivos do diretório app/, ou convenções do App Router aplicadas a estruturas de arquivos do Pages Router.",
+          "O manual de migração começa com uma auditoria estrutural. Identificamos cada arquivo nos diretórios de roteamento e o classificamos: App Router puro, Pages Router puro ou híbrido. Identificamos cada padrão de busca de dados e os mapeamos para seus equivalentes do App Router.",
+          "A migração mais disruptiva é de getServerSideProps para a busca de dados de componentes de servidor. No Pages Router, getServerSideProps é executado em cada solicitação e passa props para um componente cliente. No App Router, os componentes de servidor buscam dados diretamente e renderizam no servidor por padrão.",
+          "Uma vez que a estrutura de roteamento está limpa, abordamos o limite cliente/servidor. Cada componente que usa hooks do React, APIs do navegador ou manipuladores de eventos requer a diretiva 'use client'. O objetivo é empurrar a interatividade o mais longe possível em direção às folhas da árvore de componentes.",
+        ],
+      },
+      {
+        slug:    "ci-cd-for-non-technical-founders",
+        date:    "30 de abril de 2026",
+        tag:     "CI/CD",
+        title:   "CI/CD para Fundadores Não Técnicos: O Que Você Realmente Precisa no Dia Um",
+        excerpt: "Você não precisa de um cluster Kubernetes. Você precisa de uma regra de proteção de branch, uma verificação de build funcionando e uma implantação que não quebre quando você comete um erro de digitação.",
+        body: [
+          "Integração contínua e implantação contínua — CI/CD — é frequentemente apresentada como uma disciplina DevOps complexa. Para um fundador solo ou equipe pequena entregando um aplicativo web no Vercel, a realidade é muito mais simples. O stack mínimo viável de CI/CD requer três coisas: um repositório com controle de versão, uma verificação de build automatizada e um pipeline de implantação.",
+          "O repositório é o GitHub. Cada mudança no seu aplicativo passa por um commit e um pull request. Isso não é burocracia — é o mecanismo pelo qual você pode reverter qualquer mudança, entender o que mudou quando algo quebra e revisar o código antes de chegar aos seus usuários.",
+          "A verificação de build é a verificação automática de build do Vercel. Cada pull request aciona uma implantação de prévia. Se o build falhar, você vê isso no pull request antes de ser mesclado. Se for bem-sucedido, você recebe uma URL de prévia ao vivo para testar a mudança.",
+          "O pipeline de implantação é a integração GitHub-Vercel. Mesclar um pull request ao main implanta automaticamente na produção. Não há etapa manual, nenhuma sessão SSH. A implantação é atômica — se falhar, a implantação anterior permanece ativa.",
+          "Este stack — repositório GitHub com proteção de branch, implantações de prévia do Vercel em pull requests, implantação automática de produção na mesclagem — é suficiente para a grande maioria dos aplicativos web em estágio inicial. É exatamente o stack que estabelecemos em cada compromisso de Migração Principal.",
+        ],
+      },
+    ],
   },
 
   legal: {
