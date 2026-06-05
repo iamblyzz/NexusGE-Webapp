@@ -85,6 +85,53 @@ export interface Dictionary {
     copyrightPrefix: string;
     disclaimer: string;
   };
+
+  pages: {
+    services: {
+      hero: { sectionLabel: string; headline: string; subheadline: string };
+      retainerLabel: string;
+      ctaHeadline: string;
+      ctaSubheadline: string;
+    };
+    process: {
+      hero: { sectionLabel: string; headline: string; subheadline: string };
+      step4: { number: string; title: string; description: string; detail: string[] };
+      audit: {
+        sectionLabel: string;
+        headline: string;
+        subheadline: string;
+        layers: Array<{ title: string; items: string[] }>;
+      };
+      ctaHeadline: string;
+      ctaSubheadline: string;
+    };
+    caseStudies: {
+      hero: { sectionLabel: string; headline: string; subheadline: string };
+      tax: {
+        sectionLabel: string;
+        headline: string;
+        subheadline: string;
+        cols: { symptom: string; cause: string; impact: string };
+        patterns: Array<{ title: string; symptom: string; cause: string; impact: string }>;
+      };
+      case001: {
+        id: string;
+        title: string;
+        situationLabel: string;
+        situation: string[];
+        brokenLabel: string;
+        brokenIntro: string;
+        brokenItems: string[];
+        quoteText: string;
+        quoteAttribution: string;
+        takeawayLabel: string;
+        takeawayHeadline: string;
+        takeawayBody: string;
+      };
+      ctaHeadline: string;
+      ctaSubheadline: string;
+    };
+  };
 }
 
 export interface ServicePlan {
@@ -345,6 +392,144 @@ const en: Dictionary = {
       title:   "Request Received",
       message: "Got it. We'll review your submission and reach out within a few hours to confirm scope and next steps.",
       note:    "No payment will be requested until you approve the scope.",
+    },
+  },
+
+  pages: {
+    services: {
+      hero: {
+        sectionLabel: "Services & Pricing",
+        headline:     "Flat-Rate. Scoped Upfront. No Surprises.",
+        subheadline:  "Every engagement starts with a written scope confirmation. Payment is only requested once you approve exactly what will be delivered and when.",
+      },
+      retainerLabel: "Monthly Retainer",
+      ctaHeadline:   "Ready to get started?",
+      ctaSubheadline:"Submit your app for a scope review. We return a precise written breakdown — exact deliverables, fixed cost, confirmed timeline.",
+    },
+    process: {
+      hero: {
+        sectionLabel: "Our Process",
+        headline:     "Simple. Transparent. Fast.",
+        subheadline:  "Four structured steps from broken AI prototype to live production infrastructure. No guesswork, no retros, no hidden fees.",
+      },
+      step4: {
+        number: "04",
+        title:  "Hardened Handoff & Validation",
+        description: "Delivery is not a zip file. We hand off a fully deployed, validated production stack — live URL, repository access, and a written summary of every change made.",
+        detail: [
+          "Live production URL verified and tested across devices",
+          "Full repository access transferred to your GitHub account",
+          "Environment variable documentation for all secrets and keys",
+          "Written handoff summary — every change, every decision, every configuration",
+          "30-day async support window included on Core Migration and above",
+        ],
+      },
+      audit: {
+        sectionLabel: "Audit Methodology",
+        headline:     "What We Check in Every Repository",
+        subheadline:  "Before a single line of production work begins, we run a systematic audit across three infrastructure layers.",
+        layers: [
+          {
+            title: "Build Container Audit",
+            items: [
+              "Vercel build log analysis — every error code traced to its source",
+              "Next.js configuration validation (next.config.js, tsconfig.json, package.json)",
+              "Dependency tree inspection for version conflicts and deprecated packages",
+              "Environment variable mapping — every process.env reference verified",
+            ],
+          },
+          {
+            title: "Database & Auth Layer",
+            items: [
+              "Supabase schema review — table structure, relationships, and data types",
+              "Row-Level Security policy audit — every policy tested against authenticated and anonymous roles",
+              "JWT authentication flow validation — sign-in, sign-out, session persistence",
+              "API key exposure check — service role keys never in client bundles",
+            ],
+          },
+          {
+            title: "Deployment Pipeline",
+            items: [
+              "GitHub repository structure — branch protection, webhook configuration",
+              "Vercel project settings — root directory, build command, output directory",
+              "Custom domain DNS configuration and SSL certificate verification",
+              "Edge function and serverless route testing",
+            ],
+          },
+        ],
+      },
+      ctaHeadline:   "Ready to start the process?",
+      ctaSubheadline:"Submit your app in three minutes. Receive a written scope and fixed price within 12 hours.",
+    },
+    caseStudies: {
+      hero: {
+        sectionLabel: "Case Studies",
+        headline:     "The Infrastructure Failures AI Builders Leave Behind",
+        subheadline:  "Every engagement we take starts with a broken deployment. This is a documented account of the patterns we see, the conditions that create them, and what a professional resolution looks like.",
+      },
+      tax: {
+        sectionLabel: "Failure Taxonomy",
+        headline:     "Five Infrastructure Failure Patterns We Resolve on Every Engagement",
+        subheadline:  "These are not edge cases. They are the predictable output of applying AI code generation tools to production infrastructure problems the tools were never designed to solve.",
+        cols: { symptom: "Symptom", cause: "Root Cause", impact: "Business Impact" },
+        patterns: [
+          {
+            title:   "Environment Variable Collapse",
+            symptom: "The application builds and runs perfectly on a local machine. The moment it is pushed to a cloud deployment container, it crashes immediately. Error logs reference variables that are clearly defined in the codebase but somehow unavailable at runtime.",
+            cause:   "AI builders generate code that references environment variables but never establish the boundary between local development secrets and production deployment configuration. The two environments require distinct variable scoping — a distinction no AI tool currently handles automatically.",
+            impact:  "Complete deployment failure. Founders spend hours adding variables manually, in the wrong scope, to the wrong environment, without understanding why none of it works.",
+          },
+          {
+            title:   "Router Architecture Collision",
+            symptom: "Navigation works on some routes and silently fails on others. Pages load blank with no visible error. Server logs show 404s on routes that clearly exist in the codebase.",
+            cause:   "Modern Next.js uses two fundamentally different routing systems — Pages Router and App Router — with incompatible conventions. AI generators frequently produce hybrid outputs that mix both patterns, creating routing conflicts that are invisible to the builder but fatal in production.",
+            impact:  "Partial application functionality at best. Authentication flows, API routes, and dynamic pages are the most commonly affected. Debugging without knowing the root cause consumes days.",
+          },
+          {
+            title:   "Database Security Misconfiguration",
+            symptom: "User data is accessible to unauthenticated requests. Admin endpoints respond to public API calls. Sensitive records appear in browser network tabs without authentication.",
+            cause:   "AI-generated backends frequently provision a database with zero Row-Level Security policies. The application may appear to function correctly in local testing while being completely open to arbitrary read and write operations from anyone with the project URL.",
+            impact:  "A live security vulnerability. Depending on the data stored, this ranges from a compliance violation to a critical breach risk.",
+          },
+          {
+            title:   "Authentication State Persistence Failure",
+            symptom: "Users log in successfully and are immediately redirected to a login screen. Session cookies are written and discarded within the same request cycle. Protected routes are either always accessible or always blocked regardless of authentication state.",
+            cause:   "AI tools frequently generate authentication scaffolding that is structurally correct but environment-specific. JWT signing keys, callback URLs, and session cookie domains all require production-specific configuration that development builds never validate.",
+            impact:  "The authentication layer is the security perimeter of the entire application. A broken auth flow means every user-facing feature gated behind a login is either inaccessible or unsecured.",
+          },
+          {
+            title:   "Build Pipeline Structural Failure",
+            symptom: "The CI/CD pipeline triggers on every commit but fails at the build step. Error messages reference missing modules, type mismatches, or configuration files that exist in the repository but are not found by the build container.",
+            cause:   "AI-generated projects frequently include configuration files that work in a local environment with specific global dependencies installed but fail in a clean, isolated build container where only the declared project dependencies are available.",
+            impact:  "No deployments ever complete. The development loop breaks entirely — every code change must be tested locally with no production validation path.",
+          },
+        ],
+      },
+      case001: {
+        id:             "Case 001 — Confidential · Lovable Build Rescue",
+        title:          "Ten-Hour Deployment Deadlock. Resolved in Under 24.",
+        situationLabel: "The Situation",
+        situation: [
+          "A non-technical founder built a complete SaaS product using Lovable — a well-known AI application builder. The interface was functional. The user flows were polished. The application had genuine value.",
+          "What the AI builder did not provide — and what no AI builder currently provides — was any path to production infrastructure. No repository. No deployment configuration. No database. No environment management.",
+          "After ten consecutive hours of attempting self-directed deployment, the founder had made no measurable progress. Every attempt produced a different error. Each error felt like it was the final obstacle. None of them were.",
+        ],
+        brokenLabel: "What Was Actually Broken",
+        brokenIntro: "The audit identified four distinct infrastructure failures, each one independent, each one sufficient to prevent deployment on its own.",
+        brokenItems: [
+          "Environment variable scope mismatch between local and production environments",
+          "Routing architecture collision between two incompatible Next.js patterns",
+          "Database access credentials incorrectly placed in client-accessible code",
+          "Deployment container configuration missing required output specification",
+        ],
+        quoteText:        "How did you do that so fast? I've been hitting a wall with this setup for over 10 hours straight.",
+        quoteAttribution: "Client, Anonymized · Lovable Build Rescue · June 2026",
+        takeawayLabel:    "The Pattern",
+        takeawayHeadline: "The client was not inexperienced. The problem was not solvable through more effort or better prompting.",
+        takeawayBody:     "The failures were structural — built into the output of the AI tool itself. No amount of documentation reading, forum searching, or trial-and-error would have resolved all four simultaneously without a systematic infrastructure audit. This is the gap between AI-generated code and production-ready software. It is not a skill gap. It is an infrastructure gap. And it is resolvable.",
+      },
+      ctaHeadline:   "Recognize any of these patterns?",
+      ctaSubheadline:"Submit your app in three minutes. We audit your codebase and return a written fix plan with a fixed price and confirmed delivery window.",
     },
   },
 
@@ -623,6 +808,144 @@ const es: Dictionary = {
     },
   },
 
+  pages: {
+    services: {
+      hero: {
+        sectionLabel: "Servicios y Precios",
+        headline:     "Tarifa Fija. Alcance Confirmado. Sin Sorpresas.",
+        subheadline:  "Cada compromiso comienza con una confirmación de alcance por escrito. El pago solo se solicita una vez que apruebe exactamente lo que se entregará y cuándo.",
+      },
+      retainerLabel: "Retenedor Mensual",
+      ctaHeadline:   "¿Listo para comenzar?",
+      ctaSubheadline:"Envíe su aplicación para una revisión de alcance. Devolvemos un desglose escrito preciso — entregables exactos, costo fijo, cronograma confirmado.",
+    },
+    process: {
+      hero: {
+        sectionLabel: "Nuestro Proceso",
+        headline:     "Simple. Transparente. Rápido.",
+        subheadline:  "Cuatro pasos estructurados desde el prototipo de IA hasta la infraestructura de producción en vivo. Sin suposiciones, sin retrocesos, sin cargos ocultos.",
+      },
+      step4: {
+        number: "04",
+        title:  "Entrega Reforzada y Validación",
+        description: "La entrega no es un archivo comprimido. Entregamos un stack de producción completamente desplegado y validado — URL en vivo, acceso al repositorio y un resumen escrito de cada cambio realizado.",
+        detail: [
+          "URL de producción en vivo verificada y probada en múltiples dispositivos",
+          "Acceso completo al repositorio transferido a su cuenta de GitHub",
+          "Documentación de variables de entorno para todos los secretos y claves",
+          "Resumen de entrega escrito — cada cambio, cada decisión, cada configuración",
+          "Ventana de soporte asíncrono de 30 días incluida en Migración Integral y superiores",
+        ],
+      },
+      audit: {
+        sectionLabel: "Metodología de Auditoría",
+        headline:     "Qué Verificamos en Cada Repositorio",
+        subheadline:  "Antes de que comience una sola línea de trabajo de producción, ejecutamos una auditoría sistemática en tres capas de infraestructura.",
+        layers: [
+          {
+            title: "Auditoría del Contenedor de Build",
+            items: [
+              "Análisis del registro de build de Vercel — cada código de error rastreado hasta su fuente",
+              "Validación de configuración de Next.js (next.config.js, tsconfig.json, package.json)",
+              "Inspección del árbol de dependencias para conflictos de versión y paquetes obsoletos",
+              "Mapeo de variables de entorno — cada referencia process.env verificada",
+            ],
+          },
+          {
+            title: "Capa de Base de Datos y Autenticación",
+            items: [
+              "Revisión del esquema de Supabase — estructura de tablas, relaciones y tipos de datos",
+              "Auditoría de políticas de Row-Level Security — cada política probada contra roles autenticados y anónimos",
+              "Validación del flujo de autenticación JWT — inicio de sesión, cierre de sesión, persistencia de sesión",
+              "Verificación de exposición de claves API — las claves de rol de servicio nunca en paquetes del cliente",
+            ],
+          },
+          {
+            title: "Pipeline de Despliegue",
+            items: [
+              "Estructura del repositorio de GitHub — protección de ramas, configuración de webhooks",
+              "Configuración del proyecto en Vercel — directorio raíz, comando de build, directorio de salida",
+              "Configuración DNS de dominio personalizado y verificación de certificado SSL",
+              "Prueba de funciones edge y rutas serverless",
+            ],
+          },
+        ],
+      },
+      ctaHeadline:   "¿Listo para iniciar el proceso?",
+      ctaSubheadline:"Envíe su aplicación en tres minutos. Reciba un alcance escrito y precio fijo en 12 horas.",
+    },
+    caseStudies: {
+      hero: {
+        sectionLabel: "Casos de Estudio",
+        headline:     "Los Fallos de Infraestructura que los Constructores de IA Dejan Atrás",
+        subheadline:  "Cada compromiso que tomamos comienza con un despliegue fallido. Este es un relato documentado de los patrones que vemos, las condiciones que los crean y cómo se ve una resolución profesional.",
+      },
+      tax: {
+        sectionLabel: "Taxonomía de Fallos",
+        headline:     "Cinco Patrones de Fallo de Infraestructura que Resolvemos en Cada Compromiso",
+        subheadline:  "Estos no son casos extremos. Son el resultado predecible de aplicar herramientas de generación de código IA a problemas de infraestructura de producción para los que las herramientas nunca fueron diseñadas.",
+        cols: { symptom: "Síntoma", cause: "Causa Raíz", impact: "Impacto en el Negocio" },
+        patterns: [
+          {
+            title:   "Colapso de Variables de Entorno",
+            symptom: "La aplicación compila y funciona perfectamente en una máquina local. En el momento en que se envía a un contenedor de despliegue en la nube, falla inmediatamente. Los registros de errores hacen referencia a variables claramente definidas en el código pero de alguna manera no disponibles en tiempo de ejecución.",
+            cause:   "Los constructores de IA generan código que hace referencia a variables de entorno pero nunca establecen el límite entre los secretos del desarrollo local y la configuración de despliegue de producción.",
+            impact:  "Fallo total de despliegue. Los fundadores pasan horas agregando variables manualmente, en el alcance incorrecto, al entorno incorrecto, sin entender por qué nada funciona.",
+          },
+          {
+            title:   "Colisión de Arquitectura de Enrutador",
+            symptom: "La navegación funciona en algunas rutas y falla silenciosamente en otras. Las páginas se cargan en blanco sin error visible. Los registros del servidor muestran errores 404 en rutas que claramente existen en el código.",
+            cause:   "Next.js moderno usa dos sistemas de enrutamiento fundamentalmente diferentes — Pages Router y App Router — con convenciones incompatibles. Los generadores de IA frecuentemente producen resultados híbridos que mezclan ambos patrones.",
+            impact:  "Funcionalidad parcial de la aplicación en el mejor caso. Los flujos de autenticación, rutas de API y páginas dinámicas son los más comúnmente afectados.",
+          },
+          {
+            title:   "Configuración Incorrecta de Seguridad de Base de Datos",
+            symptom: "Los datos del usuario son accesibles a solicitudes no autenticadas. Los endpoints de administrador responden a llamadas de API públicas. Los registros sensibles aparecen en las pestañas de red del navegador sin autenticación.",
+            cause:   "Los backends generados por IA frecuentemente aprovisionan una base de datos con cero políticas de Row-Level Security. La aplicación puede parecer funcionar correctamente en pruebas locales mientras está completamente abierta a operaciones arbitrarias de lectura y escritura.",
+            impact:  "Una vulnerabilidad de seguridad en vivo. Dependiendo de los datos almacenados, esto varía desde una violación de cumplimiento hasta un riesgo crítico de brecha.",
+          },
+          {
+            title:   "Fallo en la Persistencia del Estado de Autenticación",
+            symptom: "Los usuarios inician sesión exitosamente y son inmediatamente redirigidos a la pantalla de inicio de sesión. Las cookies de sesión se escriben y descartan dentro del mismo ciclo de solicitud.",
+            cause:   "Las herramientas de IA frecuentemente generan andamiaje de autenticación que es estructuralmente correcto pero específico del entorno. Las claves de firma JWT, las URL de devolución y los dominios de cookies de sesión requieren configuración específica de producción.",
+            impact:  "La capa de autenticación es el perímetro de seguridad de toda la aplicación. Un flujo de autenticación roto significa que cada función orientada al usuario protegida por un inicio de sesión es inaccesible o no está asegurada.",
+          },
+          {
+            title:   "Fallo Estructural del Pipeline de Build",
+            symptom: "El pipeline CI/CD se activa en cada commit pero falla en el paso de build. Los mensajes de error hacen referencia a módulos faltantes, incompatibilidades de tipo o archivos de configuración que existen en el repositorio pero no son encontrados por el contenedor de build.",
+            cause:   "Los proyectos generados por IA frecuentemente incluyen archivos de configuración que funcionan en un entorno local con dependencias globales específicas instaladas pero fallan en un contenedor de build limpio y aislado.",
+            impact:  "Ningún despliegue se completa jamás. El ciclo de desarrollo se rompe por completo — cada cambio de código debe probarse localmente sin ruta de validación de producción.",
+          },
+        ],
+      },
+      case001: {
+        id:             "Caso 001 — Confidencial · Rescate de Build en Lovable",
+        title:          "Bloqueo de Despliegue de Diez Horas. Resuelto en Menos de 24.",
+        situationLabel: "La Situación",
+        situation: [
+          "Una fundadora no técnica construyó un producto SaaS completo usando Lovable — un conocido constructor de aplicaciones de IA. La interfaz era funcional. Los flujos de usuario estaban pulidos. La aplicación tenía valor genuino.",
+          "Lo que el constructor de IA no proporcionó — y lo que ningún constructor de IA proporciona actualmente — fue ningún camino hacia la infraestructura de producción. Sin repositorio. Sin configuración de despliegue. Sin base de datos. Sin gestión de entorno.",
+          "Después de diez horas consecutivas de intentar el despliegue autodidacta, la fundadora no había avanzado de manera mensurable. Cada intento producía un error diferente. Cada error parecía ser el obstáculo final. Ninguno lo era.",
+        ],
+        brokenLabel: "Qué Estaba Realmente Roto",
+        brokenIntro: "La auditoría identificó cuatro fallos de infraestructura distintos, cada uno independiente, cada uno suficiente para prevenir el despliegue por sí solo.",
+        brokenItems: [
+          "Discrepancia de alcance de variables de entorno entre entornos local y de producción",
+          "Colisión de arquitectura de enrutamiento entre dos patrones de Next.js incompatibles",
+          "Credenciales de acceso a la base de datos incorrectamente colocadas en código accesible al cliente",
+          "Configuración del contenedor de despliegue sin la especificación de salida requerida",
+        ],
+        quoteText:        "¿Cómo lo hiciste tan rápido? He estado golpeando una pared con esta configuración durante más de 10 horas.",
+        quoteAttribution: "Cliente, Anonimizado · Rescate de Build en Lovable · Junio 2026",
+        takeawayLabel:    "El Patrón",
+        takeawayHeadline: "El cliente no era inexperto. El problema no era solucionable con más esfuerzo o mejores indicaciones.",
+        takeawayBody:     "Los fallos fueron estructurales — incorporados en el resultado de la herramienta de IA misma. Ninguna cantidad de lectura de documentación, búsqueda en foros o ensayo y error habría resuelto los cuatro simultáneamente sin una auditoría de infraestructura sistemática. Esta es la brecha entre el código generado por IA y el software listo para producción. No es una brecha de habilidades. Es una brecha de infraestructura. Y es resoluble.",
+      },
+      ctaHeadline:   "¿Reconoce alguno de estos patrones?",
+      ctaSubheadline:"Envíe su aplicación en tres minutos. Auditamos su código y devolvemos un plan de corrección escrito con precio fijo y ventana de entrega confirmada.",
+    },
+  },
+
   footer: {
     tagline:
       "Especializados en migrar aplicaciones generadas por IA y sin código hacia infraestructura de nivel empresarial en Vercel y Supabase.",
@@ -895,6 +1218,144 @@ const pt: Dictionary = {
       title:   "Solicitação Recebida",
       message: "Recebemos. Revisaremos sua solicitação e entraremos em contato em poucas horas para confirmar o escopo e os próximos passos.",
       note:    "Nenhum pagamento será solicitado até que você aprove o escopo.",
+    },
+  },
+
+  pages: {
+    services: {
+      hero: {
+        sectionLabel: "Serviços e Preços",
+        headline:     "Taxa Fixa. Escopo Confirmado. Sem Surpresas.",
+        subheadline:  "Cada compromisso começa com uma confirmação de escopo por escrito. O pagamento só é solicitado depois que você aprovar exatamente o que será entregue e quando.",
+      },
+      retainerLabel: "Retenção Mensal",
+      ctaHeadline:   "Pronto para começar?",
+      ctaSubheadline:"Envie seu aplicativo para uma revisão de escopo. Retornamos um detalhamento escrito preciso — entregáveis exatos, custo fixo, cronograma confirmado.",
+    },
+    process: {
+      hero: {
+        sectionLabel: "Nosso Processo",
+        headline:     "Simples. Transparente. Rápido.",
+        subheadline:  "Quatro etapas estruturadas desde o protótipo de IA até a infraestrutura de produção ao vivo. Sem suposições, sem retrocessos, sem taxas ocultas.",
+      },
+      step4: {
+        number: "04",
+        title:  "Entrega Reforçada e Validação",
+        description: "A entrega não é um arquivo compactado. Entregamos um stack de produção totalmente implantado e validado — URL ao vivo, acesso ao repositório e um resumo escrito de cada alteração feita.",
+        detail: [
+          "URL de produção ao vivo verificada e testada em vários dispositivos",
+          "Acesso completo ao repositório transferido para sua conta do GitHub",
+          "Documentação de variáveis de ambiente para todos os segredos e chaves",
+          "Resumo de entrega escrito — cada alteração, cada decisão, cada configuração",
+          "Janela de suporte assíncrono de 30 dias incluída na Migração Principal e acima",
+        ],
+      },
+      audit: {
+        sectionLabel: "Metodologia de Auditoria",
+        headline:     "O Que Verificamos em Cada Repositório",
+        subheadline:  "Antes de uma única linha de trabalho de produção começar, executamos uma auditoria sistemática em três camadas de infraestrutura.",
+        layers: [
+          {
+            title: "Auditoria do Container de Build",
+            items: [
+              "Análise do log de build do Vercel — cada código de erro rastreado até sua fonte",
+              "Validação da configuração do Next.js (next.config.js, tsconfig.json, package.json)",
+              "Inspeção da árvore de dependências para conflitos de versão e pacotes obsoletos",
+              "Mapeamento de variáveis de ambiente — cada referência process.env verificada",
+            ],
+          },
+          {
+            title: "Camada de Banco de Dados e Autenticação",
+            items: [
+              "Revisão do esquema do Supabase — estrutura de tabelas, relacionamentos e tipos de dados",
+              "Auditoria de políticas de Row-Level Security — cada política testada contra funções autenticadas e anônimas",
+              "Validação do fluxo de autenticação JWT — login, logout, persistência de sessão",
+              "Verificação de exposição de chaves de API — chaves de função de serviço nunca em bundles do cliente",
+            ],
+          },
+          {
+            title: "Pipeline de Implantação",
+            items: [
+              "Estrutura do repositório GitHub — proteção de branch, configuração de webhook",
+              "Configurações do projeto Vercel — diretório raiz, comando de build, diretório de saída",
+              "Configuração de DNS de domínio personalizado e verificação de certificado SSL",
+              "Teste de funções edge e rotas serverless",
+            ],
+          },
+        ],
+      },
+      ctaHeadline:   "Pronto para iniciar o processo?",
+      ctaSubheadline:"Envie seu aplicativo em três minutos. Receba um escopo escrito e preço fixo em 12 horas.",
+    },
+    caseStudies: {
+      hero: {
+        sectionLabel: "Estudos de Caso",
+        headline:     "As Falhas de Infraestrutura que os Construtores de IA Deixam Para Trás",
+        subheadline:  "Cada compromisso que assumimos começa com uma implantação quebrada. Este é um relato documentado dos padrões que vemos, as condições que os criam e como é uma resolução profissional.",
+      },
+      tax: {
+        sectionLabel: "Taxonomia de Falhas",
+        headline:     "Cinco Padrões de Falha de Infraestrutura que Resolvemos em Cada Compromisso",
+        subheadline:  "Estes não são casos extremos. São o resultado previsível de aplicar ferramentas de geração de código IA a problemas de infraestrutura de produção para os quais as ferramentas nunca foram projetadas.",
+        cols: { symptom: "Sintoma", cause: "Causa Raiz", impact: "Impacto no Negócio" },
+        patterns: [
+          {
+            title:   "Colapso de Variáveis de Ambiente",
+            symptom: "O aplicativo compila e executa perfeitamente em uma máquina local. No momento em que é enviado para um container de implantação na nuvem, ele falha imediatamente. Os logs de erro fazem referência a variáveis claramente definidas no código, mas de alguma forma indisponíveis em tempo de execução.",
+            cause:   "Os construtores de IA geram código que faz referência a variáveis de ambiente, mas nunca estabelecem o limite entre os segredos de desenvolvimento local e a configuração de implantação de produção.",
+            impact:  "Falha total de implantação. Os fundadores passam horas adicionando variáveis manualmente, no escopo errado, no ambiente errado, sem entender por que nada funciona.",
+          },
+          {
+            title:   "Colisão de Arquitetura de Roteador",
+            symptom: "A navegação funciona em algumas rotas e falha silenciosamente em outras. As páginas carregam em branco sem erro visível. Os logs do servidor mostram erros 404 em rotas que claramente existem no código.",
+            cause:   "O Next.js moderno usa dois sistemas de roteamento fundamentalmente diferentes — Pages Router e App Router — com convenções incompatíveis. Os geradores de IA frequentemente produzem saídas híbridas que misturam ambos os padrões.",
+            impact:  "Funcionalidade parcial do aplicativo, no melhor caso. Fluxos de autenticação, rotas de API e páginas dinâmicas são as mais comumente afetadas.",
+          },
+          {
+            title:   "Configuração Incorreta de Segurança do Banco de Dados",
+            symptom: "Os dados do usuário são acessíveis a solicitações não autenticadas. Os endpoints de administrador respondem a chamadas de API públicas. Registros sensíveis aparecem nas abas de rede do navegador sem autenticação.",
+            cause:   "Os backends gerados por IA frequentemente provisionam um banco de dados com zero políticas de Row-Level Security. O aplicativo pode parecer funcionar corretamente em testes locais enquanto está completamente aberto a operações arbitrárias de leitura e escrita.",
+            impact:  "Uma vulnerabilidade de segurança ao vivo. Dependendo dos dados armazenados, isso varia de uma violação de conformidade a um risco crítico de brecha.",
+          },
+          {
+            title:   "Falha na Persistência do Estado de Autenticação",
+            symptom: "Os usuários fazem login com sucesso e são imediatamente redirecionados para a tela de login. Os cookies de sessão são escritos e descartados dentro do mesmo ciclo de solicitação.",
+            cause:   "As ferramentas de IA frequentemente geram andaimes de autenticação que são estruturalmente corretos, mas específicos do ambiente. Chaves de assinatura JWT, URLs de callback e domínios de cookies de sessão requerem configuração específica de produção.",
+            impact:  "A camada de autenticação é o perímetro de segurança de todo o aplicativo. Um fluxo de autenticação quebrado significa que cada recurso voltado ao usuário protegido por um login é inacessível ou não está protegido.",
+          },
+          {
+            title:   "Falha Estrutural do Pipeline de Build",
+            symptom: "O pipeline CI/CD é acionado em cada commit, mas falha na etapa de build. As mensagens de erro fazem referência a módulos ausentes, incompatibilidades de tipo ou arquivos de configuração que existem no repositório, mas não são encontrados pelo container de build.",
+            cause:   "Os projetos gerados por IA frequentemente incluem arquivos de configuração que funcionam em um ambiente local com dependências globais específicas instaladas, mas falham em um container de build limpo e isolado.",
+            impact:  "Nenhuma implantação é concluída. O ciclo de desenvolvimento é completamente interrompido — cada alteração de código deve ser testada localmente sem nenhum caminho de validação de produção.",
+          },
+        ],
+      },
+      case001: {
+        id:             "Caso 001 — Confidencial · Resgate de Build no Lovable",
+        title:          "Bloqueio de Implantação de Dez Horas. Resolvido em Menos de 24.",
+        situationLabel: "A Situação",
+        situation: [
+          "Uma fundadora não técnica construiu um produto SaaS completo usando o Lovable — um conhecido construtor de aplicativos de IA. A interface era funcional. Os fluxos de usuário eram polidos. O aplicativo tinha valor genuíno.",
+          "O que o construtor de IA não forneceu — e o que nenhum construtor de IA atualmente fornece — foi qualquer caminho para a infraestrutura de produção. Sem repositório. Sem configuração de implantação. Sem banco de dados. Sem gerenciamento de ambiente.",
+          "Após dez horas consecutivas tentando a implantação autodidata, a fundadora não tinha feito nenhum progresso mensurável. Cada tentativa produzia um erro diferente. Cada erro parecia ser o obstáculo final. Nenhum deles era.",
+        ],
+        brokenLabel: "O Que Estava Realmente Quebrado",
+        brokenIntro: "A auditoria identificou quatro falhas de infraestrutura distintas, cada uma independente, cada uma suficiente para impedir a implantação por conta própria.",
+        brokenItems: [
+          "Incompatibilidade de escopo de variáveis de ambiente entre ambientes local e de produção",
+          "Colisão de arquitetura de roteamento entre dois padrões incompatíveis do Next.js",
+          "Credenciais de acesso ao banco de dados incorretamente colocadas em código acessível ao cliente",
+          "Configuração do container de implantação sem a especificação de saída necessária",
+        ],
+        quoteText:        "Como você fez isso tão rápido? Estou batendo cabeça com essa configuração há mais de 10 horas.",
+        quoteAttribution: "Cliente, Anonimizado · Resgate de Build no Lovable · Junho 2026",
+        takeawayLabel:    "O Padrão",
+        takeawayHeadline: "O cliente não era inexperiente. O problema não era solucionável com mais esforço ou melhores instruções.",
+        takeawayBody:     "As falhas foram estruturais — incorporadas na saída da própria ferramenta de IA. Nenhuma quantidade de leitura de documentação, pesquisa em fóruns ou tentativa e erro teria resolvido todas as quatro simultaneamente sem uma auditoria sistemática de infraestrutura. Esta é a lacuna entre o código gerado por IA e o software pronto para produção. Não é uma lacuna de habilidades. É uma lacuna de infraestrutura. E é resolúvel.",
+      },
+      ctaHeadline:   "Reconhece algum desses padrões?",
+      ctaSubheadline:"Envie seu aplicativo em três minutos. Auditamos seu código e retornamos um plano de correção escrito com preço fixo e janela de entrega confirmada.",
     },
   },
 
