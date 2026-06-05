@@ -142,7 +142,7 @@ export default function Navbar() {
 
             {/* CTA */}
             <Link
-              href="/#intake-form"
+              href="/services#intake-form"
               className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors duration-150 shadow-sm"
             >
               {nav.submitCta}
@@ -203,7 +203,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="/#intake-form"
+            href="/services#intake-form"
             onClick={() => setMenuOpen(false)}
             className="mt-3 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors text-center"
           >

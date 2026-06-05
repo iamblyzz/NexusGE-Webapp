@@ -1,4 +1,6 @@
-import Link from "next/link";
+import Link               from "next/link";
+import SiteNavbar         from "@/components/SiteNavbar";
+import ServiceIntakeForm  from "@/components/ServiceIntakeForm";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type Plan = {
@@ -103,6 +105,8 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
 
+      <SiteNavbar />
+
       {/* Header */}
       <section className="bg-white border-b border-slate-200 pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -164,7 +168,7 @@ export default function ServicesPage() {
                     ))}
                   </ul>
                   <Link
-                    href="/#intake-form"
+                    href="#intake-form"
                     className={`w-full py-3 rounded-lg font-semibold text-sm text-center transition-all duration-150 ${
                       plan.popular
                         ? "bg-blue-600 hover:bg-blue-500 text-white shadow-sm"
@@ -218,7 +222,7 @@ export default function ServicesPage() {
                     <span className="text-slate-400 text-sm mb-1.5">/ month</span>
                   </div>
                   <Link
-                    href="/#intake-form"
+                    href="#intake-form"
                     className="w-full lg:w-auto px-7 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-lg transition-all shadow-sm whitespace-nowrap text-center"
                   >
                     Start Retainer
@@ -237,22 +241,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-white border-t border-slate-200 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-extrabold text-slate-900 mb-4">Ready to get started?</h2>
-          <p className="text-slate-600 mb-8">
-            Submit your app for a free scope review. We audit your submission and return a precise written breakdown — exact deliverables, fixed cost, confirmed timeline.
-          </p>
-          <Link
-            href="/#intake-form"
-            className="inline-block px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-lg transition-all shadow-sm hover:shadow-lg hover:shadow-blue-500/20"
-          >
-            Submit Your App for Review →
-          </Link>
-          <p className="mt-4 text-slate-400 text-xs">Payment collected only after scope is confirmed.</p>
-        </div>
-      </section>
+      {/* Intake form — permanent home */}
+      <ServiceIntakeForm />
     </div>
   );
 }

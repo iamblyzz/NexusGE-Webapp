@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link       from "next/link";
+import SiteNavbar from "@/components/SiteNavbar";
 
 const POSTS = [
   {
@@ -47,20 +48,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
 
-      {/* Nav */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="text-slate-900 font-bold text-sm tracking-tight select-none">
-            Nexus <span className="text-blue-600">Global</span> Enterprise
-          </Link>
-          <Link
-            href="/"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors shadow-sm"
-          >
-            Submit Your App
-          </Link>
-        </div>
-      </header>
+      <SiteNavbar />
 
       {/* Hero */}
       <section className="border-b border-slate-200 bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">

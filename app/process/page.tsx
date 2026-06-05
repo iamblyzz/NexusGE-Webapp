@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link       from "next/link";
+import SiteNavbar from "@/components/SiteNavbar";
 
 const STEPS = [
   {
@@ -86,6 +87,7 @@ const AUDIT_LAYERS = [
 export default function ProcessPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <SiteNavbar />
 
       {/* Header */}
       <section className="bg-white border-b border-slate-200 pt-24 pb-16 px-4 sm:px-6 lg:px-8">
@@ -177,7 +179,7 @@ export default function ProcessPage() {
             Submit your app in three minutes. Receive a written scope and fixed price within 12 hours.
           </p>
           <Link
-            href="/#intake-form"
+            href="/services#intake-form"
             className="inline-block px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-lg transition-all shadow-sm hover:shadow-lg hover:shadow-blue-500/20"
           >
             Submit Your App for Review →
