@@ -1,35 +1,34 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "@/components/LanguageProvider";
 import type { Lang } from "@/app/lib/languages";
 
 const LANG_LABELS: Record<Lang, string> = { en: "EN", es: "ES", pt: "PT" };
-const LANG_FULL: Record<Lang, string> = {
+const LANG_FULL:   Record<Lang, string> = {
   en: "English",
   es: "Español",
   pt: "Português",
 };
 
-const NAV_IDS = {
-  services:   "services",
-  howItWorks: "how-it-works",
-  caseStudy:  "case-study",
-  getHelp:    "intake-form",
-} as const;
+// Route-based nav links — labels from translation where available
+const NAV_LINKS = [
+  { labelKey: "services",   href: "/services"      },
+  { labelKey: "howItWorks", href: "/process"        },
+  { labelKey: "caseStudy",  href: "/case-studies"   },
+  { labelKey: "blog",       href: "/blog"           },
+] as const;
 
 export default function Navbar() {
   const { t, lang, setLanguage } = useTranslation();
   const nav = t.nav;
+  const pathname = usePathname();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
 
-  // Two separate refs — one per dropdown instance (desktop / mobile).
-  // A single shared ref always resolves to the last-rendered element, which
-  // was the mobile div. That caused the mousedown outside-click handler to
-  // fire on desktop clicks before onClick could execute, collapsing the
-  // dropdown and swallowing the language change.
   const desktopLangRef = useRef<HTMLDivElement>(null);
   const mobileLangRef  = useRef<HTMLDivElement>(null);
 
@@ -38,29 +37,28 @@ export default function Navbar() {
       const target = e.target as Node;
       const inDesktop = desktopLangRef.current?.contains(target) ?? false;
       const inMobile  = mobileLangRef.current?.contains(target)  ?? false;
-      if (!inDesktop && !inMobile) {
-        setLangOpen(false);
-      }
+      if (!inDesktop && !inMobile) setLangOpen(false);
     }
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const scrollTo = (id: string) => {
-    setMenuOpen(false);
-    setLangOpen(false);
-    if (typeof window === "undefined") return;
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   const handleLang = (l: Lang) => {
-    console.log("[NGE] Navbar: language button clicked →", l, "| current lang =", lang);
     setLanguage(l);
     setLangOpen(false);
   };
 
-  // Shared dropdown item list — rendered identically for desktop and mobile
+  // Label lookup — "blog" not in translation dict so hardcoded
+  const getLabel = (key: string): string => {
+    if (key === "services")   return nav.services;
+    if (key === "howItWorks") return nav.howItWorks;
+    if (key === "caseStudy")  return nav.caseStudy;
+    if (key === "blog")       return "Blog";
+    return key;
+  };
+
+  const isActive = (href: string) => pathname === href;
+
   const LangOptions = () => (
     <>
       {(["en", "es", "pt"] as Lang[]).map((l) => (
@@ -89,33 +87,30 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Brand */}
-          <span className="text-slate-900 font-bold text-base tracking-tight whitespace-nowrap select-none">
+          <Link href="/" className="text-slate-900 font-bold text-base tracking-tight whitespace-nowrap select-none">
             Nexus <span className="text-blue-600">Global</span> Enterprise
-          </span>
+          </Link>
 
-          {/* Desktop nav links */}
-          <nav className="hidden md:flex items-center gap-7">
-            {(
-              [
-                [nav.services,   NAV_IDS.services],
-                [nav.howItWorks, NAV_IDS.howItWorks],
-                [nav.caseStudy,  NAV_IDS.caseStudy],
-                [nav.getHelp,    NAV_IDS.getHelp],
-              ] as [string, string][]
-            ).map(([label, id]) => (
-              <button
-                key={id}
-                onClick={() => scrollTo(id)}
-                className="text-slate-600 hover:text-slate-900 text-sm font-medium transition-colors duration-150"
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-6">
+            {NAV_LINKS.map(({ labelKey, href }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`text-sm font-medium transition-colors duration-150 ${
+                  isActive(href)
+                    ? "text-blue-600 font-semibold"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
               >
-                {label}
-              </button>
+                {getLabel(labelKey)}
+              </Link>
             ))}
           </nav>
 
           {/* Desktop right — lang switcher + CTA */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Desktop language dropdown — uses desktopLangRef */}
+            {/* Language dropdown */}
             <div ref={desktopLangRef} className="relative">
               <button
                 type="button"
@@ -135,7 +130,6 @@ export default function Navbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
-
               {langOpen && (
                 <div
                   role="listbox"
@@ -147,17 +141,16 @@ export default function Navbar() {
             </div>
 
             {/* CTA */}
-            <button
-              onClick={() => scrollTo("intake-form")}
+            <Link
+              href="/#intake-form"
               className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors duration-150 shadow-sm"
             >
               {nav.submitCta}
-            </button>
+            </Link>
           </div>
 
           {/* Mobile controls */}
           <div className="md:hidden flex items-center gap-2">
-            {/* Mobile language dropdown — uses mobileLangRef */}
             <div ref={mobileLangRef} className="relative">
               <button
                 type="button"
@@ -175,7 +168,6 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Toggle navigation"
@@ -198,28 +190,25 @@ export default function Navbar() {
       {/* Mobile drawer */}
       {menuOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 flex flex-col gap-1">
-          {(
-            [
-              [nav.services,   NAV_IDS.services],
-              [nav.howItWorks, NAV_IDS.howItWorks],
-              [nav.caseStudy,  NAV_IDS.caseStudy],
-              [nav.getHelp,    NAV_IDS.getHelp],
-            ] as [string, string][]
-          ).map(([label, id]) => (
-            <button
-              key={id}
-              onClick={() => scrollTo(id)}
-              className="text-left py-2.5 text-slate-600 hover:text-slate-900 text-sm font-medium border-b border-slate-100 last:border-0 transition-colors"
+          {NAV_LINKS.map(({ labelKey, href }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMenuOpen(false)}
+              className={`py-2.5 text-sm font-medium border-b border-slate-100 last:border-0 transition-colors ${
+                isActive(href) ? "text-blue-600 font-semibold" : "text-slate-600 hover:text-slate-900"
+              }`}
             >
-              {label}
-            </button>
+              {getLabel(labelKey)}
+            </Link>
           ))}
-          <button
-            onClick={() => scrollTo("intake-form")}
-            className="mt-3 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors"
+          <Link
+            href="/#intake-form"
+            onClick={() => setMenuOpen(false)}
+            className="mt-3 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors text-center"
           >
             {nav.submitCta}
-          </button>
+          </Link>
         </div>
       )}
     </header>
