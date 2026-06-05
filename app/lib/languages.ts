@@ -86,6 +86,36 @@ export interface Dictionary {
     disclaimer: string;
   };
 
+  legal: {
+    label: string;
+    effectiveDate: string;
+    terms: {
+      title: string;
+      sections: Array<{ heading: string; paras: string[]; items?: string[] }>;
+      contactNote: string;
+    };
+    privacy: {
+      title: string;
+      subtitle: string;
+      dataTable: { cols: [string, string, string]; rows: Array<[string, string, string]> };
+      sections: Array<{
+        heading: string;
+        paras: string[];
+        items?: string[];
+        cookieBox?: { title: string; body: string };
+      }>;
+      contactNote: string;
+    };
+    refunds: {
+      title: string;
+      alert: string;
+      sections: Array<{ heading: string; paras: string[]; items?: string[] }>;
+      relatedLabel: string;
+      contactNote: string;
+    };
+    footer: { home: string; blog: string; terms: string; privacy: string; copyright: string };
+  };
+
   pages: {
     services: {
       hero: { sectionLabel: string; headline: string; subheadline: string };
@@ -392,6 +422,217 @@ const en: Dictionary = {
       title:   "Request Received",
       message: "Got it. We'll review your submission and reach out within a few hours to confirm scope and next steps.",
       note:    "No payment will be requested until you approve the scope.",
+    },
+  },
+
+  legal: {
+    label: "Legal",
+    effectiveDate: "June 1, 2026",
+    terms: {
+      title: "Terms of Service",
+      sections: [
+        {
+          heading: "1. Acceptance of Terms",
+          paras: ["By submitting an intake form, engaging our services via email, or making any payment to Nexus Global Enterprise, you unconditionally agree to be bound by these Terms of Service. If you do not agree, do not use our services."],
+        },
+        {
+          heading: "2. All Sales Are Absolute and Final",
+          paras: [
+            "All payments made to Nexus Global Enterprise are non-refundable and non-reversible. Once payment has been collected following written scope confirmation, no refunds, chargebacks, or partial credits will be issued under any circumstances, including but not limited to:",
+            "Disputes initiated via payment processor chargebacks without prior written communication to Nexus Global Enterprise will be contested in full.",
+          ],
+          items: [
+            "Change of mind after scope confirmation.",
+            "Dissatisfaction with the speed of delivery within the agreed operational window.",
+            "Discovery of additional technical issues outside the confirmed scope.",
+            "Inability to access or operate the delivered infrastructure.",
+            "Third-party platform outages (Vercel, Supabase, GitHub, or similar).",
+          ],
+        },
+        {
+          heading: "3. \"As-Is\" Production Infrastructure Handoff Delivery Shield",
+          paras: [
+            "All deliverables — including but not limited to migrated repositories, provisioned database instances, configured deployment pipelines, and any written architectural documentation — are delivered \"As-Is\" at the time of handoff.",
+            "Nexus Global Enterprise warrants that all confirmed scope items have been completed and validated against the specifications agreed upon in writing prior to payment. Beyond this, no additional warranties, express or implied, are provided.",
+            "The client assumes full operational responsibility for the delivered infrastructure upon handoff. Nexus Global Enterprise bears no liability for degradation, outages, data loss, or security failures occurring after the delivery window has closed.",
+          ],
+        },
+        {
+          heading: "4. Scope of Work & Delivery Windows",
+          paras: [
+            "All work is scoped and confirmed in writing before any payment is requested. The confirmed scope document constitutes the full and complete definition of deliverables. No verbal agreements, informal chat messages, or implied expectations extend the scope.",
+            "Delivery windows (24-hour, 48-hour, 72-hour, or custom sprint) begin upon payment clearance. Delays caused by client-side access restrictions, late credential provision, or third-party platform outages do not constitute a breach of our delivery commitment.",
+          ],
+        },
+        {
+          heading: "5. Production Oversight Retainer — Boundary Terms",
+          paras: [
+            "Monthly retainer clients receive one (1) scheduled technical audit window per calendar week, conducted within a fixed time slot confirmed at retainer activation. This constitutes the entirety of the scheduled service.",
+            "Infrastructure interventions requested outside the designated weekly window are classified as emergency off-schedule priority work and are billed separately at a rate of $150 USD per hour, invoiced immediately upon request. Retainer billing is monthly, in advance, and non-refundable for any partial month of service.",
+          ],
+        },
+        {
+          heading: "6. Co-Architecture Bespoke Engagements",
+          paras: ["Bespoke Co-Architecture engagements require execution of a Mutual Responsibility Release Framework prior to commencement. This document defines shared obligations, intellectual property ownership, confidentiality terms, and liability boundaries specific to the engagement. No Co-Architecture work begins without full legal sign-off from both parties."],
+        },
+        {
+          heading: "7. Intellectual Property",
+          paras: ["Upon receipt of final payment, the client receives full ownership of all custom code, configurations, and infrastructure assets delivered within the confirmed scope. Nexus Global Enterprise retains no claim over client repositories, databases, or deployment pipelines following handoff. Nexus Global Enterprise retains the right to reference engagements in marketing materials in anonymized, non-identifying form unless otherwise agreed in writing."],
+        },
+        {
+          heading: "8. Limitation of Liability",
+          paras: ["To the maximum extent permitted by applicable law, Nexus Global Enterprise shall not be liable for any indirect, incidental, consequential, punitive, or special damages arising from the use of, or inability to use, our services — including lost revenue, lost data, or business interruption. Our total aggregate liability shall not exceed the total amount paid by the client for the specific engagement giving rise to the claim."],
+        },
+        {
+          heading: "9. Governing Law",
+          paras: ["These Terms are governed by the laws of the jurisdiction in which Nexus Global Enterprise is registered. Any disputes shall be resolved through binding arbitration before a mutually agreed arbitrator, with each party bearing its own legal costs."],
+        },
+        {
+          heading: "10. Modifications",
+          paras: ["Nexus Global Enterprise reserves the right to update these Terms at any time. Updated Terms are effective upon publication at this URL. Continued use of our services after publication constitutes acceptance."],
+        },
+      ],
+      contactNote: "Questions regarding these Terms? Contact us at info@nexusge.com. We respond to all legal inquiries within 48 business hours.",
+    },
+    privacy: {
+      title: "Privacy Policy",
+      subtitle: "Plain English. No legal obscuration. Here is exactly what data we collect, why we collect it, and what we do — and do not do — with it.",
+      dataTable: {
+        cols: ["Data Type", "Why We Collect It", "Retention"],
+        rows: [
+          ["Name & Email", "To identify your intake request and communicate scope, invoicing, and delivery confirmations.", "Duration of engagement + 90 days"],
+          ["Phone (optional)", "Provided voluntarily for urgent communication if requested.", "Duration of engagement"],
+          ["Project scope description", "To audit your application, define a written scope, and deliver the confirmed work.", "Duration of engagement + 90 days"],
+          ["Selected service tier", "To route your request to the correct delivery workflow.", "Duration of engagement"],
+          ["IP address (server log)", "Standard server-side request logging via Vercel infrastructure. Not used for tracking.", "30 days, automated rotation"],
+        ],
+      },
+      sections: [
+        {
+          heading: "1. Who We Are",
+          paras: ["Nexus Global Enterprise is a B2B infrastructure engineering firm that migrates AI-generated applications into production-grade deployments. We operate this website at nexusge.com and accept client intake through the forms hosted here. If you have questions about this policy, email us at info@nexusge.com."],
+        },
+        {
+          heading: "2. What Data We Collect",
+          paras: ["We collect only what is strictly necessary to deliver our services."],
+        },
+        {
+          heading: "3. What We Do Not Collect",
+          paras: [],
+          items: [
+            "We do not use advertising trackers, pixel tracking, or third-party analytics scripts.",
+            "We do not build user profiles or behavioral datasets.",
+            "We do not sell, rent, or share your personal information with any third party for marketing purposes.",
+            "We do not use session recording, heatmap tools, or conversion tracking software.",
+            "We do not require account creation, passwords, or social login.",
+          ],
+        },
+        {
+          heading: "4. How We Store Your Data",
+          paras: [
+            "Intake form submissions are stored in a Supabase PostgreSQL database hosted in the United States (us-east-1 region). Access is restricted to service-role credentials used exclusively by our server-side API route. No client-side code can read submission data. Row-Level Security policies block all anonymous read access.",
+            "Email notifications triggered by form submissions are delivered via Resend. Resend processes your name and email to route the notification to our inbox. No submission data is stored by Resend beyond standard email delivery logs, which expire per their own retention policy.",
+          ],
+        },
+        {
+          heading: "5. Cookies & Browser Storage",
+          paras: ["Vercel, our hosting provider, may set infrastructure-level cookies for routing and performance (e.g., edge network affinity). These are strictly technical in nature, contain no personally identifiable information, and are outside our control. You can inspect and clear them via your browser's developer tools at any time."],
+          cookieBox: {
+            title: "Zero-Cookie Policy",
+            body:  "This website sets no first-party cookies, no tracking cookies, and no persistent browser storage. No cookie consent banner is required because there is nothing to consent to.",
+          },
+        },
+        {
+          heading: "6. Data Minimization Protocol",
+          paras: [
+            "We apply a strict minimization standard: if we do not need a piece of data to deliver your confirmed scope, we do not ask for it, store it, or process it.",
+            "After 90 days following engagement close, intake submission records are permanently deleted from our database. No archive copies are retained. Email thread records remain in our inbox only as long as operationally necessary and are governed by our email provider's standard retention settings.",
+          ],
+        },
+        {
+          heading: "7. Your Rights",
+          paras: [
+            "Regardless of your jurisdiction, you may at any time:",
+            "To exercise any of these rights, email info@nexusge.com with the subject line \"Data Request.\" We will respond within 5 business days.",
+          ],
+          items: [
+            "Request a copy of any personal data we hold about you.",
+            "Request correction of inaccurate data.",
+            "Request permanent deletion of your submission record.",
+            "Withdraw consent for any ongoing communication.",
+          ],
+        },
+        {
+          heading: "8. Changes to This Policy",
+          paras: ["If we materially change how we handle personal data, we will update the effective date at the top of this page. We will not retroactively apply weaker protections to data collected under a previous version of this policy."],
+        },
+      ],
+      contactNote: "Privacy questions? Contact info@nexusge.com. We do not route privacy inquiries through third-party ticketing systems.",
+    },
+    refunds: {
+      title: "Refund Policy",
+      alert: "All sales are absolute and final. No refunds, credits, or chargebacks are issued under any circumstances once payment has been collected.",
+      sections: [
+        {
+          heading: "1. All Sales Are Absolute and Final",
+          paras: ["All payments made to Nexus Global Enterprise are non-refundable and non-reversible. Once payment has been collected following written scope confirmation, no refunds, chargebacks, or partial credits will be issued under any circumstances, including but not limited to:"],
+          items: [
+            "Change of mind after scope confirmation and payment.",
+            "Dissatisfaction with the speed of delivery within the agreed operational window.",
+            "Discovery of additional technical issues outside the confirmed scope of work.",
+            "Inability to access, operate, or understand the delivered infrastructure.",
+            "Third-party platform outages (Vercel, Supabase, GitHub, or any other provider).",
+            "Business closure, pivot, or abandonment of the project after delivery.",
+            "Failure to provide required credentials, repository access, or environment variables within the delivery window.",
+          ],
+        },
+        {
+          heading: "2. Payment Is Collected After Scope Confirmation Only",
+          paras: [
+            "We never collect payment before delivering a written scope document. The scope document details exactly what will be delivered, at what fixed cost, and within what confirmed delivery window. By proceeding with payment, you explicitly acknowledge that you have reviewed and approved the scope.",
+            "If you have a concern about the scope before payment, that is the appropriate time to raise it. Once payment is submitted, the scope is locked and work begins immediately.",
+          ],
+        },
+        {
+          heading: "3. \"As-Is\" Production Infrastructure Handoff Delivery Shield",
+          paras: [
+            "All deliverables are handed off \"As-Is\" at the time of confirmed scope delivery. Nexus Global Enterprise warrants that every item listed in the written scope document has been completed and validated at the time of handoff.",
+            "Beyond this explicit warranty, no additional warranties — express or implied — are provided. The client assumes full operational responsibility for all delivered infrastructure upon handoff.",
+            "Issues arising after the handoff window closes — including but not limited to infrastructure degradation, third-party API changes, platform updates, or new bugs introduced by the client — are outside the scope of the original engagement and are not grounds for a refund.",
+          ],
+        },
+        {
+          heading: "4. Scope Disputes",
+          paras: [
+            "If you believe a confirmed scope item was not delivered, you must raise the dispute in writing to info@nexusge.com within 5 business days of the delivery notification.",
+            "Disputes raised outside this window will not be considered. If a legitimate scope omission is confirmed on our end, we will complete the missing deliverable at no additional cost. Monetary refunds are not available under any scenario, including confirmed scope disputes.",
+          ],
+        },
+        {
+          heading: "5. Chargebacks & Payment Disputes",
+          paras: [
+            "Chargebacks initiated via payment processors (Stripe, PayPal, credit card networks) without prior written communication to Nexus Global Enterprise will be contested in full with all available documentation, including the signed scope confirmation, delivery records, and communication logs.",
+            "We maintain complete records of all scope confirmations, delivery timestamps, and client communications. Unjustified chargebacks will be reported to relevant credit bureaus and payment networks where permitted by applicable law.",
+          ],
+        },
+        {
+          heading: "6. Retainer Cancellation",
+          paras: ["Monthly retainer agreements may be cancelled at any time with written notice. Cancellation takes effect at the end of the current billing cycle. No partial refunds are issued for unused days within a billing period. All retainer fees collected for the current billing cycle are non-refundable upon cancellation."],
+        },
+        {
+          heading: "7. Questions",
+          paras: ["Questions about this policy should be directed to info@nexusge.com with the subject line \"Refund Policy Inquiry\". We respond to all legal correspondence within 48 business hours."],
+        },
+      ],
+      relatedLabel: "Related Policies",
+      contactNote:  "Questions? Email info@nexusge.com with subject \"Refund Policy Inquiry\".",
+    },
+    footer: {
+      home:      "Home",
+      blog:      "Blog",
+      terms:     "Terms of Service",
+      privacy:   "Privacy Policy",
+      copyright: "Nexus Global Enterprise. All rights reserved.",
     },
   },
 
@@ -946,6 +1187,217 @@ const es: Dictionary = {
     },
   },
 
+  legal: {
+    label: "Legal",
+    effectiveDate: "1 de junio de 2026",
+    terms: {
+      title: "Términos de Servicio",
+      sections: [
+        {
+          heading: "1. Aceptación de los Términos",
+          paras: ["Al enviar un formulario de solicitud, contratar nuestros servicios por correo electrónico o realizar cualquier pago a Nexus Global Enterprise, usted acepta incondicionalmente estar vinculado por estos Términos de Servicio. Si no está de acuerdo, no utilice nuestros servicios."],
+        },
+        {
+          heading: "2. Todas las Ventas Son Absolutas y Definitivas",
+          paras: [
+            "Todos los pagos realizados a Nexus Global Enterprise son no reembolsables e irreversibles. Una vez que se ha cobrado el pago tras la confirmación del alcance por escrito, no se emitirán reembolsos, contracargos ni créditos parciales bajo ninguna circunstancia, incluidos pero no limitados a:",
+            "Las disputas iniciadas a través de contracargos del procesador de pago sin comunicación escrita previa a Nexus Global Enterprise serán impugnadas en su totalidad.",
+          ],
+          items: [
+            "Cambio de opinión después de la confirmación del alcance.",
+            "Insatisfacción con la velocidad de entrega dentro de la ventana operacional acordada.",
+            "Descubrimiento de problemas técnicos adicionales fuera del alcance confirmado.",
+            "Incapacidad para acceder u operar la infraestructura entregada.",
+            "Interrupciones de plataformas de terceros (Vercel, Supabase, GitHub o similares).",
+          ],
+        },
+        {
+          heading: "3. Escudo de Entrega de Infraestructura de Producción \"Tal Como Está\"",
+          paras: [
+            "Todos los entregables — incluidos entre otros repositorios migrados, instancias de base de datos aprovisionadas, pipelines de despliegue configurados y cualquier documentación arquitectónica escrita — se entregan \"Tal Como Están\" en el momento de la transferencia.",
+            "Nexus Global Enterprise garantiza que todos los elementos del alcance confirmado han sido completados y validados según las especificaciones acordadas por escrito antes del pago. Más allá de esto, no se proporcionan garantías adicionales, expresas ni implícitas.",
+            "El cliente asume plena responsabilidad operativa sobre la infraestructura entregada tras la transferencia. Nexus Global Enterprise no asume ninguna responsabilidad por degradación, interrupciones, pérdida de datos o fallos de seguridad que ocurran después de que se cierre la ventana de entrega.",
+          ],
+        },
+        {
+          heading: "4. Alcance del Trabajo y Ventanas de Entrega",
+          paras: [
+            "Todo el trabajo es delimitado y confirmado por escrito antes de solicitar cualquier pago. El documento de alcance confirmado constituye la definición completa e íntegra de los entregables. Ningún acuerdo verbal, mensaje de chat informal o expectativa implícita amplía el alcance.",
+            "Las ventanas de entrega (24 horas, 48 horas, 72 horas o sprint personalizado) comienzan al confirmarse el pago. Los retrasos causados por restricciones de acceso del cliente, provisión tardía de credenciales o interrupciones de plataformas de terceros no constituyen un incumplimiento de nuestro compromiso de entrega.",
+          ],
+        },
+        {
+          heading: "5. Términos del Retenedor de Supervisión de Producción",
+          paras: [
+            "Los clientes del retenedor mensual reciben una (1) ventana de auditoría técnica programada por semana calendario, realizada dentro de un horario fijo confirmado en la activación del retenedor. Esto constituye la totalidad del servicio programado.",
+            "Las intervenciones de infraestructura solicitadas fuera de la ventana semanal designada se clasifican como trabajo de prioridad de emergencia fuera de horario y se facturan por separado a $150 USD por hora, con factura inmediata. La facturación del retenedor es mensual, por adelantado, y no reembolsable para ningún mes parcial de servicio.",
+          ],
+        },
+        {
+          heading: "6. Contratos de Co-Arquitectura a Medida",
+          paras: ["Los contratos de Co-Arquitectura a Medida requieren la ejecución de un Marco de Liberación de Responsabilidad Mutua antes del inicio. Este documento define obligaciones compartidas, propiedad intelectual, términos de confidencialidad y límites de responsabilidad específicos del contrato. Ningún trabajo de Co-Arquitectura comienza sin la aprobación legal completa de ambas partes."],
+        },
+        {
+          heading: "7. Propiedad Intelectual",
+          paras: ["Tras la recepción del pago final, el cliente recibe la propiedad completa de todo el código personalizado, configuraciones y activos de infraestructura entregados dentro del alcance confirmado. Nexus Global Enterprise no retiene ninguna reclamación sobre repositorios, bases de datos o pipelines de despliegue del cliente tras la transferencia. Nexus Global Enterprise retiene el derecho de referenciar contratos en materiales de marketing de forma anonimizada y no identificable, salvo que se acuerde lo contrario por escrito."],
+        },
+        {
+          heading: "8. Limitación de Responsabilidad",
+          paras: ["En la máxima medida permitida por la ley aplicable, Nexus Global Enterprise no será responsable de ningún daño indirecto, incidental, consecuente, punitivo o especial derivado del uso o la imposibilidad de usar nuestros servicios — incluidos ingresos perdidos, pérdida de datos o interrupción del negocio. Nuestra responsabilidad total agregada no superará el monto total pagado por el cliente para el contrato específico que dio lugar al reclamo."],
+        },
+        {
+          heading: "9. Ley Aplicable",
+          paras: ["Estos Términos se rigen por las leyes de la jurisdicción en la que está registrada Nexus Global Enterprise. Cualquier disputa se resolverá mediante arbitraje vinculante ante un árbitro de mutuo acuerdo, con cada parte asumiendo sus propios costos legales."],
+        },
+        {
+          heading: "10. Modificaciones",
+          paras: ["Nexus Global Enterprise se reserva el derecho de actualizar estos Términos en cualquier momento. Los Términos actualizados son efectivos al publicarse en esta URL. El uso continuado de nuestros servicios después de la publicación constituye la aceptación."],
+        },
+      ],
+      contactNote: "¿Preguntas sobre estos Términos? Contáctenos en info@nexusge.com. Respondemos todas las consultas legales en 48 horas hábiles.",
+    },
+    privacy: {
+      title: "Política de Privacidad",
+      subtitle: "Inglés sencillo. Sin oscuridades legales. Aquí exactamente qué datos recopilamos, por qué los recopilamos y qué hacemos — y no hacemos — con ellos.",
+      dataTable: {
+        cols: ["Tipo de Dato", "Por Qué lo Recopilamos", "Retención"],
+        rows: [
+          ["Nombre y Correo", "Para identificar su solicitud y comunicar alcance, facturación y confirmaciones de entrega.", "Duración del contrato + 90 días"],
+          ["Teléfono (opcional)", "Proporcionado voluntariamente para comunicación urgente si se solicita.", "Duración del contrato"],
+          ["Descripción del alcance del proyecto", "Para auditar su aplicación, definir un alcance escrito y entregar el trabajo confirmado.", "Duración del contrato + 90 días"],
+          ["Nivel de servicio seleccionado", "Para dirigir su solicitud al flujo de trabajo de entrega correcto.", "Duración del contrato"],
+          ["Dirección IP (registro del servidor)", "Registro de solicitudes estándar del lado del servidor a través de la infraestructura Vercel. No se utiliza para seguimiento.", "30 días, rotación automática"],
+        ],
+      },
+      sections: [
+        {
+          heading: "1. Quiénes Somos",
+          paras: ["Nexus Global Enterprise es una empresa de ingeniería de infraestructura B2B que migra aplicaciones generadas por IA a implementaciones de nivel empresarial. Operamos este sitio web en nexusge.com y aceptamos solicitudes de clientes a través de los formularios aquí alojados. Si tiene preguntas sobre esta política, envíenos un correo a info@nexusge.com."],
+        },
+        {
+          heading: "2. Qué Datos Recopilamos",
+          paras: ["Solo recopilamos lo estrictamente necesario para prestar nuestros servicios."],
+        },
+        {
+          heading: "3. Qué No Recopilamos",
+          paras: [],
+          items: [
+            "No usamos rastreadores de publicidad, seguimiento de píxeles ni scripts de análisis de terceros.",
+            "No creamos perfiles de usuario ni conjuntos de datos de comportamiento.",
+            "No vendemos, alquilamos ni compartimos su información personal con ningún tercero con fines de marketing.",
+            "No usamos grabación de sesiones, mapas de calor ni software de seguimiento de conversiones.",
+            "No requerimos creación de cuenta, contraseñas ni inicio de sesión social.",
+          ],
+        },
+        {
+          heading: "4. Cómo Almacenamos Sus Datos",
+          paras: [
+            "Los envíos del formulario de solicitud se almacenan en una base de datos Supabase PostgreSQL alojada en los Estados Unidos (región us-east-1). El acceso está restringido a credenciales de rol de servicio utilizadas exclusivamente por nuestra ruta API del lado del servidor. Ningún código del lado del cliente puede leer los datos de los envíos. Las políticas de Row-Level Security bloquean todo acceso de lectura anónimo.",
+            "Las notificaciones de correo electrónico activadas por los envíos del formulario se entregan a través de Resend. Resend procesa su nombre y correo electrónico para dirigir la notificación a nuestra bandeja de entrada. Ningún dato de envío es almacenado por Resend más allá de los registros estándar de entrega de correo electrónico, que expiran según su propia política de retención.",
+          ],
+        },
+        {
+          heading: "5. Cookies y Almacenamiento del Navegador",
+          paras: ["Vercel, nuestro proveedor de alojamiento, puede establecer cookies a nivel de infraestructura para enrutamiento y rendimiento. Estas son estrictamente técnicas, no contienen información de identificación personal y están fuera de nuestro control. Puede inspeccionarlas y eliminarlas en cualquier momento a través de las herramientas de desarrollo de su navegador."],
+          cookieBox: {
+            title: "Política de Cero Cookies",
+            body:  "Este sitio web no establece cookies propias, cookies de seguimiento ni almacenamiento persistente del navegador. No se requiere ningún banner de consentimiento de cookies porque no hay nada a lo que dar consentimiento.",
+          },
+        },
+        {
+          heading: "6. Protocolo de Minimización de Datos",
+          paras: [
+            "Aplicamos un estándar de minimización estricto: si no necesitamos un dato para entregar su alcance confirmado, no lo solicitamos, almacenamos ni procesamos.",
+            "Después de 90 días tras el cierre del contrato, los registros de envío del formulario se eliminan permanentemente de nuestra base de datos. No se conservan copias de archivo. Los registros de hilos de correo electrónico permanecen en nuestra bandeja de entrada solo mientras sea operativamente necesario y se rigen por la configuración de retención estándar de nuestro proveedor de correo electrónico.",
+          ],
+        },
+        {
+          heading: "7. Sus Derechos",
+          paras: [
+            "Independientemente de su jurisdicción, puede en cualquier momento:",
+            "Para ejercer cualquiera de estos derechos, envíe un correo a info@nexusge.com con el asunto \"Solicitud de Datos\". Responderemos en 5 días hábiles.",
+          ],
+          items: [
+            "Solicitar una copia de cualquier dato personal que tengamos sobre usted.",
+            "Solicitar la corrección de datos inexactos.",
+            "Solicitar la eliminación permanente de su registro de envío.",
+            "Retirar el consentimiento para cualquier comunicación en curso.",
+          ],
+        },
+        {
+          heading: "8. Cambios en Esta Política",
+          paras: ["Si cambiamos materialmente cómo manejamos los datos personales, actualizaremos la fecha de vigencia en la parte superior de esta página. No aplicaremos retroactivamente protecciones más débiles a los datos recopilados bajo una versión anterior de esta política."],
+        },
+      ],
+      contactNote: "¿Preguntas sobre privacidad? Contacte info@nexusge.com. No enrutamos consultas de privacidad a través de sistemas de tickets de terceros.",
+    },
+    refunds: {
+      title: "Política de Reembolsos",
+      alert: "Todas las ventas son absolutas y definitivas. No se emiten reembolsos, créditos ni contracargos bajo ninguna circunstancia una vez que se ha cobrado el pago.",
+      sections: [
+        {
+          heading: "1. Todas las Ventas Son Absolutas y Definitivas",
+          paras: ["Todos los pagos realizados a Nexus Global Enterprise son no reembolsables e irreversibles. Una vez que se ha cobrado el pago tras la confirmación del alcance por escrito, no se emitirán reembolsos, contracargos ni créditos parciales bajo ninguna circunstancia, incluidos pero no limitados a:"],
+          items: [
+            "Cambio de opinión después de la confirmación del alcance y el pago.",
+            "Insatisfacción con la velocidad de entrega dentro de la ventana operacional acordada.",
+            "Descubrimiento de problemas técnicos adicionales fuera del alcance confirmado.",
+            "Incapacidad para acceder, operar o comprender la infraestructura entregada.",
+            "Interrupciones de plataformas de terceros (Vercel, Supabase, GitHub o cualquier otro proveedor).",
+            "Cierre del negocio, cambio de dirección o abandono del proyecto después de la entrega.",
+            "No proporcionar las credenciales, el acceso al repositorio o las variables de entorno necesarias dentro de la ventana de entrega.",
+          ],
+        },
+        {
+          heading: "2. El Pago Se Cobra Solo Después de la Confirmación del Alcance",
+          paras: [
+            "Nunca cobramos el pago antes de entregar un documento de alcance escrito. El documento de alcance detalla exactamente qué se entregará, a qué costo fijo y dentro de qué ventana de entrega confirmada. Al proceder con el pago, usted reconoce explícitamente haber revisado y aprobado el alcance.",
+            "Si tiene alguna preocupación sobre el alcance antes del pago, ese es el momento adecuado para plantearlo. Una vez enviado el pago, el alcance queda bloqueado y el trabajo comienza de inmediato.",
+          ],
+        },
+        {
+          heading: "3. Escudo de Entrega de Infraestructura \"Tal Como Está\"",
+          paras: [
+            "Todos los entregables se transfieren \"Tal Como Están\" en el momento de la entrega del alcance confirmado. Nexus Global Enterprise garantiza que cada elemento enumerado en el documento de alcance escrito ha sido completado y validado en el momento de la transferencia.",
+            "Más allá de esta garantía explícita, no se proporcionan garantías adicionales, expresas ni implícitas. El cliente asume plena responsabilidad operativa sobre toda la infraestructura entregada tras la transferencia.",
+            "Los problemas que surjan después de que se cierre la ventana de entrega — incluidos entre otros la degradación de la infraestructura, cambios en API de terceros, actualizaciones de plataformas o nuevos errores introducidos por el cliente — están fuera del alcance del contrato original y no son motivo de reembolso.",
+          ],
+        },
+        {
+          heading: "4. Disputas de Alcance",
+          paras: [
+            "Si cree que un elemento del alcance confirmado no fue entregado, debe plantear la disputa por escrito a info@nexusge.com dentro de 5 días hábiles desde la notificación de entrega.",
+            "Las disputas planteadas fuera de este plazo no serán consideradas. Si se confirma una omisión de alcance legítima por nuestra parte, completaremos el entregable faltante sin costo adicional. Los reembolsos monetarios no están disponibles bajo ningún escenario, incluidas las disputas de alcance confirmadas.",
+          ],
+        },
+        {
+          heading: "5. Contracargos y Disputas de Pago",
+          paras: [
+            "Los contracargos iniciados a través de procesadores de pago (Stripe, PayPal, redes de tarjetas de crédito) sin comunicación escrita previa a Nexus Global Enterprise serán impugnados en su totalidad con toda la documentación disponible.",
+            "Mantenemos registros completos de todas las confirmaciones de alcance, marcas de tiempo de entrega y comunicaciones con clientes. Los contracargos injustificados serán reportados a los burós de crédito relevantes y redes de pago donde lo permita la ley aplicable.",
+          ],
+        },
+        {
+          heading: "6. Cancelación del Retenedor",
+          paras: ["Los acuerdos de retenedor mensual pueden cancelarse en cualquier momento con aviso escrito. La cancelación tiene efecto al final del ciclo de facturación actual. No se emiten reembolsos parciales por días no utilizados dentro de un período de facturación. Todas las tarifas del retenedor cobradas para el ciclo de facturación actual son no reembolsables al cancelar."],
+        },
+        {
+          heading: "7. Preguntas",
+          paras: ["Las preguntas sobre esta política deben dirigirse a info@nexusge.com con el asunto \"Consulta sobre Política de Reembolsos\". Respondemos toda la correspondencia legal en 48 horas hábiles."],
+        },
+      ],
+      relatedLabel: "Políticas Relacionadas",
+      contactNote:  "¿Preguntas? Envíe un correo a info@nexusge.com con el asunto \"Consulta sobre Política de Reembolsos\".",
+    },
+    footer: {
+      home:      "Inicio",
+      blog:      "Blog",
+      terms:     "Términos de Servicio",
+      privacy:   "Política de Privacidad",
+      copyright: "Nexus Global Enterprise. Todos los derechos reservados.",
+    },
+  },
+
   footer: {
     tagline:
       "Especializados en migrar aplicaciones generadas por IA y sin código hacia infraestructura de nivel empresarial en Vercel y Supabase.",
@@ -1356,6 +1808,217 @@ const pt: Dictionary = {
       },
       ctaHeadline:   "Reconhece algum desses padrões?",
       ctaSubheadline:"Envie seu aplicativo em três minutos. Auditamos seu código e retornamos um plano de correção escrito com preço fixo e janela de entrega confirmada.",
+    },
+  },
+
+  legal: {
+    label: "Legal",
+    effectiveDate: "1 de junho de 2026",
+    terms: {
+      title: "Termos de Serviço",
+      sections: [
+        {
+          heading: "1. Aceitação dos Termos",
+          paras: ["Ao enviar um formulário de intake, contratar nossos serviços por e-mail ou realizar qualquer pagamento à Nexus Global Enterprise, você concorda incondicionalmente em estar vinculado a estes Termos de Serviço. Se não concordar, não utilize nossos serviços."],
+        },
+        {
+          heading: "2. Todas as Vendas São Absolutas e Definitivas",
+          paras: [
+            "Todos os pagamentos feitos à Nexus Global Enterprise são não reembolsáveis e irreversíveis. Uma vez que o pagamento foi cobrado após a confirmação do escopo por escrito, nenhum reembolso, estorno ou crédito parcial será emitido sob quaisquer circunstâncias, incluindo mas não se limitando a:",
+            "Disputas iniciadas por meio de estornos de processadores de pagamento sem comunicação prévia por escrito à Nexus Global Enterprise serão contestadas na íntegra.",
+          ],
+          items: [
+            "Mudança de opinião após a confirmação do escopo.",
+            "Insatisfação com a velocidade de entrega dentro da janela operacional acordada.",
+            "Descoberta de problemas técnicos adicionais fora do escopo confirmado.",
+            "Incapacidade de acessar ou operar a infraestrutura entregue.",
+            "Interrupções de plataformas de terceiros (Vercel, Supabase, GitHub ou similares).",
+          ],
+        },
+        {
+          heading: "3. Escudo de Entrega de Infraestrutura de Produção \"No Estado Em Que Se Encontra\"",
+          paras: [
+            "Todos os entregáveis — incluindo mas não se limitando a repositórios migrados, instâncias de banco de dados provisionadas, pipelines de implantação configurados e qualquer documentação arquitetônica escrita — são entregues \"No Estado Em Que Se Encontram\" no momento da transferência.",
+            "A Nexus Global Enterprise garante que todos os itens do escopo confirmado foram concluídos e validados conforme as especificações acordadas por escrito antes do pagamento. Além disso, nenhuma garantia adicional, expressa ou implícita, é fornecida.",
+            "O cliente assume plena responsabilidade operacional pela infraestrutura entregue após a transferência. A Nexus Global Enterprise não assume responsabilidade por degradação, interrupções, perda de dados ou falhas de segurança que ocorram após o fechamento da janela de entrega.",
+          ],
+        },
+        {
+          heading: "4. Escopo do Trabalho e Janelas de Entrega",
+          paras: [
+            "Todo o trabalho é delimitado e confirmado por escrito antes de qualquer pagamento ser solicitado. O documento de escopo confirmado constitui a definição completa e integral dos entregáveis. Nenhum acordo verbal, mensagem informal de chat ou expectativa implícita amplia o escopo.",
+            "As janelas de entrega (24 horas, 48 horas, 72 horas ou sprint personalizado) começam após a liberação do pagamento. Atrasos causados por restrições de acesso do cliente, fornecimento tardio de credenciais ou interrupções de plataformas de terceiros não constituem violação do nosso compromisso de entrega.",
+          ],
+        },
+        {
+          heading: "5. Termos do Contrato de Supervisão de Produção",
+          paras: [
+            "Os clientes de retenção mensal recebem uma (1) janela de auditoria técnica agendada por semana civil, realizada dentro de um horário fixo confirmado na ativação da retenção. Isso constitui a totalidade do serviço agendado.",
+            "As intervenções de infraestrutura solicitadas fora da janela semanal designada são classificadas como trabalho de prioridade de emergência fora do horário e são cobradas separadamente a R$150 USD por hora, com fatura imediata. A cobrança da retenção é mensal, antecipada e não reembolsável para qualquer mês parcial de serviço.",
+          ],
+        },
+        {
+          heading: "6. Contratos de Co-Arquitetura Personalizados",
+          paras: ["Os contratos de Co-Arquitetura Personalizada exigem a execução de um Marco de Liberação de Responsabilidade Mútua antes do início. Este documento define obrigações compartilhadas, propriedade intelectual, termos de confidencialidade e limites de responsabilidade específicos do contrato. Nenhum trabalho de Co-Arquitetura começa sem aprovação legal completa de ambas as partes."],
+        },
+        {
+          heading: "7. Propriedade Intelectual",
+          paras: ["Após o recebimento do pagamento final, o cliente recebe a propriedade total de todo o código personalizado, configurações e ativos de infraestrutura entregues dentro do escopo confirmado. A Nexus Global Enterprise não retém nenhuma reivindicação sobre repositórios, bancos de dados ou pipelines de implantação do cliente após a transferência. A Nexus Global Enterprise retém o direito de referenciar contratos em materiais de marketing de forma anonimizada e não identificável, salvo acordo contrário por escrito."],
+        },
+        {
+          heading: "8. Limitação de Responsabilidade",
+          paras: ["Na máxima extensão permitida pela lei aplicável, a Nexus Global Enterprise não será responsável por quaisquer danos indiretos, incidentais, consequentes, punitivos ou especiais decorrentes do uso ou da impossibilidade de usar nossos serviços — incluindo receita perdida, perda de dados ou interrupção dos negócios. Nossa responsabilidade total agregada não excederá o valor total pago pelo cliente pelo contrato específico que deu origem à reivindicação."],
+        },
+        {
+          heading: "9. Lei Aplicável",
+          paras: ["Estes Termos são regidos pelas leis da jurisdição em que a Nexus Global Enterprise está registrada. Quaisquer disputas serão resolvidas por arbitragem vinculante perante um árbitro de mútuo acordo, com cada parte arcando com seus próprios custos legais."],
+        },
+        {
+          heading: "10. Modificações",
+          paras: ["A Nexus Global Enterprise reserva o direito de atualizar estes Termos a qualquer momento. Os Termos atualizados entram em vigor na publicação nesta URL. O uso continuado de nossos serviços após a publicação constitui aceitação."],
+        },
+      ],
+      contactNote: "Dúvidas sobre estes Termos? Entre em contato em info@nexusge.com. Respondemos a todas as consultas legais em 48 horas úteis.",
+    },
+    privacy: {
+      title: "Política de Privacidade",
+      subtitle: "Linguagem clara. Sem obscuridade jurídica. Aqui está exatamente quais dados coletamos, por que os coletamos e o que fazemos — e não fazemos — com eles.",
+      dataTable: {
+        cols: ["Tipo de Dado", "Por Que Coletamos", "Retenção"],
+        rows: [
+          ["Nome e E-mail", "Para identificar sua solicitação e comunicar escopo, faturamento e confirmações de entrega.", "Duração do contrato + 90 dias"],
+          ["Telefone (opcional)", "Fornecido voluntariamente para comunicação urgente, se solicitado.", "Duração do contrato"],
+          ["Descrição do escopo do projeto", "Para auditar seu aplicativo, definir um escopo escrito e entregar o trabalho confirmado.", "Duração do contrato + 90 dias"],
+          ["Nível de serviço selecionado", "Para direcionar sua solicitação ao fluxo de trabalho de entrega correto.", "Duração do contrato"],
+          ["Endereço IP (log do servidor)", "Registro padrão de solicitações do lado do servidor via infraestrutura Vercel. Não usado para rastreamento.", "30 dias, rotação automática"],
+        ],
+      },
+      sections: [
+        {
+          heading: "1. Quem Somos",
+          paras: ["A Nexus Global Enterprise é uma empresa de engenharia de infraestrutura B2B que migra aplicativos gerados por IA para implantações de nível empresarial. Operamos este site em nexusge.com e aceitamos solicitações de clientes pelos formulários aqui hospedados. Se tiver dúvidas sobre esta política, envie um e-mail para info@nexusge.com."],
+        },
+        {
+          heading: "2. Quais Dados Coletamos",
+          paras: ["Coletamos apenas o estritamente necessário para prestar nossos serviços."],
+        },
+        {
+          heading: "3. O Que Não Coletamos",
+          paras: [],
+          items: [
+            "Não usamos rastreadores de publicidade, rastreamento de pixels ou scripts de análise de terceiros.",
+            "Não criamos perfis de usuário ou conjuntos de dados comportamentais.",
+            "Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins de marketing.",
+            "Não usamos gravação de sessões, mapas de calor ou software de rastreamento de conversões.",
+            "Não exigimos criação de conta, senhas ou login social.",
+          ],
+        },
+        {
+          heading: "4. Como Armazenamos Seus Dados",
+          paras: [
+            "Os envios do formulário de intake são armazenados em um banco de dados Supabase PostgreSQL hospedado nos Estados Unidos (região us-east-1). O acesso é restrito às credenciais de função de serviço usadas exclusivamente pela nossa rota de API do lado do servidor. Nenhum código do lado do cliente pode ler os dados de envio. As políticas de Row-Level Security bloqueiam todo acesso de leitura anônimo.",
+            "As notificações de e-mail acionadas pelos envios do formulário são entregues via Resend. O Resend processa seu nome e e-mail para direcionar a notificação para nossa caixa de entrada. Nenhum dado de envio é armazenado pelo Resend além dos logs padrão de entrega de e-mail, que expiram conforme sua própria política de retenção.",
+          ],
+        },
+        {
+          heading: "5. Cookies e Armazenamento do Navegador",
+          paras: ["A Vercel, nosso provedor de hospedagem, pode definir cookies de nível de infraestrutura para roteamento e desempenho. Esses são estritamente técnicos, não contêm informações de identificação pessoal e estão fora do nosso controle. Você pode inspecioná-los e limpá-los a qualquer momento pelas ferramentas de desenvolvimento do seu navegador."],
+          cookieBox: {
+            title: "Política Zero Cookies",
+            body:  "Este site não define cookies próprios, cookies de rastreamento nem armazenamento persistente do navegador. Nenhum banner de consentimento de cookies é necessário porque não há nada para consentir.",
+          },
+        },
+        {
+          heading: "6. Protocolo de Minimização de Dados",
+          paras: [
+            "Aplicamos um padrão de minimização estrito: se não precisamos de um dado para entregar seu escopo confirmado, não o solicitamos, armazenamos nem processamos.",
+            "Após 90 dias do fechamento do contrato, os registros de envio do formulário são permanentemente excluídos do nosso banco de dados. Nenhuma cópia de arquivo é mantida. Os registros de threads de e-mail permanecem em nossa caixa de entrada apenas enquanto operacionalmente necessário e são regidos pelas configurações de retenção padrão do nosso provedor de e-mail.",
+          ],
+        },
+        {
+          heading: "7. Seus Direitos",
+          paras: [
+            "Independentemente de sua jurisdição, você pode a qualquer momento:",
+            "Para exercer qualquer um desses direitos, envie um e-mail para info@nexusge.com com o assunto \"Solicitação de Dados\". Responderemos em 5 dias úteis.",
+          ],
+          items: [
+            "Solicitar uma cópia de quaisquer dados pessoais que tenhamos sobre você.",
+            "Solicitar a correção de dados imprecisos.",
+            "Solicitar a exclusão permanente do seu registro de envio.",
+            "Retirar o consentimento para qualquer comunicação em andamento.",
+          ],
+        },
+        {
+          heading: "8. Alterações nesta Política",
+          paras: ["Se alterarmos materialmente como tratamos dados pessoais, atualizaremos a data de vigência no topo desta página. Não aplicaremos retroativamente proteções mais fracas aos dados coletados sob uma versão anterior desta política."],
+        },
+      ],
+      contactNote: "Dúvidas sobre privacidade? Contate info@nexusge.com. Não encaminhamos consultas de privacidade por sistemas de tickets de terceiros.",
+    },
+    refunds: {
+      title: "Política de Reembolsos",
+      alert: "Todas as vendas são absolutas e definitivas. Nenhum reembolso, crédito ou estorno é emitido sob quaisquer circunstâncias após o pagamento ter sido cobrado.",
+      sections: [
+        {
+          heading: "1. Todas as Vendas São Absolutas e Definitivas",
+          paras: ["Todos os pagamentos feitos à Nexus Global Enterprise são não reembolsáveis e irreversíveis. Uma vez que o pagamento foi cobrado após a confirmação do escopo por escrito, nenhum reembolso, estorno ou crédito parcial será emitido sob quaisquer circunstâncias, incluindo mas não se limitando a:"],
+          items: [
+            "Mudança de opinião após a confirmação do escopo e o pagamento.",
+            "Insatisfação com a velocidade de entrega dentro da janela operacional acordada.",
+            "Descoberta de problemas técnicos adicionais fora do escopo confirmado.",
+            "Incapacidade de acessar, operar ou entender a infraestrutura entregue.",
+            "Interrupções de plataformas de terceiros (Vercel, Supabase, GitHub ou qualquer outro provedor).",
+            "Encerramento do negócio, pivô ou abandono do projeto após a entrega.",
+            "Não fornecer as credenciais, acesso ao repositório ou variáveis de ambiente necessárias dentro da janela de entrega.",
+          ],
+        },
+        {
+          heading: "2. O Pagamento é Cobrado Somente Após a Confirmação do Escopo",
+          paras: [
+            "Nunca cobramos o pagamento antes de entregar um documento de escopo escrito. O documento de escopo detalha exatamente o que será entregue, a qual custo fixo e dentro de qual janela de entrega confirmada. Ao prosseguir com o pagamento, você reconhece explicitamente ter revisado e aprovado o escopo.",
+            "Se você tiver alguma preocupação sobre o escopo antes do pagamento, esse é o momento adequado para levantá-la. Uma vez enviado o pagamento, o escopo é bloqueado e o trabalho começa imediatamente.",
+          ],
+        },
+        {
+          heading: "3. Escudo de Entrega de Infraestrutura \"No Estado Em Que Se Encontra\"",
+          paras: [
+            "Todos os entregáveis são transferidos \"No Estado Em Que Se Encontram\" no momento da entrega do escopo confirmado. A Nexus Global Enterprise garante que cada item listado no documento de escopo escrito foi concluído e validado no momento da transferência.",
+            "Além desta garantia explícita, nenhuma garantia adicional — expressa ou implícita — é fornecida. O cliente assume plena responsabilidade operacional por toda a infraestrutura entregue após a transferência.",
+            "Problemas que surjam após o fechamento da janela de entrega — incluindo mas não se limitando a degradação de infraestrutura, mudanças em APIs de terceiros, atualizações de plataformas ou novos bugs introduzidos pelo cliente — estão fora do escopo do contrato original e não são motivo de reembolso.",
+          ],
+        },
+        {
+          heading: "4. Disputas de Escopo",
+          paras: [
+            "Se você acreditar que um item do escopo confirmado não foi entregue, deverá levantar a disputa por escrito para info@nexusge.com dentro de 5 dias úteis após a notificação de entrega.",
+            "Disputas levantadas fora deste prazo não serão consideradas. Se uma omissão de escopo legítima for confirmada por nossa parte, completaremos o entregável ausente sem custo adicional. Reembolsos monetários não estão disponíveis sob nenhum cenário, incluindo disputas de escopo confirmadas.",
+          ],
+        },
+        {
+          heading: "5. Estornos e Disputas de Pagamento",
+          paras: [
+            "Os estornos iniciados por meio de processadores de pagamento (Stripe, PayPal, redes de cartão de crédito) sem comunicação prévia por escrito à Nexus Global Enterprise serão contestados na íntegra com toda a documentação disponível.",
+            "Mantemos registros completos de todas as confirmações de escopo, carimbos de data/hora de entrega e comunicações com clientes. Estornos injustificados serão reportados aos órgãos de crédito relevantes e redes de pagamento onde permitido pela lei aplicável.",
+          ],
+        },
+        {
+          heading: "6. Cancelamento da Retenção",
+          paras: ["Os contratos de retenção mensal podem ser cancelados a qualquer momento com aviso por escrito. O cancelamento entra em vigor no final do ciclo de faturamento atual. Nenhum reembolso parcial é emitido por dias não utilizados dentro de um período de faturamento. Todas as taxas de retenção cobradas para o ciclo de faturamento atual são não reembolsáveis no cancelamento."],
+        },
+        {
+          heading: "7. Dúvidas",
+          paras: ["Dúvidas sobre esta política devem ser direcionadas para info@nexusge.com com o assunto \"Consulta sobre Política de Reembolsos\". Respondemos toda a correspondência legal em 48 horas úteis."],
+        },
+      ],
+      relatedLabel: "Políticas Relacionadas",
+      contactNote:  "Dúvidas? Envie um e-mail para info@nexusge.com com o assunto \"Consulta sobre Política de Reembolsos\".",
+    },
+    footer: {
+      home:      "Início",
+      blog:      "Blog",
+      terms:     "Termos de Serviço",
+      privacy:   "Política de Privacidade",
+      copyright: "Nexus Global Enterprise. Todos os direitos reservados.",
     },
   },
 
