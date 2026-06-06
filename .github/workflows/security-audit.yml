@@ -17,24 +17,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: TruffleHog OSS
-        uses: trufflehog/trufflehog-actions@main
+      - name: Secret Leak Scan
+        uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ""
-          head: ${{ github.ref_name }}
-          extra_args: --debug
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
 
   npm-audit:
     name: npm Dependency Audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run npm audit
         run: npm audit --audit-level=high
