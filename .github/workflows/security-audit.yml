@@ -107,51 +107,11 @@ jobs:
   # ---------------------------------------------------------------------------
   # JOB 2 — Dependency Vulnerability Scan (OSV-Scanner)
   # ---------------------------------------------------------------------------
-  # Cross-references package-lock.json against the Google OSV database, which
-  # aggregates CVEs, GitHub Security Advisories, and ecosystem-specific
-  # vulnerability databases (npm, PyPI, etc.) into a single feed.
+  # Uses Google's official reusable workflow. Scans package-lock.json against
+  # the OSV database (CVEs, GitHub Security Advisories, ecosystem advisories).
   # ---------------------------------------------------------------------------
   osv-scan:
-    name: "Dependency Vulnerability Scan (OSV-Scanner)"
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run OSV-Scanner against npm lockfile
-        uses: google/osv-scanner-action@v1.9.2
-        with:
-          scan-args: |-
-            --lockfile=package-lock.json
-            --format=table
-            --fail-on-vuln
-
-      - name: Print failure guidance on vulnerable dependency
-        if: failure()
-        run: |
-          echo ""
-          echo "========================================================"
-          echo "  SECURITY FAILURE: Vulnerable dependency detected (OSV)"
-          echo "========================================================"
-          echo ""
-          echo "  One or more dependencies have known vulnerabilities in the"
-          echo "  OSV database (CVE, GHSA, or ecosystem advisory)."
-          echo ""
-          echo "  REMEDIATION STEPS:"
-          echo "  1. Review the vulnerability table printed above."
-          echo "  2. Check the severity and whether your code exercises the"
-          echo "     affected code path."
-          echo "  3. Update the affected package:"
-          echo "       npm update <package-name>"
-          echo "     or pin to a patched version in package.json."
-          echo "  4. If no patch is available, assess whether a safe alternative"
-          echo "     package exists and migrate accordingly."
-          echo "  5. Run 'npm install' to regenerate package-lock.json, then"
-          echo "     commit the updated lockfile."
-          echo "========================================================"
-          exit 1
+    uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.3.8"
 
 
   # ---------------------------------------------------------------------------
