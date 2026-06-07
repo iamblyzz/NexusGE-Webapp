@@ -72,7 +72,7 @@ export default function SiteNavbar() {
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
@@ -88,7 +88,7 @@ export default function SiteNavbar() {
                 key={href}
                 href={href}
                 className={`text-sm font-medium transition-colors duration-150 ${
-                  isActive(href) ? "text-blue-600 font-semibold" : "text-slate-600 hover:text-slate-900"
+                  isActive(href) ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-950"
                 }`}
               >
                 {label}
@@ -133,7 +133,7 @@ export default function SiteNavbar() {
             {/* Primary CTA */}
             <Link
               href="/services#intake-form"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors duration-150 shadow-sm whitespace-nowrap"
+              className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded transition-colors duration-150 whitespace-nowrap"
             >
               {nav.submitCta}
             </Link>
@@ -189,7 +189,7 @@ export default function SiteNavbar() {
               href={href}
               onClick={() => setMenuOpen(false)}
               className={`py-2.5 text-sm font-medium border-b border-slate-100 last:border-0 transition-colors ${
-                isActive(href) ? "text-blue-600 font-semibold" : "text-slate-600 hover:text-slate-900"
+                isActive(href) ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-950"
               }`}
             >
               {label}
@@ -198,7 +198,7 @@ export default function SiteNavbar() {
           <Link
             href="/services#intake-form"
             onClick={() => setMenuOpen(false)}
-            className="mt-3 w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition-colors text-center"
+            className="mt-3 w-full px-4 py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded transition-colors text-center"
           >
             {nav.submitCta}
           </Link>

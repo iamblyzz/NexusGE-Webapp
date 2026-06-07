@@ -4,22 +4,14 @@
 
 html,
 body {
-  background-color: #fafafa;
+  background-color: #ffffff;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
 }
 
-/* Light grid overlay for hero section */
-.grid-overlay {
-  background-image:
-    linear-gradient(to right, rgb(0 0 0 / 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(0 0 0 / 0.04) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-
-/* Prevent FOUC on language switch — use layout-stable containers */
+/* Prevent FOUC on language switch */
 .lang-stable {
   min-height: 1.5em;
 }

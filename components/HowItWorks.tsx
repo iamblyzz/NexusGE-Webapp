@@ -2,58 +2,45 @@
 
 import { useTranslation } from "@/components/LanguageProvider";
 
-const ICONS = [
-  <svg key="form" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
-  </svg>,
-  <svg key="check" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-  </svg>,
-  <svg key="rocket" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-  </svg>,
-];
-
 export default function HowItWorks() {
   const { t } = useTranslation();
   const hiw = t.howItWorks;
 
   return (
-    <section id="how-it-works" className="py-24 bg-slate-50">
+    <section id="how-it-works" className="py-16 sm:py-20 bg-white border-t border-slate-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="text-center mb-16">
-          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="block w-6 h-px bg-blue-700" />
+          <p className="text-xs font-mono font-semibold text-blue-700 uppercase tracking-widest">
             {hiw.sectionLabel}
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            {hiw.headline}
-          </h2>
-          <p className="mt-4 text-slate-600 text-base max-w-xl mx-auto leading-relaxed">
-            {hiw.subheadline}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-          <div className="hidden md:block absolute top-8 left-[calc(16.666%+1rem)] right-[calc(16.666%+1rem)] h-px bg-slate-200" aria-hidden />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-950 tracking-tight mb-3">
+              {hiw.headline}
+            </h2>
+            <p className="text-slate-600 text-sm leading-relaxed max-w-md">
+              {hiw.subheadline}
+            </p>
+          </div>
 
-          {hiw.steps.map((step, i) => (
-            <div
-              key={step.number}
-              className="relative bg-white rounded-xl border border-slate-200 p-8 shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200"
-            >
-              <span className="absolute top-5 right-6 text-4xl font-black text-slate-100 select-none" aria-hidden>
-                {step.number}
-              </span>
-              <div className="relative z-10 w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white mb-6 shadow-sm">
-                {ICONS[i]}
+          {/* Steps — table-style, not rounded cards */}
+          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
+            {hiw.steps.map((step, i) => (
+              <div key={step.number} className="flex gap-6 py-5">
+                <span className="text-xs font-mono font-bold text-slate-400 w-6 flex-shrink-0 pt-0.5">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-950 mb-1">{step.title}</h3>
+                  <p className="text-slate-500 text-xs leading-relaxed">{step.description}</p>
+                </div>
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-3 min-h-[2.5rem] flex items-start">
-                {step.title}
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">{step.description}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
