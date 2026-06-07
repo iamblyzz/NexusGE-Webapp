@@ -86,6 +86,50 @@ export interface Dictionary {
     disclaimer: string;
   };
 
+  home: {
+    paths: {
+      label: string;
+      headline: string;
+      subheadline: string;
+      items: Array<{
+        tag: string;
+        title: string;
+        persona: string;
+        description: string;
+        cta: string;
+        href: string;
+      }>;
+    };
+    process: {
+      label: string;
+      headline: string;
+      steps: Array<{ number: string; title: string; description: string }>;
+    };
+    packages: {
+      label: string;
+      headline: string;
+      subheadline: string;
+      cta: string;
+      items: Array<{ name: string; price: string; unit: string; description: string }>;
+    };
+    caseStudy: {
+      label: string;
+      headline: string;
+      body: string;
+      badge: string;
+      ctaPrimary: string;
+      ctaSecondary: string;
+      metrics: Array<[string, string]>;
+    };
+    cta: {
+      label: string;
+      headline: string;
+      body: string;
+      button: string;
+      note: string;
+    };
+  };
+
   blog: {
     sectionLabel: string;
     headline: string;
@@ -209,15 +253,13 @@ const en: Dictionary = {
   },
 
   hero: {
-    badge: "Production-Ready Migrations · 24–72 Hour Turnaround",
-    headline:
-      "Your AI-Built App Is Failing in Production. We Architect the Fix.",
-    subheadline:
-      "We perform structural migrations from raw AI outputs — Lovable, Bolt, v0, Cursor — into production-hardened repositories deployed natively on Vercel and Supabase within a strict 24–72 hour operational window.",
-    primaryCta:  "Submit Your App for Review",
-    secondaryCta:"See How It Works",
-    paymentNote: "Payment collected only after scope is confirmed.",
-    stackLabel:  "Production stack we deploy to:",
+    badge:        "Application Architecture for AI-Built Products",
+    headline:     "From Idea to Blueprint. Blueprint to Build. Build to Production.",
+    subheadline:  "We help founders move through every stage of the product development journey — structured architecture, expert infrastructure, and production-ready delivery.",
+    primaryCta:   "Get Started",
+    secondaryCta: "View Services",
+    paymentNote:  "No payment until scope is confirmed in writing.",
+    stackLabel:   "Production stack we deploy to:",
   },
 
   howItWorks: {
@@ -918,6 +960,87 @@ const en: Dictionary = {
     },
   },
 
+  home: {
+    paths: {
+      label:      "Choose Your Starting Point",
+      headline:   "Where Are You in Your Journey?",
+      subheadline:"We work with founders at every stage — whether you have an idea, a prototype, or a live application with problems.",
+      items: [
+        {
+          tag:         "STRATEGY",
+          title:       "Blueprint & Strategy",
+          persona:     "I have an idea but don't know where to start.",
+          description: "We map your product concept into a concrete technical architecture. You receive a structured blueprint — database schema, infrastructure plan, tech stack recommendation, and a build roadmap — before a single line of code is written.",
+          cta:         "Start with a Blueprint",
+          href:        "/services#intake-form",
+        },
+        {
+          tag:         "INFRASTRUCTURE",
+          title:       "Foundation Setup",
+          persona:     "I started building but need proper infrastructure.",
+          description: "We establish the production infrastructure your application requires. GitHub repository, Supabase database with correct schemas and security policies, and a CI/CD pipeline that validates every change before it reaches your users.",
+          cta:         "Set Up My Foundation",
+          href:        "/services#intake-form",
+        },
+        {
+          tag:         "RESCUE",
+          title:       "Production Rescue",
+          persona:     "My app is live but has technical problems.",
+          description: "We audit your live application and resolve the specific infrastructure failures causing your problems. Deployment errors, security vulnerabilities, authentication issues, performance degradation, and scaling bottlenecks — all diagnosed and fixed.",
+          cta:         "Fix My Production App",
+          href:        "/services#intake-form",
+        },
+      ],
+    },
+    process: {
+      label:    "How It Works",
+      headline: "A Structured Engagement — Every Time.",
+      steps: [
+        { number: "01", title: "Discovery",              description: "We understand your product, your goals, and the current state of your application or idea." },
+        { number: "02", title: "Architecture Review",    description: "We map your existing or planned system against production requirements and identify every gap." },
+        { number: "03", title: "Scope Confirmation",     description: "We return a written scope document with exact deliverables, fixed cost, and a confirmed delivery window. You approve before work begins." },
+        { number: "04", title: "Written Deliverables",   description: "Architecture documents, database schemas, infrastructure configurations, and security policies — all written before implementation." },
+        { number: "05", title: "Implementation",         description: "We execute against the confirmed scope. Repository setup, database provisioning, pipeline configuration, and code hardening." },
+        { number: "06", title: "Production Validation",  description: "Live deployment verified across all critical paths. Handoff includes full documentation, repository access, and a 30-day support window." },
+      ],
+    },
+    packages: {
+      label:      "Service Packages",
+      headline:   "Flat-Rate. Scoped Upfront. No Surprises.",
+      subheadline:"Every engagement starts with a written scope. Payment is requested only after you approve exactly what will be delivered.",
+      cta:        "View Full Package Details",
+      items: [
+        { name: "AI App Launch Blueprint",       price: "Custom",  unit: "per engagement", description: "Architecture blueprint and roadmap for founders starting from an idea." },
+        { name: "Foundation Setup",              price: "$350",    unit: "flat",           description: "GitHub, Supabase, and Vercel configured correctly from the start." },
+        { name: "Infrastructure Deployment Fix", price: "$250",    unit: "flat",           description: "Resolve build failures and get your existing application deployed." },
+        { name: "Core Migration",                price: "$450",    unit: "flat",           description: "Migrate an AI export to production infrastructure within 72 hours." },
+        { name: "Enterprise Stabilization",      price: "$750",    unit: "flat",           description: "Harden a live but fragile application — security, auth, performance." },
+        { name: "Bespoke Architecture",          price: "$2,500+", unit: "per sprint",     description: "Custom multi-service infrastructure design for teams scaling up." },
+      ],
+    },
+    caseStudy: {
+      label:        "Verified Outcome",
+      headline:     "10-Hour Deployment Deadlock. Resolved in Under 24.",
+      body:         "A non-technical founder spent over 10 consecutive hours unable to deploy a Lovable-generated SaaS application. Four compounding infrastructure failures were identified, resolved, and delivered to production in a single structured engagement.",
+      badge:        "Delivered < 24h",
+      ctaPrimary:   "Read full case study",
+      ctaSecondary: "Submit your app",
+      metrics: [
+        ["Source",   "Lovable AI"],
+        ["Stack",    "Next.js + Supabase + Vercel"],
+        ["Failures", "4 infrastructure gaps"],
+        ["Result",   "Production live in < 24h"],
+      ],
+    },
+    cta: {
+      label:   "Start Here",
+      headline:"Your product deserves production-grade infrastructure.",
+      body:    "Submit your project in three minutes. Receive a written architecture review and fixed-price scope within 12 hours.",
+      button:  "Get Started →",
+      note:    "No payment until scope is confirmed in writing.",
+    },
+  },
+
   footer: {
     tagline:
       "Specialized in migrating AI-generated and no-code applications into production-grade infrastructure on Vercel and Supabase.",
@@ -956,14 +1079,12 @@ const es: Dictionary = {
   },
 
   hero: {
-    badge: "Migraciones Listas para Producción · Entrega en 24–72 Horas",
-    headline:
-      "Su aplicación creada con IA no funciona en producción. Nosotros la estructuramos.",
-    subheadline:
-      "Realizamos migraciones estructurales desde salidas brutas de IA — Lovable, Bolt, v0, Cursor — hacia repositorios reforzados para producción, desplegados nativamente en Vercel y Supabase dentro de una ventana operacional estricta de 24 a 72 horas.",
-    primaryCta:   "Enviar Aplicación para Revisión",
-    secondaryCta: "Ver Cómo Funciona",
-    paymentNote:  "El pago se cobra únicamente después de confirmar el alcance.",
+    badge:        "Arquitectura de Aplicaciones para Productos con IA",
+    headline:     "De Idea a Blueprint. De Blueprint a Build. De Build a Producción.",
+    subheadline:  "Ayudamos a los fundadores en cada etapa del proceso de desarrollo del producto — arquitectura estructurada, infraestructura experta y entrega lista para producción.",
+    primaryCta:   "Comenzar",
+    secondaryCta: "Ver Servicios",
+    paymentNote:  "Sin pago hasta que el alcance esté confirmado por escrito.",
     stackLabel:   "Stack de producción donde desplegamos:",
   },
 
@@ -1664,6 +1785,87 @@ const es: Dictionary = {
     },
   },
 
+  home: {
+    paths: {
+      label:      "Elige Tu Punto de Partida",
+      headline:   "¿Dónde Estás en Tu Proceso?",
+      subheadline:"Trabajamos con fundadores en cada etapa — ya sea que tengas una idea, un prototipo o una aplicación en producción con problemas.",
+      items: [
+        {
+          tag:         "ESTRATEGIA",
+          title:       "Blueprint y Estrategia",
+          persona:     "Tengo una idea pero no sé por dónde empezar.",
+          description: "Transformamos tu concepto de producto en una arquitectura técnica concreta. Recibes un blueprint estructurado — esquema de base de datos, plan de infraestructura, recomendación de stack tecnológico y una hoja de ruta de construcción — antes de escribir una sola línea de código.",
+          cta:         "Comenzar con un Blueprint",
+          href:        "/services#intake-form",
+        },
+        {
+          tag:         "INFRAESTRUCTURA",
+          title:       "Configuración de Base",
+          persona:     "Empecé a construir pero necesito infraestructura adecuada.",
+          description: "Establecemos la infraestructura de producción que tu aplicación requiere. Repositorio GitHub, base de datos Supabase con esquemas correctos y políticas de seguridad, y un pipeline CI/CD que valida cada cambio antes de que llegue a tus usuarios.",
+          cta:         "Configurar Mi Base",
+          href:        "/services#intake-form",
+        },
+        {
+          tag:         "RESCATE",
+          title:       "Rescate de Producción",
+          persona:     "Mi aplicación está en vivo pero tiene problemas técnicos.",
+          description: "Auditamos tu aplicación en producción y resolvemos los fallos de infraestructura específicos que causan tus problemas. Errores de despliegue, vulnerabilidades de seguridad, problemas de autenticación, degradación de rendimiento y cuellos de botella de escalabilidad — todos diagnosticados y corregidos.",
+          cta:         "Corregir Mi App",
+          href:        "/services#intake-form",
+        },
+      ],
+    },
+    process: {
+      label:    "Cómo Funciona",
+      headline: "Un Compromiso Estructurado — Siempre.",
+      steps: [
+        { number: "01", title: "Descubrimiento",           description: "Entendemos tu producto, tus objetivos y el estado actual de tu aplicación o idea." },
+        { number: "02", title: "Revisión de Arquitectura", description: "Mapeamos tu sistema existente o planificado contra los requisitos de producción e identificamos cada brecha." },
+        { number: "03", title: "Confirmación de Alcance",  description: "Devolvemos un documento de alcance escrito con entregables exactos, costo fijo y una ventana de entrega confirmada. Apruebas antes de que comience el trabajo." },
+        { number: "04", title: "Entregables Escritos",     description: "Documentos de arquitectura, esquemas de base de datos, configuraciones de infraestructura y políticas de seguridad — todo escrito antes de la implementación." },
+        { number: "05", title: "Implementación",           description: "Ejecutamos contra el alcance confirmado. Configuración de repositorio, aprovisionamiento de base de datos, configuración de pipeline y reforzamiento de código." },
+        { number: "06", title: "Validación en Producción", description: "Despliegue en vivo verificado en todas las rutas críticas. La entrega incluye documentación completa, acceso al repositorio y una ventana de soporte de 30 días." },
+      ],
+    },
+    packages: {
+      label:      "Paquetes de Servicio",
+      headline:   "Tarifa Fija. Alcance Confirmado. Sin Sorpresas.",
+      subheadline:"Cada compromiso comienza con un alcance escrito. El pago se solicita solo después de que apruebas exactamente lo que se entregará.",
+      cta:        "Ver Detalles Completos",
+      items: [
+        { name: "Blueprint de Lanzamiento de App IA", price: "Personalizado", unit: "por compromiso", description: "Blueprint de arquitectura y hoja de ruta para fundadores que parten de una idea." },
+        { name: "Configuración de Base",              price: "$350",          unit: "tarifa fija",    description: "GitHub, Supabase y Vercel configurados correctamente desde el inicio." },
+        { name: "Corrección de Despliegue",           price: "$250",          unit: "tarifa fija",    description: "Resuelve fallos de build y despliega tu aplicación existente." },
+        { name: "Migración Principal",                price: "$450",          unit: "tarifa fija",    description: "Migra una exportación de IA a infraestructura de producción en 72 horas." },
+        { name: "Estabilización Empresarial",         price: "$750",          unit: "tarifa fija",    description: "Refuerza una aplicación en vivo pero frágil — seguridad, autenticación, rendimiento." },
+        { name: "Arquitectura a Medida",              price: "$2.500+",       unit: "por sprint",     description: "Diseño de infraestructura multi-servicio para equipos que escalan." },
+      ],
+    },
+    caseStudy: {
+      label:        "Resultado Verificado",
+      headline:     "Bloqueo de Despliegue de 10 Horas. Resuelto en Menos de 24.",
+      body:         "Una fundadora no técnica pasó más de 10 horas consecutivas sin poder desplegar una aplicación SaaS generada por Lovable. Cuatro fallos de infraestructura compuestos fueron identificados, resueltos y entregados a producción en un único compromiso estructurado.",
+      badge:        "Entregado < 24h",
+      ctaPrimary:   "Leer caso de estudio completo",
+      ctaSecondary: "Enviar tu aplicación",
+      metrics: [
+        ["Fuente",     "Lovable AI"],
+        ["Stack",      "Next.js + Supabase + Vercel"],
+        ["Fallos",     "4 brechas de infraestructura"],
+        ["Resultado",  "En producción en < 24h"],
+      ],
+    },
+    cta: {
+      label:   "Empieza Aquí",
+      headline:"Tu producto merece infraestructura de nivel empresarial.",
+      body:    "Envía tu proyecto en tres minutos. Recibe una revisión de arquitectura escrita y un alcance de precio fijo en 12 horas.",
+      button:  "Comenzar →",
+      note:    "Sin pago hasta que el alcance esté confirmado por escrito.",
+    },
+  },
+
   footer: {
     tagline:
       "Especializados en migrar aplicaciones generadas por IA y sin código hacia infraestructura de nivel empresarial en Vercel y Supabase.",
@@ -1702,14 +1904,12 @@ const pt: Dictionary = {
   },
 
   hero: {
-    badge: "Migrações Prontas para Produção · Entrega em 24–72 Horas",
-    headline:
-      "Seu aplicativo desenvolvido com IA não funciona em produção. Nós estruturamos a solução.",
-    subheadline:
-      "Realizamos migrações estruturais de saídas brutas de IA — Lovable, Bolt, v0, Cursor — para repositórios endurecidos para produção, implantados nativamente no Vercel e Supabase dentro de uma janela operacional rigorosa de 24 a 72 horas.",
-    primaryCta:   "Enviar Aplicativo para Revisão",
-    secondaryCta: "Ver Como Funciona",
-    paymentNote:  "Pagamento cobrado somente após a confirmação do escopo.",
+    badge:        "Arquitetura de Aplicativos para Produtos com IA",
+    headline:     "De Ideia a Blueprint. De Blueprint a Build. De Build a Produção.",
+    subheadline:  "Ajudamos fundadores em cada estágio da jornada de desenvolvimento do produto — arquitetura estruturada, infraestrutura especializada e entrega pronta para produção.",
+    primaryCta:   "Começar",
+    secondaryCta: "Ver Serviços",
+    paymentNote:  "Sem pagamento até que o escopo seja confirmado por escrito.",
     stackLabel:   "Stack de produção em que implantamos:",
   },
 
@@ -2407,6 +2607,87 @@ const pt: Dictionary = {
       terms:     "Termos de Serviço",
       privacy:   "Política de Privacidade",
       copyright: "Nexus Global Enterprise. Todos os direitos reservados.",
+    },
+  },
+
+  home: {
+    paths: {
+      label:      "Escolha Seu Ponto de Partida",
+      headline:   "Onde Você Está na Sua Jornada?",
+      subheadline:"Trabalhamos com fundadores em cada estágio — seja com uma ideia, um protótipo ou um aplicativo em produção com problemas.",
+      items: [
+        {
+          tag:         "ESTRATÉGIA",
+          title:       "Blueprint e Estratégia",
+          persona:     "Tenho uma ideia mas não sei por onde começar.",
+          description: "Transformamos seu conceito de produto em uma arquitetura técnica concreta. Você recebe um blueprint estruturado — esquema de banco de dados, plano de infraestrutura, recomendação de stack tecnológico e um roteiro de construção — antes de escrever uma única linha de código.",
+          cta:         "Começar com um Blueprint",
+          href:        "/services#intake-form",
+        },
+        {
+          tag:         "INFRAESTRUTURA",
+          title:       "Configuração de Base",
+          persona:     "Comecei a construir mas preciso de infraestrutura adequada.",
+          description: "Estabelecemos a infraestrutura de produção que seu aplicativo requer. Repositório GitHub, banco de dados Supabase com esquemas corretos e políticas de segurança, e um pipeline CI/CD que valida cada mudança antes de chegar aos seus usuários.",
+          cta:         "Configurar Minha Base",
+          href:        "/services#intake-form",
+        },
+        {
+          tag:         "RESGATE",
+          title:       "Resgate de Produção",
+          persona:     "Meu app está no ar mas tem problemas técnicos.",
+          description: "Auditamos seu aplicativo em produção e resolvemos as falhas de infraestrutura específicas que causam seus problemas. Erros de implantação, vulnerabilidades de segurança, problemas de autenticação, degradação de desempenho e gargalos de escalabilidade — todos diagnosticados e corrigidos.",
+          cta:         "Corrigir Meu App",
+          href:        "/services#intake-form",
+        },
+      ],
+    },
+    process: {
+      label:    "Como Funciona",
+      headline: "Um Compromisso Estruturado — Sempre.",
+      steps: [
+        { number: "01", title: "Descoberta",               description: "Entendemos seu produto, seus objetivos e o estado atual do seu aplicativo ou ideia." },
+        { number: "02", title: "Revisão de Arquitetura",   description: "Mapeamos seu sistema existente ou planejado em relação aos requisitos de produção e identificamos cada lacuna." },
+        { number: "03", title: "Confirmação de Escopo",    description: "Retornamos um documento de escopo escrito com entregáveis exatos, custo fixo e uma janela de entrega confirmada. Você aprova antes do início do trabalho." },
+        { number: "04", title: "Entregáveis Escritos",     description: "Documentos de arquitetura, esquemas de banco de dados, configurações de infraestrutura e políticas de segurança — tudo escrito antes da implementação." },
+        { number: "05", title: "Implementação",            description: "Executamos conforme o escopo confirmado. Configuração de repositório, provisionamento de banco de dados, configuração de pipeline e endurecimento de código." },
+        { number: "06", title: "Validação em Produção",    description: "Implantação ao vivo verificada em todos os caminhos críticos. A entrega inclui documentação completa, acesso ao repositório e uma janela de suporte de 30 dias." },
+      ],
+    },
+    packages: {
+      label:      "Pacotes de Serviço",
+      headline:   "Taxa Fixa. Escopo Confirmado. Sem Surpresas.",
+      subheadline:"Cada compromisso começa com um escopo escrito. O pagamento é solicitado somente após você aprovar exatamente o que será entregue.",
+      cta:        "Ver Detalhes Completos",
+      items: [
+        { name: "Blueprint de Lançamento de App IA", price: "Personalizado", unit: "por compromisso", description: "Blueprint de arquitetura e roteiro para fundadores que partem de uma ideia." },
+        { name: "Configuração de Base",              price: "R$ 1.750",      unit: "taxa fixa",       description: "GitHub, Supabase e Vercel configurados corretamente desde o início." },
+        { name: "Correção de Implantação",           price: "R$ 1.250",      unit: "taxa fixa",       description: "Resolve falhas de build e implanta seu aplicativo existente." },
+        { name: "Migração Principal",                price: "R$ 2.250",      unit: "taxa fixa",       description: "Migra uma exportação de IA para infraestrutura de produção em 72 horas." },
+        { name: "Estabilização Empresarial",         price: "R$ 3.750",      unit: "taxa fixa",       description: "Reforça um aplicativo ao vivo mas frágil — segurança, autenticação, desempenho." },
+        { name: "Arquitetura Personalizada",         price: "R$ 12.500+",    unit: "por sprint",      description: "Design de infraestrutura multi-serviço para equipes em expansão." },
+      ],
+    },
+    caseStudy: {
+      label:        "Resultado Verificado",
+      headline:     "Bloqueio de Implantação de 10 Horas. Resolvido em Menos de 24.",
+      body:         "Uma fundadora não técnica passou mais de 10 horas consecutivas sem conseguir implantar um aplicativo SaaS gerado pelo Lovable. Quatro falhas de infraestrutura compostas foram identificadas, resolvidas e entregues à produção em um único compromisso estruturado.",
+      badge:        "Entregue < 24h",
+      ctaPrimary:   "Ler estudo de caso completo",
+      ctaSecondary: "Enviar seu aplicativo",
+      metrics: [
+        ["Fonte",      "Lovable AI"],
+        ["Stack",      "Next.js + Supabase + Vercel"],
+        ["Falhas",     "4 lacunas de infraestrutura"],
+        ["Resultado",  "Em produção em < 24h"],
+      ],
+    },
+    cta: {
+      label:   "Comece Aqui",
+      headline:"Seu produto merece infraestrutura de nível empresarial.",
+      body:    "Envie seu projeto em três minutos. Receba uma revisão de arquitetura escrita e um escopo de preço fixo em 12 horas.",
+      button:  "Começar →",
+      note:    "Sem pagamento até que o escopo seja confirmado por escrito.",
     },
   },
 
