@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslation } from "@/components/LanguageProvider";
+import { trackEvent }     from "@/lib/analytics";
 
 export type TierKey =
   | "blueprint"
@@ -88,6 +89,7 @@ export default function IntakeForm({ initialTier }: Props) {
       const data = await res.json();
 
       if (res.ok) {
+        trackEvent("form_submission", { tier: form.selected_tier });
         setForm(EMPTY);
         setSubmitted(true);
       } else {

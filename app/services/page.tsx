@@ -6,6 +6,7 @@ import SiteNavbar         from "@/components/SiteNavbar";
 import ServiceIntakeForm  from "@/components/ServiceIntakeForm";
 import { useTranslation } from "@/components/LanguageProvider";
 import { type TierKey }   from "@/components/IntakeForm";
+import { trackEvent }     from "@/lib/analytics";
 
 // ── How It Works steps ────────────────────────────────────────────────────────
 const HOW_IT_WORKS_EN = [
@@ -50,6 +51,7 @@ export default function ServicesPage() {
 
   const selectTier = useCallback((key: TierKey) => {
     setPendingTier(key);
+    trackEvent(`cta_click_${key}`);
     // Small timeout lets React re-render the form with the new tier before scrolling
     setTimeout(() => {
       document.getElementById("intake-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
