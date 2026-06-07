@@ -5,6 +5,16 @@ import SiteNavbar       from "@/components/SiteNavbar";
 import Footer           from "@/components/Footer";
 import { useTranslation } from "@/components/LanguageProvider";
 
+// ISO dates keyed by slug — language-agnostic sort that works for EN/ES/PT
+const POST_DATES: Record<string, string> = {
+  "the-3-month-ai-hangover":            "2026-06-05",
+  "why-ai-builders-fail-at-deployment": "2026-05-28",
+  "supabase-rls-the-silent-killer":     "2026-05-22",
+  "vercel-env-vars-the-right-way":      "2026-05-15",
+  "next-js-app-router-migration-guide": "2026-05-08",
+  "ci-cd-for-non-technical-founders":   "2026-04-30",
+};
+
 const TAG_COLORS: Record<string, string> = {
   Infrastructure:           "bg-blue-50 border-blue-100 text-blue-600",
   Infraestrutura:           "bg-blue-50 border-blue-100 text-blue-600",
@@ -23,6 +33,13 @@ const TAG_COLORS: Record<string, string> = {
 export default function BlogPage() {
   const { t } = useTranslation();
   const bl = t.blog;
+
+  // Sort newest first using the locale-agnostic ISO date map
+  const sortedPosts = [...bl.posts].sort((a, b) => {
+    const da = POST_DATES[a.slug] ?? "2000-01-01";
+    const db = POST_DATES[b.slug] ?? "2000-01-01";
+    return db < da ? -1 : db > da ? 1 : 0;
+  });
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -46,7 +63,7 @@ export default function BlogPage() {
       {/* Post list */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-col divide-y divide-slate-100">
-          {bl.posts.map((post) => (
+          {sortedPosts.map((post) => (
             <article key={post.slug} className="py-10 group">
               <div className="flex items-center gap-3 mb-3">
                 <span className={`px-2.5 py-0.5 rounded-full border text-xs font-semibold ${TAG_COLORS[post.tag] ?? "bg-slate-50 border-slate-200 text-slate-600"}`}>
