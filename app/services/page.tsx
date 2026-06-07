@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import Link               from "next/link";
 import SiteNavbar         from "@/components/SiteNavbar";
 import ServiceIntakeForm  from "@/components/ServiceIntakeForm";
-import { useTranslation }  from "@/components/LanguageProvider";
+import { useTranslation } from "@/components/LanguageProvider";
+import { type TierKey }   from "@/components/IntakeForm";
 
-// ── How It Works steps (service-specific — not the homepage process) ──────────
+// ── How It Works steps ────────────────────────────────────────────────────────
 const HOW_IT_WORKS_EN = [
   { n: "01", title: "Submit your project or idea",            body: "Complete the intake form with details about your current situation — idea stage, broken deployment, or live app with problems." },
   { n: "02", title: "We review the current state",           body: "We read your submission, assess the scope, and identify the specific work required." },
@@ -15,17 +17,12 @@ const HOW_IT_WORKS_EN = [
   { n: "06", title: "We execute and provide completion notes",body: "We complete the work and deliver written notes covering everything done, every configuration made, and every decision taken." },
 ];
 
-function CheckIcon() {
+function CheckIcon({ amber = false }: { amber?: boolean }) {
   return (
-    <svg className="w-3.5 h-3.5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-    </svg>
-  );
-}
-
-function AmberCheck() {
-  return (
-    <svg className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+    <svg
+      className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${amber ? "text-amber-500" : "text-blue-600"}`}
+      fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
+    >
       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
     </svg>
   );
@@ -44,10 +41,20 @@ export default function ServicesPage() {
   // plans[5] = Retainer                   ($99/mo)
   // plans[6] = Bespoke Co-Architecture    ($2,500+)
 
-  const pathOnePlans  = [plans[0], plans[1]];
-  const pathTwoPlans  = [plans[2], plans[3], plans[4]];
-  const retainer      = plans[5];
-  const bespoke       = plans[6];
+  const pathOnePlans = [plans[0], plans[1]];
+  const pathTwoPlans = [plans[2], plans[3], plans[4]];
+  const retainer     = plans[5];
+  const bespoke      = plans[6];
+
+  const [pendingTier, setPendingTier] = useState<TierKey | undefined>(undefined);
+
+  const selectTier = useCallback((key: TierKey) => {
+    setPendingTier(key);
+    // Small timeout lets React re-render the form with the new tier before scrolling
+    setTimeout(() => {
+      document.getElementById("intake-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  }, []);
 
   const scopeNote = lang === "es"
     ? "El pago no se cobra hasta que el alcance esté confirmado por escrito."
@@ -60,6 +67,10 @@ export default function ServicesPage() {
     : lang === "pt"
     ? "Cada compromisso começa com uma confirmação de escopo escrita descrevendo entregáveis, cronograma e limites."
     : "Every engagement begins with a written scope confirmation outlining deliverables, timeline, and boundaries.";
+
+  // Tier keys for each plan slot — must match TierKey type
+  const PATH1_KEYS: TierKey[]    = ["blueprint", "foundation_setup"];
+  const PATH2_KEYS: TierKey[]    = ["deployment_fix", "core_migration", "stabilization"];
 
   return (
     <div className="min-h-screen bg-white text-slate-950">
@@ -98,7 +109,6 @@ export default function ServicesPage() {
       ════════════════════════════════════════════════════════════════ */}
       <section className="py-14 px-4 sm:px-6 lg:px-8 bg-slate-50 border-b border-slate-200">
         <div className="max-w-5xl mx-auto">
-
           <div className="mb-8">
             <p className="text-xs font-mono font-semibold text-slate-400 uppercase tracking-widest mb-1">Path 01</p>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight mb-2">
@@ -114,7 +124,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200">
-            {pathOnePlans.map((plan) => (
+            {pathOnePlans.map((plan, i) => (
               <div key={plan.name} className="bg-white p-7 flex flex-col gap-5">
                 <div>
                   <div className="flex items-baseline justify-between mb-2">
@@ -125,19 +135,20 @@ export default function ServicesPage() {
                   <p className="text-slate-500 text-xs leading-relaxed">{plan.tagline}</p>
                 </div>
                 <ul className="flex flex-col gap-2 flex-1">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2">
+                  {plan.features.map((f, j) => (
+                    <li key={j} className="flex items-start gap-2">
                       <CheckIcon />
                       <span className="text-slate-600 text-xs leading-snug">{f}</span>
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="#intake-form"
-                  className="mt-2 inline-block w-full py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold text-center rounded transition-colors"
+                <button
+                  type="button"
+                  onClick={() => selectTier(PATH1_KEYS[i])}
+                  className="mt-2 w-full py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold text-center transition-colors duration-150"
                 >
                   {plan.cta}
-                </Link>
+                </button>
               </div>
             ))}
           </div>
@@ -149,7 +160,6 @@ export default function ServicesPage() {
       ════════════════════════════════════════════════════════════════ */}
       <section className="py-14 px-4 sm:px-6 lg:px-8 bg-white border-b border-slate-200">
         <div className="max-w-5xl mx-auto">
-
           <div className="mb-8">
             <p className="text-xs font-mono font-semibold text-slate-400 uppercase tracking-widest mb-1">Path 02</p>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight mb-2">
@@ -199,16 +209,17 @@ export default function ServicesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="#intake-form"
-                  className={`mt-2 inline-block w-full py-2.5 text-xs font-semibold text-center rounded transition-colors ${
+                <button
+                  type="button"
+                  onClick={() => selectTier(PATH2_KEYS[i])}
+                  className={`mt-2 w-full py-2.5 text-xs font-semibold text-center transition-colors duration-150 ${
                     i === 1
                       ? "bg-blue-600 hover:bg-blue-700 text-white"
                       : "bg-white hover:bg-slate-50 text-slate-950 border border-slate-200 hover:border-slate-400"
                   }`}
                 >
                   {plan.cta}
-                </Link>
+                </button>
               </div>
             ))}
           </div>
@@ -255,7 +266,7 @@ export default function ServicesPage() {
                   </li>
                 ))}
                 <li className="flex items-start gap-2 mt-1">
-                  <AmberCheck />
+                  <CheckIcon amber />
                   <span className="text-amber-700 text-xs leading-snug font-medium">
                     {lang === "pt" ? "Trabalho de emergência fora do horário agendado: $150/hora"
                      : lang === "es" ? "Trabajo de emergencia fuera del horario programado: $150/hora"
@@ -270,12 +281,13 @@ export default function ServicesPage() {
                  : lang === "es" ? "Cancela en cualquier momento. Facturación mensual."
                  : "Cancel anytime. Billed monthly."}
               </p>
-              <Link
-                href="#intake-form"
-                className="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded transition-colors"
+              <button
+                type="button"
+                onClick={() => selectTier("retainer")}
+                className="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold transition-colors duration-150"
               >
                 {retainer.cta}
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -325,12 +337,13 @@ export default function ServicesPage() {
                  : lang === "es" ? "Alcance y marco legal confirmados antes del inicio."
                  : "Scope and legal framework confirmed before engagement begins."}
               </p>
-              <Link
-                href="#intake-form"
-                className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold rounded transition-colors"
+              <button
+                type="button"
+                onClick={() => selectTier("bespoke")}
+                className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold transition-colors duration-150"
               >
                 {bespoke.cta}
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -369,17 +382,20 @@ export default function ServicesPage() {
             <strong className="text-slate-950">{scopeNote}</strong>{" "}
             {scopeBody}
           </p>
-          <Link
-            href="#intake-form"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm rounded transition-colors"
+          <button
+            type="button"
+            onClick={() => {
+              document.getElementById("intake-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm transition-colors duration-150"
           >
             {lang === "pt" ? "Começar →" : lang === "es" ? "Comenzar →" : "Get Started →"}
-          </Link>
+          </button>
         </div>
       </section>
 
       {/* ── Intake form ─────────────────────────────────────────────────── */}
-      <ServiceIntakeForm />
+      <ServiceIntakeForm initialTier={pendingTier} />
     </div>
   );
 }
