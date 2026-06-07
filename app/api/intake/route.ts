@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { validateOrigin } from "@/lib/csrf";
 
 export async function POST(req: NextRequest) {
+  // ── 0. Origin / CSRF check ────────────────────────────────────────────────
+  const originError = validateOrigin(req);
+  if (originError) return originError;
+
   // ── 1. Read + hard-trim env vars — redeployed with fresh Vercel env ───────
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
   const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
