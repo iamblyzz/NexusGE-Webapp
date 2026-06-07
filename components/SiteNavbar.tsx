@@ -42,11 +42,14 @@ export default function SiteNavbar() {
     setLangOpen(false);
   };
 
+  const homeLabel = lang === "es" ? "Inicio" : lang === "pt" ? "Início" : "Home";
+
   const NAV_LINKS = [
-    { label: nav.services,   href: "/services"    },
-    { label: nav.howItWorks, href: "/process"      },
-    { label: nav.caseStudy,  href: "/case-studies" },
-    { label: "Blog",         href: "/blog"         },
+    { label: homeLabel,        href: "/"            },
+    { label: nav.services,     href: "/services"    },
+    { label: nav.howItWorks,   href: "/process"      },
+    { label: nav.caseStudy,    href: "/case-studies" },
+    { label: "Blog",           href: "/blog"         },
   ];
 
   const LangOptions = () => (

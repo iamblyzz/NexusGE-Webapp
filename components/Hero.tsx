@@ -1,5 +1,6 @@
 "use client";
 
+import Link             from "next/link";
 import { useTranslation } from "@/components/LanguageProvider";
 
 const STACK = ["Next.js 15", "Vercel", "Supabase", "GitHub", "TypeScript", "Tailwind CSS"];
@@ -196,12 +197,6 @@ export default function Hero() {
   const { t } = useTranslation();
   const hero = t.hero;
 
-  const scrollTo = (id: string) => {
-    if (typeof window === "undefined") return;
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <section id="hero" className="pt-16 bg-white border-b border-slate-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
@@ -230,18 +225,18 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <button
-                onClick={() => scrollTo("intake-form")}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm rounded transition-colors duration-150"
+              <Link
+                href="/services#intake-form"
+                className="w-full sm:w-auto px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm rounded transition-colors duration-150 text-center"
               >
                 {hero.primaryCta}
-              </button>
-              <button
-                onClick={() => scrollTo("how-it-works")}
-                className="w-full sm:w-auto px-6 py-3 border border-slate-300 hover:border-slate-500 text-slate-700 hover:text-slate-950 font-semibold text-sm rounded transition-colors duration-150"
+              </Link>
+              <Link
+                href="/services"
+                className="w-full sm:w-auto px-6 py-3 border border-slate-300 hover:border-slate-500 text-slate-700 hover:text-slate-950 font-semibold text-sm rounded transition-colors duration-150 text-center"
               >
                 {hero.secondaryCta}
-              </button>
+              </Link>
             </div>
 
             <p className="text-slate-400 text-xs mb-10">{hero.paymentNote}</p>

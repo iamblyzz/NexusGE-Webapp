@@ -37,7 +37,7 @@ export interface Dictionary {
     headline: string;
     subheadline: string;
     popularBadge: string;
-    plans: [ServicePlan, ServicePlan, ServicePlan, ServicePlan, ServicePlan];
+    plans: [ServicePlan, ServicePlan, ServicePlan, ServicePlan, ServicePlan, ServicePlan, ServicePlan];
     disclaimer: string;
   };
   caseStudy: {
@@ -295,6 +295,39 @@ const en: Dictionary = {
     popularBadge: "Most Popular",
     plans: [
       {
+        name:    "AI App Launch Blueprint",
+        price:   "$149",
+        unit:    "flat",
+        tagline: "For founders with an idea but no technical roadmap.",
+        popular: false,
+        features: [
+          "Technology stack recommendation",
+          "Database architecture plan",
+          "Authentication strategy",
+          "Hosting and deployment plan",
+          "Security recommendations",
+          "Production readiness checklist",
+          "Written implementation roadmap",
+        ],
+        cta: "Get Blueprint",
+      },
+      {
+        name:    "Foundation Setup",
+        price:   "$399",
+        unit:    "flat",
+        tagline: "Your technical foundation — built correctly from day one.",
+        popular: false,
+        features: [
+          "GitHub repository setup and branch protection",
+          "Supabase project configuration and schema",
+          "Vercel deployment setup and domain routing",
+          "Environment variable management",
+          "CI/CD pipeline configuration",
+          "Security baseline implementation",
+        ],
+        cta: "Set Up Foundation",
+      },
+      {
         name:    "Infrastructure Deployment Fix",
         price:   "$250",
         unit:    "flat",
@@ -328,19 +361,19 @@ const en: Dictionary = {
         cta: "Get Started",
       },
       {
-        name:    "Enterprise App Stabilization",
+        name:    "App Stabilization & Security Hardening",
         price:   "$750",
         unit:    "flat",
         tagline: "Live but fragile. We harden the entire stack.",
         popular: false,
         features: [
           "Everything in End-to-End Core Migration",
-          "Integrate Supabase native JWT User Authentication",
-          "Write strict database Row-Level Security (RLS) policies",
-          "Debug and optimize Next.js serverless middleware",
-          "Establish API rate-limit guards to prevent billing spikes",
-          "Full performance audit and Core Web Vitals remediation",
-          "30-day asynchronous support SLA",
+          "Supabase JWT authentication review and hardening",
+          "Row-Level Security policy review and implementation",
+          "Next.js middleware optimization",
+          "API rate-limit guard setup",
+          "Performance and Core Web Vitals review",
+          "30-day asynchronous support window",
         ],
         cta: "Get Started",
       },
@@ -1120,6 +1153,39 @@ const es: Dictionary = {
     subheadline:  "El alcance exacto se confirma por escrito antes de solicitar cualquier pago.",
     popularBadge: "Más Popular",
     plans: [
+      {
+        name:    "Blueprint de Lanzamiento de App IA",
+        price:   "$149",
+        unit:    "tarifa fija",
+        tagline: "Para fundadores con una idea pero sin hoja de ruta técnica.",
+        popular: false,
+        features: [
+          "Recomendación de stack tecnológico",
+          "Plan de arquitectura de base de datos",
+          "Estrategia de autenticación",
+          "Plan de alojamiento y despliegue",
+          "Recomendaciones de seguridad",
+          "Lista de verificación de preparación para producción",
+          "Hoja de ruta de implementación escrita",
+        ],
+        cta: "Obtener Blueprint",
+      },
+      {
+        name:    "Configuración de Base",
+        price:   "$399",
+        unit:    "tarifa fija",
+        tagline: "Tu base técnica — construida correctamente desde el primer día.",
+        popular: false,
+        features: [
+          "Configuración del repositorio GitHub y protección de ramas",
+          "Configuración del proyecto Supabase y esquema",
+          "Configuración del despliegue Vercel y enrutamiento de dominio",
+          "Gestión de variables de entorno",
+          "Configuración del pipeline CI/CD",
+          "Implementación de línea de base de seguridad",
+        ],
+        cta: "Configurar Base",
+      },
       {
         name:    "Corrección de Despliegue de Infraestructura",
         price:   "$250",
@@ -1945,6 +2011,39 @@ const pt: Dictionary = {
     subheadline:  "O escopo exato é confirmado por escrito antes que qualquer pagamento seja solicitado.",
     popularBadge: "Mais Popular",
     plans: [
+      {
+        name:    "Blueprint de Lançamento de App IA",
+        price:   "R$ 750",
+        unit:    "valor fixo",
+        tagline: "Para fundadores com uma ideia mas sem roteiro técnico.",
+        popular: false,
+        features: [
+          "Recomendação de stack tecnológico",
+          "Plano de arquitetura de banco de dados",
+          "Estratégia de autenticação",
+          "Plano de hospedagem e implantação",
+          "Recomendações de segurança",
+          "Lista de verificação de prontidão para produção",
+          "Roteiro de implementação escrito",
+        ],
+        cta: "Obter Blueprint",
+      },
+      {
+        name:    "Configuração de Base",
+        price:   "R$ 2.000",
+        unit:    "valor fixo",
+        tagline: "Sua base técnica — construída corretamente desde o primeiro dia.",
+        popular: false,
+        features: [
+          "Configuração do repositório GitHub e proteção de branch",
+          "Configuração do projeto Supabase e esquema",
+          "Configuração da implantação Vercel e roteamento de domínio",
+          "Gerenciamento de variáveis de ambiente",
+          "Configuração de pipeline CI/CD",
+          "Implementação de baseline de segurança",
+        ],
+        cta: "Configurar Base",
+      },
       {
         name:    "Correção de Implantação de Infraestrutura",
         price:   "R$ 2.500",
