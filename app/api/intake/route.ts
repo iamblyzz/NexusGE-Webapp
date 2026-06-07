@@ -1,7 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+
+// 10 submissions per IP per 15-minute window — generous for a B2B intake form.
+const RATE_LIMIT    = 10;
+const RATE_WINDOW   = 15 * 60 * 1000; // 15 minutes in ms
 
 export async function POST(req: NextRequest) {
+  // ── 0. Rate limiting ──────────────────────────────────────────────────────
+  const ip    = getClientIp(req);
+  const rl    = checkRateLimit({ key: `intake:${ip}`, limit: RATE_LIMIT, windowMs: RATE_WINDOW });
+
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before submitting again." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After":       String(Math.ceil((rl.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": String(RATE_LIMIT),
+          "X-RateLimit-Reset": String(Math.ceil(rl.resetAt / 1000)),
+        },
+      }
+    );
+  }
+
   // ── 1. Read + hard-trim env vars — redeployed with fresh Vercel env ───────
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
   const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
